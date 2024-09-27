@@ -1,2 +1,4 @@
 cd backend
 npm test
+
+npm run lint
