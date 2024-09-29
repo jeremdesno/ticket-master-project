@@ -16,6 +16,27 @@ export class IntegrationService {
     this.apiKey = this.configService.get<string>('TICKETMASTER_API_KEY');
   }
 
+  async makeRequest<T>(url: string): Promise<T> {
+    const maxRetries = 5;
+    let retryCount = 0;
+
+    while (retryCount < maxRetries) {
+      try {
+        const response = await lastValueFrom(this.httpService.get(url));
+        return response.data;
+      } catch (error) {
+        if (error.response && error.response.status === 429) {
+          const waitTime = Math.pow(2, retryCount) * 1000; // Exponential backoff
+          await new Promise((resolve) => setTimeout(resolve, waitTime));
+          retryCount++;
+        } else {
+          throw new Error(`Error when making the request: ${error.message}`);
+        }
+      }
+    }
+    throw new Error(`Max retries reached for request: ${url}`);
+  }
+
   async getEvents(): Promise<EventsResponse> {
     const startDateTime = new Date();
     startDateTime.setDate(startDateTime.getDate() + 1);
