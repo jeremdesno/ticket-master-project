@@ -6,7 +6,7 @@ import { EventsResponse } from './types';
 
 @Injectable()
 export class IntegrationService {
-  private readonly apiUrl = 'https://app.ticketmaster.com/discovery/v2/';
+  private readonly baseUrl = 'https://app.ticketmaster.com';
   private readonly apiKey: string;
 
   constructor(
@@ -51,15 +51,9 @@ export class IntegrationService {
       .toISOString()
       .replace(/\.\d{3}Z$/, 'Z');
 
-    const url = `${this.apiUrl}events.json?apikey=${this.apiKey}&locale=*&city=Paris&countryCode=FR&startDateTime=${startDateTimeFormatted}&endDateTime=${endDateTimeFormatted}`;
+    const url = `${this.baseUrl}/discovery/v2/events.json?apikey=${this.apiKey}&locale=*&city=Paris&countryCode=FR&startDateTime=${startDateTimeFormatted}&endDateTime=${endDateTimeFormatted}`;
 
-    try {
-      const response = await lastValueFrom(this.httpService.get(url));
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        `Error fetching events from Ticketmaster: ${error.message}`,
-      );
-    }
+    return await this.makeRequest<EventsResponse>(url);
+  }
   }
 }
