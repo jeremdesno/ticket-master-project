@@ -2,7 +2,9 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
-import { EventsResponse } from './types';
+
+import { EventExtracted, EventsResponse } from './types';
+import { EventDataModel } from '../database/events';
 
 @Injectable()
 export class IntegrationService {
@@ -54,6 +56,45 @@ export class IntegrationService {
     const url = `${this.baseUrl}/discovery/v2/events.json?apikey=${this.apiKey}&locale=*&city=Paris&countryCode=FR&startDateTime=${startDateTimeFormatted}&endDateTime=${endDateTimeFormatted}`;
 
     return await this.makeRequest<EventsResponse>(url);
+  }
+
+  async parsePageEvents(data: EventsResponse): Promise<EventDataModel[]> {
+    if (!data._embedded || !data._embedded.events) {
+      throw new Error('Invalid data structure');
+    }
+
+    return data._embedded.events.map((event: EventExtracted) => {
+      const venue = event._embedded?.venues?.[0];
+      const venueAddress = [
+        venue.address?.line1,
+        venue.address?.line2,
+        venue.address?.line3,
+      ]
+        .filter(Boolean)
+        .join(', ');
+
+      const startDate = event.dates.start.dateTBD
+        ? 'TBD'
+        : `${event.dates.start.localDate} ${event.dates.start.localTime || ''}`.trim();
+
+      const endDate = event.dates.end?.dateTBD
+        ? 'TBD'
+        : `${event.dates.end?.localDate || ''} ${event.dates.end?.localTime || ''}`.trim();
+
+      return {
+        id: event.id,
+        name: event.name,
+        startDate: startDate || 'TBD',
+        endDate: endDate || 'TBD',
+        startDateSales: event.sales.public.startDateTime,
+        endDateSales: event.sales.public.endDateTime,
+        url: event.url,
+        description: event.description,
+        eventType: event.type,
+        venueAddress: venueAddress || 'No address available',
+        venueName: venue.name || 'No information',
+      };
+    });
   }
   }
 }
