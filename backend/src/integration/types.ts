@@ -14,7 +14,7 @@ export interface Links {
   prev?: Link;
 }
 
-export interface Event {
+export interface EventExtracted {
   id: string;
   name: string;
   dates: object;
@@ -31,7 +31,7 @@ export interface Event {
 }
 
 export interface Embedded {
-  events: Event[];
+  events: EventExtracted[];
 }
 
 export interface Page {
