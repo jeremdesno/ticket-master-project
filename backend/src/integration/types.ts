@@ -14,15 +14,37 @@ export interface Links {
   prev?: Link;
 }
 
+export interface Venue {
+  address: {
+    line1?: string;
+    line2?: string;
+    line3?: string;
+  };
+  name?: string;
+}
+
+export interface EmbeddedData {
+  venues?: Venue[];
+}
+
+export interface dates {
+  start: { localDate: string; localTime?: string; dateTBD: boolean };
+  end?: { localDate: string; localTime?: string; dateTBD: boolean };
+}
+
+export interface sales {
+  public: { startDateTime: string; endDateTime?: string };
+}
+
 export interface EventExtracted {
   id: string;
   name: string;
-  dates: object;
+  dates: dates;
   url: string;
   description: string;
   type: string;
-  sales: object;
-  place: object;
+  sales: sales;
+  _embedded?: EmbeddedData;
   [key: string]:
     | string
     | number
