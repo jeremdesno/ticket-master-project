@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 
 import { EventExtracted, EventsResponse } from './types';
-import { EventDataModel } from '../database/events';
+import { EventDataModel } from '../database/models';
 
 @Injectable()
 export class IntegrationService {
