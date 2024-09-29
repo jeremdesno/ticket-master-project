@@ -96,5 +96,25 @@ export class IntegrationService {
       };
     });
   }
+
+  async parseEvents(data: EventsResponse): Promise<EventDataModel[]> {
+    let events: EventDataModel[] = [];
+    let nextUrl: string | null = data._links.self.href;
+
+    while (nextUrl) {
+      const pageEventsParsed = await this.parsePageEvents(data);
+      events = events.concat(pageEventsParsed);
+
+      const nextLink = data._links?.next;
+
+      if (nextLink && nextLink.href) {
+        nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
+        console.log();
+        data = await this.makeRequest<EventsResponse>(nextUrl);
+      } else {
+        nextUrl = null;
+      }
+    }
+    return events;
   }
 }
