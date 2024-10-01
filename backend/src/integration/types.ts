@@ -35,7 +35,12 @@ export interface dates {
 export interface sales {
   public: { startDateTime: string; endDateTime?: string };
 }
-
+interface Classification {
+  genre: {
+    id: string;
+    name: string;
+  };
+}
 export interface EventExtracted {
   id: string;
   name: string;
@@ -45,6 +50,7 @@ export interface EventExtracted {
   type: string;
   sales: sales;
   _embedded?: EmbeddedData;
+  classifications: Classification[];
   [key: string]:
     | string
     | number

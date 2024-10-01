@@ -1,13 +1,17 @@
+export interface DatabaseSchema {
+  events: EventDataModel;
+}
+
 export interface EventDataModel {
   id: string;
   name: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   url: string;
   description: string;
-  eventType: string;
-  startDateSales: string;
-  endDateSales: string;
+  genre: string;
+  startDateSales: Date;
+  endDateSales: Date;
   venueAddress: string;
   venueName: string;
 }
