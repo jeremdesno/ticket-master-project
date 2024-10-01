@@ -5,7 +5,7 @@ import * as path from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
+import { DatabaseService } from './database/database.service';
 import { IntegrationService } from './integration/integration.service';
 
 @Module({
@@ -14,9 +14,8 @@ import { IntegrationService } from './integration/integration.service';
       envFilePath: path.resolve(__dirname, '../../.env'),
     }),
     HttpModule,
-    DatabaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService, IntegrationService],
+  providers: [AppService, IntegrationService, DatabaseService],
 })
 export class AppModule {}
