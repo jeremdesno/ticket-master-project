@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 
-import { DatabaseSchema, EventDataModel } from './models';
+import { DatabaseSchema } from './models';
 
 @Injectable()
 export class DatabaseService {
@@ -27,25 +27,7 @@ export class DatabaseService {
       }),
     });
   }
-
-  async upsertEvent(event: EventDataModel): Promise<void> {
-    await this.database
-      .insertInto('events')
-      .values(event)
-      .onConflict((oc) =>
-        oc.column('id').doUpdateSet({
-          name: event.name,
-          startDate: event.startDate,
-          endDate: event.endDate,
-          url: event.url,
-          description: event.description,
-          genre: event.genre,
-          startDateSales: event.startDateSales,
-          endDateSales: event.endDateSales,
-          venueAddress: event.venueAddress,
-          venueName: event.venueName,
-        }),
-      )
-      .execute();
+  public getDatabase(): Kysely<DatabaseSchema> {
+    return this.database;
   }
 }
