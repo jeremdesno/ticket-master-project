@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { IntegrationService } from './integration.service';
-import { DatabaseService } from '../database/database.service';
+import { DatabaseService } from '../common/database.service';
 
 describe('IntegrationService', () => {
   let service: IntegrationService;

@@ -7,4 +7,4 @@ import { DatabaseService } from './database.service';
   imports: [ConfigService],
   providers: [DatabaseService],
 })
-export class DatabaseModule {}
+export class CommonModule {}

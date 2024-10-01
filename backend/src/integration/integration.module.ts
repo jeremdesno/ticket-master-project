@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as path from 'path';
 
 import { IntegrationService } from './integration.service';
-import { DatabaseService } from '../database/database.service';
+import { DatabaseService } from '../common/database.service';
 
 @Module({
   imports: [

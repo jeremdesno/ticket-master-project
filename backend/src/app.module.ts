@@ -5,7 +5,7 @@ import * as path from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseService } from './database/database.service';
+import { DatabaseService } from './common/database.service';
 import { IntegrationService } from './integration/integration.service';
 
 @Module({
