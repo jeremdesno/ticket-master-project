@@ -1,16 +1,18 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Kysely } from 'kysely';
 import { lastValueFrom } from 'rxjs';
 
 import { EventExtracted, EventsResponse } from './types';
 import { DatabaseService } from '../common/database.service';
-import { EventDataModel } from '../common/models';
+import { DatabaseSchema, EventDataModel } from '../common/models';
 
 @Injectable()
 export class IntegrationService {
   private readonly baseUrl = 'https://app.ticketmaster.com';
   private readonly apiKey: string;
+  private readonly database: Kysely<DatabaseSchema>;
 
   constructor(
     private httpService: HttpService,
@@ -18,6 +20,7 @@ export class IntegrationService {
     private databaseService: DatabaseService,
   ) {
     this.apiKey = this.configService.get<string>('TICKETMASTER_API_KEY');
+    this.database = this.databaseService.getDatabase();
   }
 
   async makeRequest<T>(url: string): Promise<T> {
@@ -117,6 +120,27 @@ export class IntegrationService {
     });
   }
 
+  async upsertEvent(event: EventDataModel): Promise<void> {
+    await this.database
+      .insertInto('events')
+      .values(event)
+      .onConflict((oc) =>
+        oc.column('id').doUpdateSet({
+          name: event.name,
+          startDate: event.startDate,
+          endDate: event.endDate,
+          url: event.url,
+          description: event.description,
+          genre: event.genre,
+          startDateSales: event.startDateSales,
+          endDateSales: event.endDateSales,
+          venueAddress: event.venueAddress,
+          venueName: event.venueName,
+        }),
+      )
+      .execute();
+  }
+
   async parseAndSaveEvents(data: EventsResponse): Promise<void> {
     let nextUrl: string | null = data._links.self.href;
 
@@ -124,7 +148,7 @@ export class IntegrationService {
       const pageEventsParsed = await this.parsePageEvents(data);
 
       for (const parsedEvent of pageEventsParsed) {
-        this.databaseService.upsertEvent(parsedEvent);
+        this.upsertEvent(parsedEvent);
       }
       console.log('upserted page:', data.page.number);
 
