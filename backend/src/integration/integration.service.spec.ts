@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { IntegrationService } from './integration.service';
+import { DatabaseService } from '../database/database.service';
 
 describe('IntegrationService', () => {
   let service: IntegrationService;
@@ -10,7 +11,7 @@ describe('IntegrationService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule, ConfigModule.forRoot()],
-      providers: [IntegrationService],
+      providers: [IntegrationService, DatabaseService],
     }).compile();
 
     service = module.get<IntegrationService>(IntegrationService);

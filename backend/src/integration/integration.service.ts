@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 
 import { EventExtracted, EventsResponse } from './types';
+import { DatabaseService } from '../database/database.service';
 import { EventDataModel } from '../database/models';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class IntegrationService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
+    private databaseService: DatabaseService,
   ) {
     this.apiKey = this.configService.get<string>('TICKETMASTER_API_KEY');
   }
@@ -115,24 +117,25 @@ export class IntegrationService {
     });
   }
 
-  async parseEvents(data: EventsResponse): Promise<EventDataModel[]> {
-    let events: EventDataModel[] = [];
+  async parseAndSaveEvents(data: EventsResponse): Promise<void> {
     let nextUrl: string | null = data._links.self.href;
 
     while (nextUrl) {
       const pageEventsParsed = await this.parsePageEvents(data);
-      events = events.concat(pageEventsParsed);
+
+      for (const parsedEvent of pageEventsParsed) {
+        this.databaseService.upsertEvent(parsedEvent);
+      }
+      console.log('upserted page:', data.page.number);
 
       const nextLink = data._links?.next;
 
       if (nextLink && nextLink.href) {
         nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
-        console.log();
         data = await this.makeRequest<EventsResponse>(nextUrl);
       } else {
         nextUrl = null;
       }
     }
-    return events;
   }
 }
