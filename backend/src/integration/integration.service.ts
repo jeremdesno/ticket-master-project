@@ -74,23 +74,41 @@ export class IntegrationService {
         .join(', ');
 
       const startDate = event.dates.start.dateTBD
-        ? 'TBD'
-        : `${event.dates.start.localDate} ${event.dates.start.localTime || ''}`.trim();
+        ? null
+        : new Date(
+            `${event.dates.start.localDate}T${event.dates.start.localTime || '00:00:00'}`,
+          );
 
       const endDate = event.dates.end?.dateTBD
-        ? 'TBD'
-        : `${event.dates.end?.localDate || ''} ${event.dates.end?.localTime || ''}`.trim();
+        ? null
+        : event.dates.end?.localDate
+          ? new Date(
+              `${event.dates.end.localDate}T${event.dates.end.localTime || '23:59:59'}`,
+            )
+          : null;
+
+      const startDateSales = event.sales.public.startDateTime
+        ? new Date(event.sales.public.startDateTime)
+        : null;
+
+      const endDateSales = event.sales.public.endDateTime
+        ? new Date(event.sales.public.endDateTime)
+        : null;
+      const genre: string[] = [];
+      for (const classification of event.classifications) {
+        genre.push(classification.genre?.name);
+      }
 
       return {
         id: event.id,
         name: event.name,
-        startDate: startDate || 'TBD',
-        endDate: endDate || 'TBD',
-        startDateSales: event.sales.public.startDateTime,
-        endDateSales: event.sales.public.endDateTime,
+        startDate: startDate,
+        endDate: endDate,
+        startDateSales: startDateSales,
+        endDateSales: endDateSales,
         url: event.url,
         description: event.description,
-        eventType: event.type,
+        genre: genre.join('/'),
         venueAddress: venueAddress || 'No address available',
         venueName: venue.name || 'No information',
       };
