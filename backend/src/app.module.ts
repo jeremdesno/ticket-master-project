@@ -1,21 +1,21 @@
-import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as path from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseService } from './common/database.service';
-import { IntegrationService } from './integration/integration.service';
+import { CommonModule } from './common/common.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: path.resolve(__dirname, '../../.env'),
+      envFilePath: path.resolve(__dirname, '../../../.env'),
     }),
-    HttpModule,
+    EventsModule,
+    CommonModule,
   ],
   controllers: [AppController],
-  providers: [AppService, IntegrationService, DatabaseService],
+  providers: [AppService],
 })
 export class AppModule {}
