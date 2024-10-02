@@ -59,7 +59,9 @@ export class IntegrationService {
       .replace(/\.\d{3}Z$/, 'Z');
 
     const url = `${this.baseUrl}/discovery/v2/events.json?apikey=${this.apiKey}&locale=*&city=Paris&countryCode=FR&startDateTime=${startDateTimeFormatted}&endDateTime=${endDateTimeFormatted}`;
-
+    console.log(
+      `Fetching events from the ${startDateTimeFormatted} to the ${endDateTimeFormatted}`,
+    );
     return await this.makeRequest<EventsResponse>(url);
   }
 
