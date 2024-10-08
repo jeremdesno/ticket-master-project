@@ -20,12 +20,14 @@ let DatabaseService = class DatabaseService {
         const postgresUser = this.configService.get('POSTGRES_USER');
         const postgresPassword = this.configService.get('POSTGRES_PASSWORD');
         const postgresDatabase = this.configService.get('POSTGRES_DB');
-        console.log(`Connecting to database at 127.0.0.1:5433 as ${postgresUser}`);
+        const host = this.configService.get('HOST', '127.0.0.1');
+        const port = this.configService.get('PORT', '5433');
+        console.log(`Connecting to database at ${host}:${port} as ${postgresUser}`);
         this.database = new kysely_1.Kysely({
             dialect: new kysely_1.PostgresDialect({
                 pool: new pg_1.Pool({
-                    host: '127.0.0.1',
-                    port: 5433,
+                    host: host,
+                    port: port,
                     database: postgresDatabase,
                     user: postgresUser,
                     password: postgresPassword,

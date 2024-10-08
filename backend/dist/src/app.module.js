@@ -12,8 +12,8 @@ const config_1 = require("@nestjs/config");
 const path = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const events_module_1 = require("./events/events.module");
 const common_module_1 = require("./common/common.module");
+const events_module_1 = require("./events/events.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
