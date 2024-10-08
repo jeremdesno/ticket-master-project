@@ -14,12 +14,14 @@ export class DatabaseService {
     const postgresPassword =
       this.configService.get<string>('POSTGRES_PASSWORD');
     const postgresDatabase = this.configService.get<string>('POSTGRES_DB');
-    console.log(`Connecting to database at 127.0.0.1:5433 as ${postgresUser}`);
+    const host = this.configService.get<string>('HOST', '127.0.0.1');
+    const port = this.configService.get<string>('PORT', '5433');
+    console.log(`Connecting to database at ${host}:${port} as ${postgresUser}`);
     this.database = new Kysely<DatabaseSchema>({
       dialect: new PostgresDialect({
         pool: new Pool({
-          host: '127.0.0.1',
-          port: 5433,
+          host: host,
+          port: port,
           database: postgresDatabase,
           user: postgresUser,
           password: postgresPassword,
