@@ -17,7 +17,9 @@
     "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.tsx\" --fix",
+    "format": "prettier --write \"src/**/*.tsx\""
   },
   "eslintConfig": {
     "extends": [
@@ -39,6 +41,12 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.13",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
     "typescript": "^4.9.5"
   }
 }
