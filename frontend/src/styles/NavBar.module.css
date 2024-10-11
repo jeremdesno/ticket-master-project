@@ -36,3 +36,14 @@
   .genreItem:hover {
       background-color: #f0f0f0;
   }
+  
+  .searchBar {
+    flex-grow: 1;
+    margin-left: 20px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+
