@@ -4,7 +4,7 @@ if git diff --cached --name-only | grep -q 'backend/'; then
     cd backend
     npm test
     npm run lint
-    npm run format
+    npm run check-format
     cd ..
 else
   echo "No backend changes detected. Skipping backend tests."
@@ -14,7 +14,7 @@ if git diff --cached --name-only | grep -q 'frontend/'; then
     echo "Running frontend lint, format and tests..."
     cd frontend
     npm run lint
-    npm run format
+    npm run check-format
 else
   echo "No frontend changes detected. Skipping frontend tests."
 fi
