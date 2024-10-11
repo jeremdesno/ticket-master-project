@@ -1,0 +1,15 @@
+  .navBarButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .navBarButton:hover {
+      background-color: #45a049;
+      font-weight: bold;
+  }
