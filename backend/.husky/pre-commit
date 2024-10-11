@@ -1,4 +1,10 @@
-cd backend
-npm test
-npm run lint
-npm run format
+
+if git diff --cached --name-only | grep -q 'backend/'; then
+    echo "Running backend lint, format and tests..."
+    cd backend
+    npm test
+    npm run lint
+    npm run format
+else
+  echo "No backend changes detected. Skipping backend tests."
+fi
