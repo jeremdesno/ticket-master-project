@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint \"{src,apps,libs,test}/**/*.tsx\" --fix",
-    "format": "prettier --write \"src/**/*.tsx\""
+    "format": "prettier --check \"src/**/*.tsx\""
   },
   "eslintConfig": {
     "extends": [
