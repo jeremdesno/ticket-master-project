@@ -13,3 +13,26 @@
       background-color: #45a049;
       font-weight: bold;
   }
+
+  .genreMenu {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .genreItem {
+      padding: 8px;
+      color: black;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  .genreItem:hover {
+      background-color: #f0f0f0;
+  }
