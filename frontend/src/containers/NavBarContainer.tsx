@@ -9,9 +9,11 @@ import styles from '../styles/NavBar.module.css';
 const NavBarContainer: React.FC = () => {
   return (
     <nav className={styles.navbar}>
-      <HomeButton />
-      <FavoritesButton />
-      <GenreMenuContainer />
+      <div className={styles.leftSectionNavBar}>
+        <HomeButton />
+        <FavoritesButton />
+        <GenreMenuContainer />
+      </div>
       <SearchBarContainer />
     </nav>
   );
