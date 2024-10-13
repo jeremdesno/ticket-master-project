@@ -5,6 +5,12 @@
     color: #004d00;
   }
   
+  .eventsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px 40px;
+  }
   
   .eventCard {
     border: 1px solid #ccc;
@@ -63,3 +69,4 @@
   .detailsButton:hover {
     opacity: 0.8;
   }
+  
