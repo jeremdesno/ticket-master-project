@@ -12,7 +12,10 @@ function App(): JSX.Element {
       <NavBarContainer />
       <Routes>
         <Route path="/" element={<HomePageContainer />} />
-        <Route path="/events/:genre" element={<EventsByGenrePage />} />
+        <Route
+          path="/events/:genre/:startDate?/:endDate?"
+          element={<EventsByGenrePage />}
+        />
       </Routes>
     </div>
   );
