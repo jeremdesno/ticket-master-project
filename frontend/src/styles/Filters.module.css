@@ -1,3 +1,9 @@
+  .filtersContainer {
+    padding: 20px;
+    flex: 1;  
+    background-color: #f8f8f8;
+  }
+
   /* Genre Filter component styling */
   .genreFilter {
     margin-bottom: 20px;
