@@ -1,0 +1,65 @@
+  .genreTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #004d00;
+  }
+  
+  
+  .eventCard {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .eventCard:hover {
+    transform: scale(1.05);
+  }
+  
+  .eventTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .eventDetails {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .eventButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .accessWebsiteButton,
+  .detailsButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    margin: 0 5px;
+  }
+  
+  .accessWebsiteButton {
+    background-color: #004d00;
+    color: white;
+  }
+  
+  .detailsButton {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+  
+  .accessWebsiteButton:hover,
+  .detailsButton:hover {
+    opacity: 0.8;
+  }
