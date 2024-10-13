@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import EventsByGenrePage from './containers/GenrePageContainer';
 import HomePageContainer from './containers/HomePageContainer';
 import NavBarContainer from './containers/NavBarContainer';
 
@@ -11,6 +12,7 @@ function App(): JSX.Element {
       <NavBarContainer />
       <Routes>
         <Route path="/" element={<HomePageContainer />} />
+        <Route path="/events/:genre" element={<EventsByGenrePage />} />
       </Routes>
     </div>
   );
