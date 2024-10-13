@@ -4,9 +4,18 @@
     text-align: center;
     color: #004d00;
   }
+
+  .eventsPageLayout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    height: 100%;
+  }
   
   .eventsGrid {
     display: grid;
+    flex: 4;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 20px 40px;

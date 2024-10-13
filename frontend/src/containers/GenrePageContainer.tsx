@@ -1,9 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import FiltersContainer from './FiltersContainer';
 import { EventDataModel } from '../../../backend/src/common/models';
 import GenreEventsGrid from '../components/GenreEventsGrid';
 import styles from '../styles/GenrePage.module.css';
+
+const genres = ['Rock', 'Pop', 'Jazz', 'Classical', 'Hip-Hop'];
 
 // Generate 10 fake events as placeholders
 const events: EventDataModel[] = Array.from({ length: 10 }, (_, index) => ({
@@ -21,12 +24,36 @@ const events: EventDataModel[] = Array.from({ length: 10 }, (_, index) => ({
 }));
 
 const EventsPageContainer: React.FC = (): React.JSX.Element => {
-  const { genre } = useParams<{ genre: string }>();
+  const { genre, startDate, endDate } = useParams<{
+    genre: string;
+    startDate?: string;
+    endDate?: string;
+  }>() as { genre: string; startDate?: string; endDate?: string };
+
+  const currentStartDate = startDate ? new Date(startDate) : null;
+  const currentEndDate = endDate ? new Date(endDate) : null;
+
+  const filteredEvents = events.filter((event) => {
+    const eventDate = new Date(event.startDate);
+    return (
+      (!genre || event.genre === genre) &&
+      (!currentStartDate || eventDate >= currentStartDate) &&
+      (!currentEndDate || eventDate <= currentEndDate)
+    );
+  });
 
   return (
     <div>
       <h1 className={styles.genreTitle}>{genre} Events</h1>
-      <GenreEventsGrid events={events} />
+      <div className={styles.eventsPageLayout}>
+        <GenreEventsGrid events={filteredEvents} />
+        <FiltersContainer
+          genres={genres}
+          currentGenre={genre}
+          currentStartDate={currentStartDate}
+          currentEndDate={currentEndDate}
+        />
+      </div>
     </div>
   );
 };
