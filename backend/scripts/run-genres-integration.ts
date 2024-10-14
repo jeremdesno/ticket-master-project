@@ -7,13 +7,15 @@ async function runGenreIntegration() {
   const integrationService = app.get(IntegrationService);
 
   try {
-    const genres = await integrationService.getClassifications();
+    const classifications = await integrationService.getClassifications();
     console.log(
       'Classifications retrieved:',
-      genres.page.totalElements,
+      classifications.page.totalElements,
       'Pages:',
-      genres.page.totalPages,
+      classifications.page.totalPages,
     );
+    await integrationService.parseAndSaveGenresAndSubGenres(classifications);
+    console.log('Genres & Sub Genres parsed and saved');
   } catch (error) {
     console.error('Error:', error.message);
   } finally {
