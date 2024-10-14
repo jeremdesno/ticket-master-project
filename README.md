@@ -6,7 +6,7 @@ Command to update the postgres database with the events from tomorrow .
 The time period can be changed in the integration service.
 ```
 cd backend/
-ts-node script/run-integration.ts
+ts-node script/run-events-integration.ts
 ```
 
 ## Backend 
