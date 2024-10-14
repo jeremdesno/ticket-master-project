@@ -207,4 +207,30 @@ export class IntegrationService {
     });
     return [genreList, subGenreList];
   }
+
+  async upsertGenre(genre: GenreDataModel): Promise<void> {
+    await this.database
+      .insertInto('genres')
+      .values(genre)
+      .onConflict((oc) =>
+        oc.column('id').doUpdateSet({
+          name: genre.name,
+        }),
+      )
+      .execute();
+  }
+
+  async upsertSubGenre(subGenre: SubGenreDataModel): Promise<void> {
+    await this.database
+      .insertInto('subgenres')
+      .values(subGenre)
+      .onConflict((oc) =>
+        oc.column('id').doUpdateSet({
+          name: subGenre.name,
+          genreId: subGenre.genreId,
+        }),
+      )
+      .execute();
+  }
+
 }
