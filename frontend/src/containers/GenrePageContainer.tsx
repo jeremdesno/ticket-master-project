@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import FiltersContainer from './FiltersContainer';
+import GenreEventsGridContainer from './GenreEventsGridContainer';
 import { EventDataModel } from '../../../backend/src/common/models';
-import GenreEventsGrid from '../components/GenreEventsGrid';
 import styles from '../styles/GenrePage.module.css';
 
 const genres = ['Rock', 'Pop', 'Jazz', 'Classical', 'Hip-Hop'];
@@ -46,7 +46,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     <div>
       <h1 className={styles.genreTitle}>{genre} Events</h1>
       <div className={styles.eventsPageLayout}>
-        <GenreEventsGrid events={filteredEvents} />
+        <GenreEventsGridContainer events={filteredEvents} />
         <FiltersContainer
           genres={genres}
           currentGenre={genre}
