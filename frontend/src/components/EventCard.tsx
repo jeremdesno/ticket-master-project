@@ -5,9 +5,10 @@ import styles from '../styles/GenrePage.module.css';
 
 interface EventCardProps {
   event: EventDataModel;
+  onDetailsClick: () => void;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, onDetailsClick }) => {
   return (
     <div key={event.id} className={styles.eventCard}>
       <h2 className={styles.eventTitle}>{event.name}</h2>
@@ -29,7 +30,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         >
           Access Website
         </a>
-        <button className={styles.detailsButton}>Details</button>
+        <button className={styles.detailsButton} onClick={onDetailsClick}>
+          Details
+        </button>
       </div>
     </div>
   );
