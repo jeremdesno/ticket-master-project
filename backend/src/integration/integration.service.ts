@@ -4,7 +4,11 @@ import { ConfigService } from '@nestjs/config';
 import { Kysely } from 'kysely';
 import { lastValueFrom } from 'rxjs';
 
-import { EventExtracted, EventsResponse } from './types';
+import {
+  ClassificationsResponse,
+  EventExtracted,
+  EventsResponse,
+} from './types';
 import { DatabaseService } from '../common/database.service';
 import { DatabaseSchema, EventDataModel } from '../common/models';
 
@@ -163,5 +167,11 @@ export class IntegrationService {
         nextUrl = null;
       }
     }
+  }
+
+  async getClassifications(): Promise<ClassificationsResponse> {
+    const url = `${this.baseUrl}/discovery/v2/classifications.json?apikey=${this.apiKey}`;
+    console.log('Fetching classifications');
+    return await this.makeRequest<ClassificationsResponse>(url);
   }
 }
