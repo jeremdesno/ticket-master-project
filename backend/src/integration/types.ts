@@ -36,10 +36,7 @@ export interface sales {
   public: { startDateTime: string; endDateTime?: string };
 }
 interface Classification {
-  genre: {
-    id: string;
-    name: string;
-  };
+  genre: Genre;
 }
 export interface EventExtracted {
   id: string;
@@ -58,10 +55,6 @@ export interface EventExtracted {
     | object;
 }
 
-export interface Embedded {
-  events: EventExtracted[];
-}
-
 export interface Page {
   size: number;
   totalElements: number;
@@ -71,6 +64,13 @@ export interface Page {
 
 export interface EventsResponse {
   _links: Links;
-  _embedded: Embedded;
+  _embedded: {
+    events: EventExtracted[];
+  };
   page: Page;
+}
+
+export interface Genre {
+  id: string;
+  name: string;
 }
