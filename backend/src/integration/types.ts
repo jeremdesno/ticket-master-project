@@ -74,3 +74,22 @@ export interface Genre {
   id: string;
   name: string;
 }
+
+export interface ClassificationItem {
+  id: string;
+  name: string;
+  _links: Links;
+  segment: {
+    _embedded: {
+      genres: Genre[];
+    };
+  };
+}
+
+export interface ClassificationsResponse {
+  _links: Links;
+  _embedded: {
+    classifications: ClassificationItem[];
+  };
+  page: Page;
+}
