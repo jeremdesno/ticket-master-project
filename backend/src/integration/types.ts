@@ -79,7 +79,9 @@ export interface ClassificationItem {
   id: string;
   name: string;
   _links: Links;
-  segment: {
+  segment?: {
+    id: string;
+    name: string;
     _embedded: {
       genres: Genre[];
     };
