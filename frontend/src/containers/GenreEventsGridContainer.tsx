@@ -1,9 +1,9 @@
 import React from 'react';
-
-import EventCard from '../components/EventCard';
-import { EventDataModel } from '../../../backend/src/common/models';
-import styles from '../styles/GenrePage.module.css';
 import { useNavigate } from 'react-router-dom';
+
+import { EventDataModel } from '../../../backend/src/common/models';
+import EventCard from '../components/EventCard';
+import styles from '../styles/GenrePage.module.css';
 
 interface GenreEventsGridProps {
   events: EventDataModel[];
@@ -12,11 +12,18 @@ interface GenreEventsGridProps {
 const GenreEventsGridContainer: React.FC<GenreEventsGridProps> = ({
   events,
 }) => {
+  const navigate = useNavigate();
+  const handleDetailsClick = (eventId: string): void => {
+    navigate(`/event/${eventId}`);
+  };
   return (
     <div className={styles.eventsGrid}>
       {events.map((event) => (
         <EventCard
           event={event}
+          onDetailsClick={(): void => {
+            handleDetailsClick(event.id);
+          }}
         />
       ))}
     </div>
