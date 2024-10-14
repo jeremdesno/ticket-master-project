@@ -233,4 +233,32 @@ export class IntegrationService {
       .execute();
   }
 
+  async parseAndSaveGenresAndSubGenres(
+    data: ClassificationsResponse,
+  ): Promise<void> {
+    let nextUrl: string | null = data._links.self.href;
+
+    while (nextUrl) {
+      const [pageGenresParsed, pageSubGenresParsed] =
+        await this.parsePageClassifications(data);
+
+      for (const parsedGenre of pageGenresParsed) {
+        this.upsertGenre(parsedGenre);
+      }
+
+      for (const parsedSubGenre of pageSubGenresParsed) {
+        this.upsertSubGenre(parsedSubGenre);
+      }
+      console.log('upserted page:', data.page.number);
+
+      const nextLink = data._links?.next;
+
+      if (nextLink && nextLink.href) {
+        nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
+        data = await this.makeRequest<ClassificationsResponse>(nextUrl);
+      } else {
+        nextUrl = null;
+      }
+    }
+  }
 }
