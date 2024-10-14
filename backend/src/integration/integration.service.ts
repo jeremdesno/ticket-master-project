@@ -10,7 +10,12 @@ import {
   EventsResponse,
 } from './types';
 import { DatabaseService } from '../common/database.service';
-import { DatabaseSchema, EventDataModel } from '../common/models';
+import {
+  DatabaseSchema,
+  EventDataModel,
+  GenreDataModel,
+  SubGenreDataModel,
+} from '../common/models';
 
 @Injectable()
 export class IntegrationService {
@@ -173,5 +178,33 @@ export class IntegrationService {
     const url = `${this.baseUrl}/discovery/v2/classifications.json?apikey=${this.apiKey}`;
     console.log('Fetching classifications');
     return await this.makeRequest<ClassificationsResponse>(url);
+  }
+
+  async parsePageClassifications(
+    data: ClassificationsResponse,
+  ): Promise<[GenreDataModel[], SubGenreDataModel[]]> {
+    if (!data._embedded || !data._embedded.classifications) {
+      throw new Error('Invalid data structure');
+    }
+    const subGenreList: SubGenreDataModel[] = [];
+    const genreList: GenreDataModel[] = [];
+    data._embedded.classifications.forEach((classification) => {
+      const genreId = classification.segment?.id;
+      const genreName = classification.segment?.name;
+      if (genreId && genreName) {
+        genreList.push({ id: genreId, name: genreName });
+      }
+
+      if (classification?.segment?._embedded?.genres) {
+        classification.segment._embedded.genres.forEach((subGenre) => {
+          subGenreList.push({
+            id: subGenre.id,
+            name: subGenre.name,
+            genreId: genreId,
+          });
+        });
+      }
+    });
+    return [genreList, subGenreList];
   }
 }
