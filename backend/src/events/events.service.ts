@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Kysely } from 'kysely';
 import { DatabaseService } from 'src/common/database.service';
-import { DatabaseSchema, EventDataModel } from 'src/common/models';
+import {
+  DatabaseSchema,
+  EventDataModel,
+  GenreDataModel,
+} from 'src/common/models';
 
 @Injectable()
 export class EventService {
@@ -46,5 +50,9 @@ export class EventService {
       .selectAll()
       .where('id', '=', id)
       .executeTakeFirst();
+  }
+
+  async getGenres(): Promise<GenreDataModel[]> {
+    return await this.database.selectFrom('genres').selectAll().execute();
   }
 }
