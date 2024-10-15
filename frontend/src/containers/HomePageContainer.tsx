@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { GenreDataModel } from '../../../backend/src/common/models';
+import { fetchGenres } from '../api/genreService';
 import GenreSection from '../components/GenreSection';
-
-const genres = ['Rock', 'Pop', 'Jazz', 'Classical', 'Hip-Hop'];
 
 // Sample placeholder events to be fetched from API
 const placeholderEvents = Array.from({ length: 20 }, (_, index) => ({
@@ -11,12 +11,25 @@ const placeholderEvents = Array.from({ length: 20 }, (_, index) => ({
 }));
 
 const HomePageContainer: React.FC = (): JSX.Element => {
+  const [genres, setGenres] = useState<GenreDataModel[]>([]);
+  useEffect(() => {
+    const loadGenres = async (): Promise<void> => {
+      try {
+        const fetchedGenres = await fetchGenres();
+        setGenres(fetchedGenres);
+      } catch (error) {
+        console.error('Failed to fetch genres:', error);
+      }
+    };
+    loadGenres();
+  }, []);
+
   return (
     <div>
       {genres.map((genre, index) => (
         <GenreSection
-          key={genre}
-          genre={genre}
+          key={genre.id}
+          genre={genre.name}
           events={placeholderEvents}
           autoplayDirection={index % 2 === 0 ? 'rtl' : 'ltr'}
         />
