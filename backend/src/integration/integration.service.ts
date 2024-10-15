@@ -190,7 +190,10 @@ export class IntegrationService {
     const genreList: GenreDataModel[] = [];
     data._embedded.classifications.forEach((classification) => {
       const genreId = classification.segment?.id;
-      const genreName = classification.segment?.name;
+      const genreName =
+        classification.segment?.name === 'Undefined'
+          ? 'Others'
+          : classification.segment?.name;
       if (genreId && genreName) {
         genreList.push({ id: genreId, name: genreName });
       }
