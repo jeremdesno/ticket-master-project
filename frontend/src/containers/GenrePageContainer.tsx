@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import FiltersContainer from './FiltersContainer';
 import GenreEventsGridContainer from './GenreEventsGridContainer';
 import { EventDataModel } from '../../../backend/src/common/models';
+import { fetchGenres } from '../api/genreService';
 import styles from '../styles/GenrePage.module.css';
-
-const genres = ['Rock', 'Pop', 'Jazz', 'Classical', 'Hip-Hop'];
 
 // Generate 10 fake events as placeholders
 const events: EventDataModel[] = Array.from({ length: 10 }, (_, index) => ({
@@ -16,7 +15,7 @@ const events: EventDataModel[] = Array.from({ length: 10 }, (_, index) => ({
   endDate: new Date(`2024-07-${index + 12}`),
   url: `https://event${index + 1}.com`,
   description: `This is the description for Event ${index + 1}`,
-  genre: index % 2 === 0 ? 'Rock' : 'Pop',
+  genre: index % 2 === 0 ? 'Sports' : 'Film',
   startDateSales: new Date('2024-01-01'),
   endDateSales: new Date('2024-07-01'),
   venueAddress: `${index + 1} Venue St.`,
@@ -29,6 +28,20 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     startDate?: string;
     endDate?: string;
   }>() as { genre: string; startDate?: string; endDate?: string };
+
+  const [genres, setGenres] = useState<string[]>([]);
+  useEffect(() => {
+    const loadGenres = async (): Promise<void> => {
+      try {
+        const fetchedGenres = await fetchGenres();
+        const genreNames = fetchedGenres.map((genre) => genre.name);
+        setGenres(genreNames);
+      } catch (error) {
+        console.error('Failed to fetch genres:', error);
+      }
+    };
+    loadGenres();
+  }, []);
 
   const currentStartDate = startDate ? new Date(startDate) : null;
   const currentEndDate = endDate ? new Date(endDate) : null;
