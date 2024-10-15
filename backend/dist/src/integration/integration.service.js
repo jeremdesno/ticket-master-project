@@ -143,6 +143,75 @@ let IntegrationService = class IntegrationService {
             }
         }
     }
+    async getClassifications() {
+        const url = `${this.baseUrl}/discovery/v2/classifications.json?apikey=${this.apiKey}`;
+        console.log('Fetching classifications');
+        return await this.makeRequest(url);
+    }
+    async parsePageClassifications(data) {
+        if (!data._embedded || !data._embedded.classifications) {
+            throw new Error('Invalid data structure');
+        }
+        const subGenreList = [];
+        const genreList = [];
+        data._embedded.classifications.forEach((classification) => {
+            const genreId = classification.segment?.id;
+            const genreName = classification.segment?.name;
+            if (genreId && genreName) {
+                genreList.push({ id: genreId, name: genreName });
+            }
+            if (classification?.segment?._embedded?.genres) {
+                classification.segment._embedded.genres.forEach((subGenre) => {
+                    subGenreList.push({
+                        id: subGenre.id,
+                        name: subGenre.name,
+                        genreId: genreId,
+                    });
+                });
+            }
+        });
+        return [genreList, subGenreList];
+    }
+    async upsertGenre(genre) {
+        await this.database
+            .insertInto('genres')
+            .values(genre)
+            .onConflict((oc) => oc.column('id').doUpdateSet({
+            name: genre.name,
+        }))
+            .execute();
+    }
+    async upsertSubGenre(subGenre) {
+        await this.database
+            .insertInto('subgenres')
+            .values(subGenre)
+            .onConflict((oc) => oc.column('id').doUpdateSet({
+            name: subGenre.name,
+            genreId: subGenre.genreId,
+        }))
+            .execute();
+    }
+    async parseAndSaveGenresAndSubGenres(data) {
+        let nextUrl = data._links.self.href;
+        while (nextUrl) {
+            const [pageGenresParsed, pageSubGenresParsed] = await this.parsePageClassifications(data);
+            for (const parsedGenre of pageGenresParsed) {
+                this.upsertGenre(parsedGenre);
+            }
+            for (const parsedSubGenre of pageSubGenresParsed) {
+                this.upsertSubGenre(parsedSubGenre);
+            }
+            console.log('upserted page:', data.page.number);
+            const nextLink = data._links?.next;
+            if (nextLink && nextLink.href) {
+                nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
+                data = await this.makeRequest(nextUrl);
+            }
+            else {
+                nextUrl = null;
+            }
+        }
+    }
 };
 exports.IntegrationService = IntegrationService;
 exports.IntegrationService = IntegrationService = __decorate([

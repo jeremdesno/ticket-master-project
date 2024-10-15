@@ -25,7 +25,12 @@ let EventController = class EventController {
     async findByDateRange(startDate, endDate, limit = 20, offset = 0) {
         return this.eventService.findByDateRange(startDate, endDate, limit, offset);
     }
+    async getGenres() {
+        console.log("getting genres");
+        return await this.eventService.getGenres();
+    }
     async getEvent(id) {
+        console.log("getting event by id");
         return this.eventService.getEvent(id);
     }
 };
@@ -48,6 +53,12 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Number, Number]),
     __metadata("design:returntype", Promise)
 ], EventController.prototype, "findByDateRange", null);
+__decorate([
+    (0, common_1.Get)('genres'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], EventController.prototype, "getGenres", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

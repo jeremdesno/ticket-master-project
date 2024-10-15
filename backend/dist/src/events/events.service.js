@@ -43,6 +43,12 @@ let EventService = class EventService {
             .where('id', '=', id)
             .executeTakeFirst();
     }
+    async getGenres() {
+        return await this.database
+            .selectFrom('genres')
+            .selectAll()
+            .execute();
+    }
 };
 exports.EventService = EventService;
 exports.EventService = EventService = __decorate([

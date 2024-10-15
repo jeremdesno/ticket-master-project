@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { EventsResponse } from './types';
+import { ClassificationsResponse, EventsResponse } from './types';
 import { DatabaseService } from '../common/database.service';
-import { EventDataModel } from '../common/models';
+import { EventDataModel, GenreDataModel, SubGenreDataModel } from '../common/models';
 export declare class IntegrationService {
     private httpService;
     private configService;
@@ -16,4 +16,9 @@ export declare class IntegrationService {
     parsePageEvents(data: EventsResponse): Promise<EventDataModel[]>;
     upsertEvent(event: EventDataModel): Promise<void>;
     parseAndSaveEvents(data: EventsResponse): Promise<void>;
+    getClassifications(): Promise<ClassificationsResponse>;
+    parsePageClassifications(data: ClassificationsResponse): Promise<[GenreDataModel[], SubGenreDataModel[]]>;
+    upsertGenre(genre: GenreDataModel): Promise<void>;
+    upsertSubGenre(subGenre: SubGenreDataModel): Promise<void>;
+    parseAndSaveGenresAndSubGenres(data: ClassificationsResponse): Promise<void>;
 }

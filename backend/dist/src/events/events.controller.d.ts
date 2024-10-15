@@ -5,5 +5,6 @@ export declare class EventController {
     constructor(eventService: EventService);
     getEvents(limit?: number, offset?: number): Promise<EventDataModel[]>;
     findByDateRange(startDate: string, endDate: string, limit?: number, offset?: number): Promise<EventDataModel[]>;
+    getGenres(): Promise<import("src/common/models").GenreDataModel[]>;
     getEvent(id: string): Promise<EventDataModel | null>;
 }

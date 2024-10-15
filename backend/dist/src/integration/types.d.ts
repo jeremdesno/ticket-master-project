@@ -37,10 +37,7 @@ export interface sales {
     };
 }
 interface Classification {
-    genre: {
-        id: string;
-        name: string;
-    };
+    genre: Genre;
 }
 export interface EventExtracted {
     id: string;
@@ -54,9 +51,6 @@ export interface EventExtracted {
     classifications: Classification[];
     [key: string]: string | number | Array<string | number | object | boolean> | object;
 }
-export interface Embedded {
-    events: EventExtracted[];
-}
 export interface Page {
     size: number;
     totalElements: number;
@@ -65,7 +59,32 @@ export interface Page {
 }
 export interface EventsResponse {
     _links: Links;
-    _embedded: Embedded;
+    _embedded: {
+        events: EventExtracted[];
+    };
+    page: Page;
+}
+export interface Genre {
+    id: string;
+    name: string;
+}
+export interface ClassificationItem {
+    id: string;
+    name: string;
+    _links: Links;
+    segment?: {
+        id: string;
+        name: string;
+        _embedded: {
+            genres: Genre[];
+        };
+    };
+}
+export interface ClassificationsResponse {
+    _links: Links;
+    _embedded: {
+        classifications: ClassificationItem[];
+    };
     page: Page;
 }
 export {};
