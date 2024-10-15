@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { GenreDataModel } from '../../../backend/src/common/models';
 import styles from '../styles/NavBar.module.css';
 
 interface GenreMenuProps {
-  genres: string[];
+  genres: GenreDataModel[];
   onClose: () => void;
   onGenreClick: (genre: string) => void;
 }
@@ -19,9 +20,9 @@ const GenreMenu: React.FC<GenreMenuProps> = ({
         <div
           key={index}
           className={styles.genreItem}
-          onClick={(): void => onGenreClick(genre)}
+          onClick={(): void => onGenreClick(genre.name)}
         >
-          {genre}
+          {genre.name}
         </div>
       ))}
     </div>
