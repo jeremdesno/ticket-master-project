@@ -1,5 +1,5 @@
 import { Controller, Get, Query, Param } from '@nestjs/common';
-import { EventDataModel } from 'src/common/models';
+import { EventDataModel, GenreDataModel } from 'src/common/models';
 
 import { EventService } from './events.service';
 
@@ -23,6 +23,11 @@ export class EventController {
     @Query('offset') offset: number = 0,
   ): Promise<EventDataModel[]> {
     return this.eventService.findByDateRange(startDate, endDate, limit, offset);
+  }
+
+  @Get('genres')
+  async getGenres(): Promise<GenreDataModel[]> {
+    return await this.eventService.getGenres();
   }
 
   @Get(':id')
