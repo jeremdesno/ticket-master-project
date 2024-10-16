@@ -16,34 +16,32 @@ export class EventService {
   }
 
   async getEvents(
+    startDate?: string,
+    endDate?: string,
+    genre?: string,
     limit: number = 20,
     offset: number = 0,
   ): Promise<EventDataModel[]> {
-    return await this.database
+    let query = this.database
       .selectFrom('events')
       .selectAll()
       .limit(limit)
-      .offset(offset)
-      .execute();
-  }
+      .offset(offset);
 
-  async findByDateRange(
-    startDate: string,
-    endDate: string,
-    limit: number = 20,
-    offset: number = 0,
-  ): Promise<EventDataModel[]> {
-    return await this.database
-      .selectFrom('events')
-      .selectAll()
-      .where('startDate', '>=', new Date(startDate))
-      .where('startDate', '<=', new Date(endDate))
-      .orderBy('startDate', 'asc')
-      .limit(limit)
-      .offset(offset)
-      .execute();
-  }
+    if (startDate) {
+      query = query.where('startDate', '>=', new Date(startDate));
+    }
+    if (endDate) {
+      query = query.where('startDate', '<=', new Date(endDate));
+    }
+    if (genre) {
+      query = query.where('genre', '=', genre);
+    }
 
+    query = query.orderBy('startDate', 'asc');
+    return await query.execute();
+  }   
+  
   async getEvent(id: string): Promise<EventDataModel | null> {
     return await this.database
       .selectFrom('events')
