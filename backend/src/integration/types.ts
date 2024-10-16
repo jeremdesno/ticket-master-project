@@ -37,6 +37,10 @@ export interface sales {
 }
 interface Classification {
   genre: Genre;
+  segment: {
+    id: string;
+    name: string;
+  };
 }
 export interface EventExtracted {
   id: string;

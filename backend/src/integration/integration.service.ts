@@ -112,7 +112,11 @@ export class IntegrationService {
         : null;
       const genre: string[] = [];
       for (const classification of event.classifications) {
-        genre.push(classification.genre?.name);
+        genre.push(
+          classification.segment?.name === 'Undefined'
+            ? 'Others'
+            : classification.segment?.name,
+        );
       }
 
       return {
