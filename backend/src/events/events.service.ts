@@ -40,8 +40,8 @@ export class EventService {
 
     query = query.orderBy('startDate', 'asc');
     return await query.execute();
-  }   
-  
+  }
+
   async getEvent(id: string): Promise<EventDataModel | null> {
     return await this.database
       .selectFrom('events')

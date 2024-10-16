@@ -9,20 +9,19 @@ export class EventController {
 
   @Get()
   async getEvents(
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('genre') genre?: string,
     @Query('limit') limit: number = 20,
     @Query('offset') offset: number = 0,
   ): Promise<EventDataModel[]> {
-    return this.eventService.getEvents(limit, offset);
-  }
-
-  @Get('by-date-range')
-  async findByDateRange(
-    @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
-    @Query('limit') limit: number = 20,
-    @Query('offset') offset: number = 0,
-  ): Promise<EventDataModel[]> {
-    return this.eventService.findByDateRange(startDate, endDate, limit, offset);
+    return this.eventService.getEvents(
+      startDate,
+      endDate,
+      genre,
+      limit,
+      offset,
+    );
   }
 
   @Get('genres')
