@@ -11,6 +11,7 @@ import {
   EventExtracted,
   EventsResponse,
 } from './types';
+import { findClosestImage, targetHeight, targetWidth } from './utils';
 import { DatabaseService } from '../common/database.service';
 import {
   DatabaseSchema,
@@ -127,63 +128,76 @@ export class IntegrationService {
       throw new Error('Invalid data structure');
     }
 
-    return data._embedded.events.map((event: EventExtracted) => {
-      const venue = event._embedded?.venues?.[0];
-      const venueAddress = [
-        venue.address?.line1,
-        venue.address?.line2,
-        venue.address?.line3,
-      ]
-        .filter(Boolean)
-        .join(', ');
+    const events = await Promise.all(
+      data._embedded.events.map(async (event: EventExtracted) => {
+        const venue = event._embedded?.venues?.[0];
+        const venueAddress = [
+          venue.address?.line1,
+          venue.address?.line2,
+          venue.address?.line3,
+        ]
+          .filter(Boolean)
+          .join(', ');
 
-      const startDate = event.dates.start.dateTBD
-        ? null
-        : new Date(
-            `${event.dates.start.localDate}T${event.dates.start.localTime || '00:00:00'}`,
-          );
+        const startDate = event.dates.start.dateTBD
+          ? null
+          : new Date(
+              `${event.dates.start.localDate}T${event.dates.start.localTime || '00:00:00'}`,
+            );
 
-      const endDate = event.dates.end?.dateTBD
-        ? null
-        : event.dates.end?.localDate
-          ? new Date(
-              `${event.dates.end.localDate}T${event.dates.end.localTime || '23:59:59'}`,
-            )
+        const endDate = event.dates.end?.dateTBD
+          ? null
+          : event.dates.end?.localDate
+            ? new Date(
+                `${event.dates.end.localDate}T${event.dates.end.localTime || '23:59:59'}`,
+              )
+            : null;
+
+        const startDateSales = event.sales.public.startDateTime
+          ? new Date(event.sales.public.startDateTime)
           : null;
 
-      const startDateSales = event.sales.public.startDateTime
-        ? new Date(event.sales.public.startDateTime)
-        : null;
+        const endDateSales = event.sales.public.endDateTime
+          ? new Date(event.sales.public.endDateTime)
+          : null;
 
-      const endDateSales = event.sales.public.endDateTime
-        ? new Date(event.sales.public.endDateTime)
-        : null;
-      const genre: string[] = [];
-      for (const classification of event.classifications) {
-        genre.push(
-          classification.segment?.name === 'Undefined'
-            ? 'Others'
-            : classification.segment?.name,
-        );
-      }
+        const genre: string[] = [];
+        for (const classification of event.classifications) {
+          genre.push(
+            classification.segment?.name === 'Undefined'
+              ? 'Others'
+              : classification.segment?.name,
+          );
+        }
+
+        const closestImage = findClosestImage(event.images);
         let imageUrl: string | null = null;
         if (closestImage) {
+          try {
+            const resizedImageBuffer = await this.resizeImage(closestImage.url);
+            imageUrl = await this.uploadToImgBB(resizedImageBuffer);
+          } catch (error) {
+            console.error('Error processing image:', error);
+          }
+        }
 
-      return {
-        id: event.id,
-        name: event.name,
-        startDate: startDate,
-        endDate: endDate,
-        startDateSales: startDateSales,
-        endDateSales: endDateSales,
-        url: event.url,
-        description: event.description,
-        genre: genre.join('/'),
-        venueAddress: venueAddress || 'No address available',
-        venueName: venue.name || 'No information',
+        return {
+          id: event.id,
+          name: event.name,
+          startDate: startDate,
+          endDate: endDate,
+          startDateSales: startDateSales,
+          endDateSales: endDateSales,
+          url: event.url,
+          description: event.description,
+          genre: genre.join('/'),
+          venueAddress: venueAddress || 'No address available',
+          venueName: venue.name || 'No information',
           imageUrl: imageUrl,
-      };
-    });
+        };
+      }),
+    );
+    return events;
   }
 
   async upsertEvent(event: EventDataModel): Promise<void> {
