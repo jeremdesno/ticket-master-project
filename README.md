@@ -11,14 +11,14 @@ ts-node scripts/run-events-integration.ts
 
 ## Backend 
 
+The backend was build using Nest.js and typescript and stores data in a postgresql database.
+Make sure you're located in the backend folder before running the following commands.
 Run the following command tu start the postgres database :
 ```
-cd backend/
 docker-compose up --build
 ```
 And to start the backend server run :
 ```
-cd backend/
 nest start
 ```
 
