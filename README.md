@@ -9,6 +9,14 @@ cd backend/
 ts-node scripts/run-events-integration.ts
 ```
 
+To update the genres and subgenres tables run the following command:
+```
+ts-node scripts/run-genres-integration.ts
+```
+
+NB: The genres corresponds to the classification levels of the ticketmaster API and the subgenres to the genres.
+
+
 ## Backend 
 
 The backend was build using Nest.js and typescript and stores data in a postgresql database.
