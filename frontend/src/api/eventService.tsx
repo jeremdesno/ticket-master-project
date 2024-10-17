@@ -23,3 +23,21 @@ export const fetchEvents = async (
 
   return events;
 };
+
+export const fetchEvent = async (
+  id: string,
+): Promise<EventDataModel | null> => {
+  const response = await axiosInstance.get(`/events/${id}`);
+  const event = response.data;
+  if (event) {
+    return {
+      ...event,
+      startDate: new Date(event.startDate),
+      endDate: event.endDate ? new Date(event.endDate) : null,
+      startDateSales: new Date(event.startDateSales),
+      endDateSales: new Date(event.endDateSales),
+    };
+  } else {
+    return null;
+  }
+};
