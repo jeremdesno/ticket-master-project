@@ -42,6 +42,14 @@ interface Classification {
     name: string;
   };
 }
+
+export interface Image {
+  url: string;
+  ratio: string;
+  width: number;
+  height: number;
+}
+
 export interface EventExtracted {
   id: string;
   name: string;
@@ -52,6 +60,7 @@ export interface EventExtracted {
   sales: sales;
   _embedded?: EmbeddedData;
   classifications: Classification[];
+  images: Image[];
   [key: string]:
     | string
     | number
