@@ -1,8 +1,10 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
 import { Kysely } from 'kysely';
 import { lastValueFrom } from 'rxjs';
+import sharp from 'sharp';
 
 import {
   ClassificationsResponse,
@@ -52,6 +54,23 @@ export class IntegrationService {
     }
     throw new Error(`Max retries reached for request: ${url}`);
   }
+
+  async resizeImage(imageUrl: string): Promise<Buffer> {
+    try {
+      const response = await axios.get(imageUrl, {
+        responseType: 'arraybuffer',
+      });
+      const imageBuffer = Buffer.from(response.data);
+
+      return await sharp(imageBuffer)
+        .resize(targetWidth, targetHeight)
+        .toBuffer();
+    } catch (error) {
+      console.error('Error fetching or processing image:', error);
+      throw error;
+    }
+  }
+
 
   async getEvents(): Promise<EventsResponse> {
     const startDateTime = new Date();
