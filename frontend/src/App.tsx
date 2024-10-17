@@ -17,7 +17,7 @@ function App(): JSX.Element {
           path="/events/:genre/:startDate?/:endDate?"
           element={<EventsByGenrePage />}
         />
-        <Route path="/event/:id" element={<EventPage />} />
+        <Route path="/event/:eventId" element={<EventPage />} />
       </Routes>
     </div>
   );
