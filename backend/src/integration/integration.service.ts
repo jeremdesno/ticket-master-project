@@ -23,6 +23,7 @@ import {
 export class IntegrationService {
   private readonly baseUrl = 'https://app.ticketmaster.com';
   private readonly apiKey: string;
+  private readonly imgBBApiKey: string;
   private readonly database: Kysely<DatabaseSchema>;
 
   constructor(
@@ -31,6 +32,7 @@ export class IntegrationService {
     private databaseService: DatabaseService,
   ) {
     this.apiKey = this.configService.get<string>('TICKETMASTER_API_KEY');
+    this.imgBBApiKey = this.configService.get<string>('IMGBB_API_KEY');
     this.database = this.databaseService.getDatabase();
   }
 
@@ -71,6 +73,33 @@ export class IntegrationService {
     }
   }
 
+  async uploadToImgBB(imageBuffer: Buffer): Promise<string> {
+    const base64Image = imageBuffer.toString('base64');
+    const imgBBUrl = `https://api.imgbb.com/1/upload`;
+
+    try {
+      const formData = {
+        key: this.imgBBApiKey,
+        image: base64Image,
+        expiration: 172800, // 2 jours
+      };
+
+      const response = await lastValueFrom(
+        this.httpService.post(imgBBUrl, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }),
+      );
+
+      if (response.data && response.data.data.url) {
+        return response.data.data.url;
+      } else {
+        throw new Error('Failed to upload image to imgBB');
+      }
+    } catch (error) {
+      console.error('Error uploading image to imgBB:', error);
+      throw new Error('Image upload to imgBB failed');
+    }
+  }
 
   async getEvents(): Promise<EventsResponse> {
     const startDateTime = new Date();
