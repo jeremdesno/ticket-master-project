@@ -20,6 +20,7 @@ const relatedEvents: EventDataModel[] = Array.from(
     endDateSales: new Date('2024-07-01'),
     venueAddress: `${index + 1} Venue St.`,
     venueName: `Venue ${index + 1}`,
+    imageUrl: null,
   }),
 );
 

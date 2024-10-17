@@ -118,6 +118,8 @@ export class IntegrationService {
             : classification.segment?.name,
         );
       }
+        let imageUrl: string | null = null;
+        if (closestImage) {
 
       return {
         id: event.id,
@@ -131,6 +133,7 @@ export class IntegrationService {
         genre: genre.join('/'),
         venueAddress: venueAddress || 'No address available',
         venueName: venue.name || 'No information',
+          imageUrl: imageUrl,
       };
     });
   }
@@ -151,6 +154,7 @@ export class IntegrationService {
           endDateSales: event.endDateSales,
           venueAddress: event.venueAddress,
           venueName: event.venueName,
+          imageUrl: event.imageUrl,
         }),
       )
       .execute();

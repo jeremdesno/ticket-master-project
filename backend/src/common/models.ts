@@ -16,6 +16,7 @@ export interface EventDataModel {
   endDateSales: Date;
   venueAddress: string;
   venueName: string;
+  imageUrl: string | null;
 }
 
 export interface GenreDataModel {
