@@ -71,7 +71,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
               {event.startDate.toLocaleDateString()}
             </p>
             <p>
-              <strong>End Date:</strong> {event.endDate.toLocaleDateString()}
+                <strong>End Date:</strong> {event.endDate ? event.endDate.toLocaleDateString() : 'Not defined'}
             </p>
             <p>
               <strong>Sales Period:</strong>{' '}

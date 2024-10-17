@@ -16,7 +16,7 @@ export const fetchEvents = async (
   const events = response.data.map((event: EventDataModel) => ({
     ...event,
     startDate: new Date(event.startDate),
-    endDate: new Date(event.endDate),
+    endDate: event.endDate ? new Date(event.endDate) : null,
     startDateSales: new Date(event.startDateSales),
     endDateSales: new Date(event.endDateSales),
   }));

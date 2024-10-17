@@ -8,7 +8,7 @@ export interface EventDataModel {
   id: string;
   name: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   url: string;
   description: string;
   genre: string;
