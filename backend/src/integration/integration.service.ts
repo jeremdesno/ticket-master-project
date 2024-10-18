@@ -155,6 +155,15 @@ export class IntegrationService {
       .execute();
   }
 
+  async getNewExtractedEvents(): Promise<ExtractedEventDataModel[]> {
+    const newExtractedEvents = await this.database
+      .selectFrom('extractedEvents')
+      .leftJoin('eventSessions', 'extractedEvents.id', 'eventSessions.id')
+      .where('eventSessions.id', 'is', null)
+      .selectAll('extractedEvents')
+      .execute();
+    return newExtractedEvents;
+  }
 
   async getClassifications(): Promise<ClassificationsResponse> {
     const url = `${this.baseUrl}/discovery/v2/classifications.json?apikey=${this.apiKey}`;
