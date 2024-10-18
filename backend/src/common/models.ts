@@ -23,7 +23,7 @@ export interface ExtractedEventDataModel {
 
 // Stores event details
 export interface EventDataModel {
-  id: string;
+  id: string; // Hash of name + venueName
   name: string;
   description: string;
   genre: string;

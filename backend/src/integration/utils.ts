@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createHash } from 'crypto';
 import sharp from 'sharp';
 import {
   ExtractedEventDataModel,
@@ -154,6 +155,15 @@ export async function parsePageEvents(
     }),
   );
   return events;
+}
+
+export function generateHashFromNameAndVenue(
+  name: string,
+  venueName: string,
+): string {
+  const hash = createHash('sha256');
+  hash.update(name + venueName);
+  return hash.digest('hex');
 }
 
 export async function parsePageClassifications(
