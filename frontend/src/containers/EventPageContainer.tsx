@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ExtractedEventDataModel } from '../../../backend/src/common/models';
-import { fetchEvent } from '../api/eventService';
+import {
+  EventDataModel,
+  EventSessionDataModel,
+  ExtractedEventDataModel,
+} from '../../../backend/src/common/models';
+import { fetchEvent, fetchEventSessions } from '../api/eventService';
 import EventCard from '../components/EventCard';
 import styles from '../styles/EventPage.module.css';
 
@@ -28,94 +32,149 @@ const EventPage: React.FC = (): React.JSX.Element => {
   const { eventId } = useParams<{
     eventId: string;
   }>() as { eventId: string };
-  const [event, setEvent] = useState<ExtractedEventDataModel | null>(null);
+
+  const [event, setEvent] = useState<EventDataModel | null>(null);
+  const [sessions, setSessions] = useState<EventSessionDataModel[] | null>(
+    null,
+  );
+
+  // Fetch event and sessions
   useEffect(() => {
-    const loadEvent = async (): Promise<void> => {
+    const loadEventData = async (): Promise<void> => {
       try {
         const fetchedEvent = await fetchEvent(eventId);
+        const fetchedSessions = await fetchEventSessions(eventId);
         setEvent(fetchedEvent);
+        setSessions(fetchedSessions);
       } catch (error) {
-        console.error('Failed to fetch event:', error);
+        console.error('Failed to fetch event or sessions:', error);
       }
     };
-    loadEvent();
-  }, [event]);
-
+    loadEventData();
+  }, [eventId]);
   const navigate = useNavigate();
   const handleDetailsClick = (eventId: string): void => {
     navigate(`/event/${eventId}`);
   };
-  if (event == null) {
-    return <div>An error happened while fetching the event...</div>;
-  } else {
+  if (!event || !sessions) {
     return (
-      <div className={styles.eventPageContainer}>
-        <div className={styles.eventDetailsSection}>
-          <div className={styles.leftSection}>
-            {event.imageUrl ? (
-              <img
-                src={event.imageUrl}
-                alt={event.name}
-                className={styles.eventImage}
-              />
-            ) : (
-              <div className={styles.imageUnavailable}>Image Unavailable</div>
-            )}
-            <div className={styles.eventDetails}>
-              <p>
-                <strong>Venue:</strong> {event.venueName}
-              </p>
-              <p>
-                <strong>Address:</strong> {event.venueAddress}
-              </p>
-              <p>
-                <strong>Start Date:</strong>{' '}
-                {event.startDate.toLocaleDateString()}
-              </p>
-              <p>
-                <strong>End Date:</strong>{' '}
-                {event.endDate
-                  ? event.endDate.toLocaleDateString()
-                  : 'Not defined'}
-              </p>
-              <p>
-                <strong>Sales Period:</strong>{' '}
-                {event.startDateSales.toLocaleDateString()} -{' '}
-                {event.endDateSales.toLocaleDateString()}
-              </p>
-            </div>
-            <a
-              className={styles.accessWebsiteButton}
-              href={event.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Event Website
-            </a>
-          </div>
-
-          <div className={styles.rightSection}>
-            <h1>{event.name}</h1>
-            <p>{event.description}</p>
-          </div>
-        </div>
-        <div className={styles.suggestedEventsSection}>
-          <h3>You Might Like</h3>
-          <div className={styles.suggestedEventsContainer}>
-            {relatedEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                onDetailsClick={(): void => {
-                  handleDetailsClick(event.id);
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      <div>An error happened while fetching the event's information...</div>
     );
   }
+  console.log(sessions);
+  // Find the first session (main session) and set it as default
+  const mainSession = sessions[0];
+  const otherSessions = sessions.slice(1, 6); // Next 5 sessions
+
+  return (
+    <div className={styles.eventPageContainer}>
+      <div className={styles.eventDetailsSection}>
+        {/* Left Section (Main Session Details) */}
+        <div className={styles.leftSection}>
+          {event.imageUrl ? (
+            <img
+              src={event.imageUrl}
+              alt={event.name}
+              className={styles.eventImage}
+            />
+          ) : (
+            <div className={styles.imageUnavailable}>Image Unavailable</div>
+          )}
+          <div className={styles.eventDetails}>
+            <p>
+              <strong>Venue:</strong> {event.venueName}
+            </p>
+            <p>
+              <strong>Address:</strong> {event.venueAddress}
+            </p>
+            {mainSession && (
+              <>
+                <p>
+                  {mainSession.startDate.toLocaleString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                  <br />
+                  {mainSession.startDate.toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                  })}
+                  {mainSession.endDate
+                    ? ` - ${mainSession.endDate.toLocaleString('en-US', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        hour12: true,
+                      })}`
+                    : ''}
+                </p>
+                <p>
+                  <strong>Sales Period:</strong>{' '}
+                  {mainSession.startDateSales.toLocaleDateString()} -{' '}
+                  {mainSession.endDateSales.toLocaleDateString()}
+                </p>
+              </>
+            )}
+          </div>
+          <a
+            className={styles.accessWebsiteButton}
+            href={mainSession.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Event Website
+          </a>
+        </div>
+
+        {/* Right Section (Event Description + Additional Sessions) */}
+        <div className={styles.centerSection}>
+          <h1>{event.name}</h1>
+          <p>{event.description}</p>
+        </div>
+        {/* Section to show other available sessions */}
+        {otherSessions.length > 0 && (
+          <div className={styles.otherSessions}>
+            <h3>Other Sessions</h3>
+            <ul className={styles.sessionList}>
+              {otherSessions.map((session) => (
+                <li key={session.id}>
+                  <p>
+                    <strong>Start Date:</strong>{' '}
+                    {session.startDate.toLocaleDateString()}
+                  </p>
+                  <a
+                    href={session.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Buy Tickets
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Suggested Events Section */}
+      <div className={styles.suggestedEventsSection}>
+        <h3>You Might Like</h3>
+        <div className={styles.suggestedEventsContainer}>
+          {relatedEvents.map((event) => (
+            <EventCard
+              key={event.id}
+              event={event}
+              onDetailsClick={(): void => {
+                handleDetailsClick(event.id);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default EventPage;

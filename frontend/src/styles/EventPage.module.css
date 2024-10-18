@@ -7,8 +7,8 @@
     display: flex;
     flex-direction: row;
     margin-top: 30px;
-    margin-left: 12%;
-    margin-right: 12%;
+    margin-left: 5%;
+    margin-right: 5%;
   }
   
   .leftSection {
@@ -17,9 +17,10 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    margin-top: 20px;
   }
   
-  .rightSection {
+  .centerSection {
     flex: 2;
   }
   
@@ -67,15 +68,44 @@
     margin-top: 20px;
   }
   
-  .rightSection h1 {
+  .centerSection h1 {
     margin-bottom: 20px;
     font-size: 24px;
   }
   
-  .rightSection p {
+  .centerSection p {
     font-size: 16px;
     line-height: 1.6;
   }
+
+  .otherSessions {
+    flex: 1;
+    margin-top: 20px;
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+  .otherSessions h3{
+    margin-top: 0;
+
+  }
+  
+  .sessionList {
+    list-style: none;
+    padding: 0 10%;
+  }
+  
+  .sessionList li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .sessionList li a {
+    display: inline-block;
+    margin-top: 5px;
+    color: #004d00;
+    font-weight: bold;
+  }  
 
   .suggestedEventsSection {
     margin-top: 30px;
