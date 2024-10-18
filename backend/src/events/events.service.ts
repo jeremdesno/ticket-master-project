@@ -4,7 +4,7 @@ import { DatabaseService } from 'src/common/database.service';
 import {
   DatabaseSchema,
   EventDataModel,
-  ExtractedEventDataModel,
+  EventSessionDataModel,
   GenreDataModel,
 } from 'src/common/models';
 
@@ -62,6 +62,14 @@ export class EventService {
       .selectAll()
       .where('id', '=', id)
       .executeTakeFirst();
+  }
+
+  async getSessions(eventId: string): Promise<EventSessionDataModel[] | []> {
+    return await this.database
+      .selectFrom('eventSessions')
+      .selectAll()
+      .where('eventId', '=', eventId)
+      .execute();
   }
 
   async getGenres(): Promise<GenreDataModel[]> {

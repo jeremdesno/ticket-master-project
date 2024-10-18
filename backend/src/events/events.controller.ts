@@ -1,6 +1,9 @@
 import { Controller, Get, Query, Param } from '@nestjs/common';
-import { EventDataModel, 
-  GenreDataModel } from 'src/common/models';
+import {
+  EventDataModel,
+  EventSessionDataModel,
+  GenreDataModel,
+} from 'src/common/models';
 
 import { EventService } from './events.service';
 
@@ -33,5 +36,12 @@ export class EventController {
   @Get(':id')
   async getEvent(@Param('id') id: string): Promise<EventDataModel | null> {
     return this.eventService.getEvent(id);
+  }
+
+  @Get(':eventId/sessions')
+  async getEventSessions(
+    @Param('eventId') eventId: string,
+  ): Promise<EventSessionDataModel[] | []> {
+    return this.eventService.getSessions(eventId);
   }
 }
