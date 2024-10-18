@@ -28,7 +28,6 @@ const EventPage: React.FC = (): React.JSX.Element => {
   const { eventId } = useParams<{
     eventId: string;
   }>() as { eventId: string };
-  const imageUrl = ''; // Image URL is empty for the fake event
   const [event, setEvent] = useState<EventDataModel | null>(null);
   useEffect(() => {
     const loadEvent = async (): Promise<void> => {
@@ -41,7 +40,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
     };
     loadEvent();
   }, [event]);
-  console.log(event);
+
   const navigate = useNavigate();
   const handleDetailsClick = (eventId: string): void => {
     navigate(`/event/${eventId}`);
@@ -53,9 +52,9 @@ const EventPage: React.FC = (): React.JSX.Element => {
       <div className={styles.eventPageContainer}>
         <div className={styles.eventDetailsSection}>
           <div className={styles.leftSection}>
-            {imageUrl ? (
+            {event.imageUrl ? (
               <img
-                src={imageUrl}
+                src={event.imageUrl}
                 alt={event.name}
                 className={styles.eventImage}
               />
