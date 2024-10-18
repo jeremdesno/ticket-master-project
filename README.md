@@ -2,7 +2,8 @@
 
 ## Data Integration
 
-Command to update the postgres database with the events from tomorrow .
+Command to update the postgres database with the events from tomorrow. 
+The events images are sent to imgBB and we only store the url associated in the events table. 
 The time period can be changed in the integration service.
 ```
 cd backend/
