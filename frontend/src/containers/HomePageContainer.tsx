@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   EventDataModel,
@@ -60,7 +61,7 @@ const HomePageContainer: React.FC = (): JSX.Element => {
       loadEvents();
     }
   }, [genres]);
-
+  const navigate = useNavigate();
   return (
     <div>
       {genres.length === 0 ? (
@@ -74,6 +75,9 @@ const HomePageContainer: React.FC = (): JSX.Element => {
               genre={genre.name}
               events={events[genre.name]}
               autoplayDirection={index % 2 === 0 ? 'rtl' : 'ltr'}
+              handleEventClick={(eventId: string): void => {
+                navigate(`/event/${eventId}`);
+              }}
             />
           ))
       )}

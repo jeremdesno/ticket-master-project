@@ -10,16 +10,24 @@ interface GenreSectionProps {
   genre: string;
   events: EventDataModel[];
   autoplayDirection: 'rtl' | 'ltr';
+  handleEventClick: (eventId: string) => void;
 }
 
 const GenreSection: React.FC<GenreSectionProps> = ({
   genre,
   events,
   autoplayDirection,
+  handleEventClick,
 }): JSX.Element => {
   const renderCarouselItems = (): JSX.Element[] => {
     return events.map((event) => (
-      <div key={event.id} className={styles.eventPlaceholder}>
+      <div
+        key={event.id}
+        className={styles.eventPlaceholder}
+        onClick={(): void => {
+          handleEventClick(event.id);
+        }}
+      >
         {event.imageUrl ? (
           <img
             src={event.imageUrl}
