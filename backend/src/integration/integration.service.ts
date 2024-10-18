@@ -4,7 +4,11 @@ import axios from 'axios';
 import { Kysely } from 'kysely';
 
 import { ClassificationsResponse, EventsResponse } from './types';
-import { parsePageClassifications, parsePageEvents } from './utils';
+import {
+  generateHashFromNameAndVenue,
+  parsePageClassifications,
+  parsePageEvents,
+} from './utils';
 import { DatabaseService } from '../common/database.service';
 import {
   DatabaseSchema,
@@ -163,6 +167,35 @@ export class IntegrationService {
       .selectAll('extractedEvents')
       .execute();
     return newExtractedEvents;
+  }
+
+  async syncExtractedEventsToSessionsAndEvents(
+    newExtractedEvents: ExtractedEventDataModel[],
+  ): Promise<void> {
+    for (const newExtractedEvent of newExtractedEvents) {
+      const eventId = generateHashFromNameAndVenue(
+        newExtractedEvent.name,
+        newExtractedEvent.venueName,
+      );
+      await this.upsertEvent({
+        id: eventId,
+        name: newExtractedEvent.name,
+        description: newExtractedEvent.description,
+        genre: newExtractedEvent.genre,
+        venueAddress: newExtractedEvent.venueAddress,
+        venueName: newExtractedEvent.venueName,
+        imageUrl: newExtractedEvent.imageUrl,
+      });
+      await this.upsertEventSession({
+        id: newExtractedEvent.id,
+        startDate: newExtractedEvent.startDate,
+        endDate: newExtractedEvent.endDate,
+        url: newExtractedEvent.url,
+        startDateSales: newExtractedEvent.startDateSales,
+        endDateSales: newExtractedEvent.endDateSales,
+        eventId: eventId,
+      });
+    }
   }
 
   async getClassifications(): Promise<ClassificationsResponse> {
