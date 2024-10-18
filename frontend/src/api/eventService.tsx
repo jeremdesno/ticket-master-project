@@ -1,6 +1,9 @@
 import axiosInstance from './axios';
-import { EventDataModel, 
-  ExtractedEventDataModel } from '../../../backend/src/common/models';
+import {
+  EventDataModel,
+  EventSessionDataModel,
+  ExtractedEventDataModel,
+} from '../../../backend/src/common/models';
 
 export const fetchEvents = async (
   genre?: string,
@@ -33,4 +36,23 @@ export const fetchEvent = async (
   return event ? event : null;
 };
 
+export const fetchEventSessions = async (
+  eventId: string,
+): Promise<EventSessionDataModel[] | null> => {
+  const response = await axiosInstance.get(`/events/${eventId}/sessions`);
+  const sessions = response.data;
+  if (sessions) {
+    return sessions.map(
+      (session: EventSessionDataModel): EventSessionDataModel => {
+        return {
+          ...session,
+          startDate: new Date(session.startDate),
+          endDate: session.endDate ? new Date(session.endDate) : null,
+          startDateSales: new Date(session.startDateSales),
+          endDateSales: new Date(session.endDateSales),
+        };
+      },
+    );
+  }
+  return null;
 };
