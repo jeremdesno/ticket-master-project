@@ -3,6 +3,7 @@ import { Kysely } from 'kysely';
 import { DatabaseService } from 'src/common/database.service';
 import {
   DatabaseSchema,
+  EventDataModel,
   ExtractedEventDataModel,
   GenreDataModel,
 } from 'src/common/models';
@@ -21,30 +22,43 @@ export class EventService {
     genre?: string,
     limit: number = 20,
     offset: number = 0,
-  ): Promise<ExtractedEventDataModel[]> {
+  ): Promise<EventDataModel[]> {
     let query = this.database
-      .selectFrom('extractedEvents')
-      .selectAll()
+      .selectFrom('events')
+      .innerJoin('eventSessions', 'events.id', 'eventSessions.eventId')
+      .select([
+        'events.id',
+        'events.name',
+        'events.description',
+        'events.genre',
+        'events.venueAddress',
+        'events.venueName',
+        'events.imageUrl',
+      ]);
+
+    if (startDate) {
+      query = query.where('eventSessions.startDate', '>=', new Date(startDate));
+    }
+    if (endDate) {
+      query = query.where('eventSessions.startDate', '<=', new Date(endDate));
+    }
+    if (genre) {
+      query = query.where('events.genre', '=', genre);
+    }
+
+    query = query
+      .distinctOn('events.id')
+      .orderBy('events.id', 'asc')
+      .orderBy('eventSessions.startDate', 'asc')
       .limit(limit)
       .offset(offset);
 
-    if (startDate) {
-      query = query.where('startDate', '>=', new Date(startDate));
-    }
-    if (endDate) {
-      query = query.where('startDate', '<=', new Date(endDate));
-    }
-    if (genre) {
-      query = query.where('genre', '=', genre);
-    }
-
-    query = query.orderBy('startDate', 'asc');
     return await query.execute();
   }
 
-  async getEvent(id: string): Promise<ExtractedEventDataModel | null> {
+  async getEvent(id: string): Promise<EventDataModel | null> {
     return await this.database
-      .selectFrom('extractedEvents')
+      .selectFrom('events')
       .selectAll()
       .where('id', '=', id)
       .executeTakeFirst();
