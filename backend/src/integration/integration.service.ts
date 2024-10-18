@@ -54,7 +54,7 @@ export class IntegrationService {
     }
   }
 
-  async upsertEvent(event: ExtractedEventDataModel): Promise<void> {
+  async upsertExtractedEvent(event: ExtractedEventDataModel): Promise<void> {
     await this.database
       .insertInto('extractedEvents')
       .values(event)
@@ -83,7 +83,7 @@ export class IntegrationService {
       const pageEventsParsed = await parsePageEvents(data);
 
       for (const parsedEvent of pageEventsParsed) {
-        this.upsertEvent(parsedEvent);
+        this.upsertExtractedEvent(parsedEvent);
       }
       console.log('upserted page:', data.page.number);
 
