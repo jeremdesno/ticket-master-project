@@ -1,4 +1,3 @@
-import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -10,7 +9,7 @@ describe('IntegrationService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [HttpModule, ConfigModule.forRoot()],
+      imports: [ConfigModule.forRoot()],
       providers: [IntegrationService, DatabaseService],
     }).compile();
 
