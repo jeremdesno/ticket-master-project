@@ -1,5 +1,5 @@
 export interface DatabaseSchema {
-  events: ExtractedEventDataModel;
+  extractedEvents: ExtractedEventDataModel;
   genres: GenreDataModel;
   subgenres: SubGenreDataModel;
 }

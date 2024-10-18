@@ -56,7 +56,7 @@ export class IntegrationService {
 
   async upsertEvent(event: ExtractedEventDataModel): Promise<void> {
     await this.database
-      .insertInto('events')
+      .insertInto('extractedEvents')
       .values(event)
       .onConflict((oc) =>
         oc.column('id').doUpdateSet({

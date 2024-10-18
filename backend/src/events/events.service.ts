@@ -23,7 +23,7 @@ export class EventService {
     offset: number = 0,
   ): Promise<ExtractedEventDataModel[]> {
     let query = this.database
-      .selectFrom('events')
+      .selectFrom('extractedEvents')
       .selectAll()
       .limit(limit)
       .offset(offset);
@@ -44,7 +44,7 @@ export class EventService {
 
   async getEvent(id: string): Promise<ExtractedEventDataModel | null> {
     return await this.database
-      .selectFrom('events')
+      .selectFrom('extractedEvents')
       .selectAll()
       .where('id', '=', id)
       .executeTakeFirst();
