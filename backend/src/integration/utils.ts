@@ -1,7 +1,7 @@
 import axios from 'axios';
 import sharp from 'sharp';
 import {
-  EventDataModel,
+  ExtractedEventDataModel,
   GenreDataModel,
   SubGenreDataModel,
 } from 'src/common/models';
@@ -79,7 +79,7 @@ export async function uploadToImgBB(imageBuffer: Buffer): Promise<string> {
 
 export async function parsePageEvents(
   data: EventsResponse,
-): Promise<EventDataModel[]> {
+): Promise<ExtractedEventDataModel[]> {
   if (!data._embedded || !data._embedded.events) {
     throw new Error('Invalid data structure');
   }

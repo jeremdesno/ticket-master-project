@@ -1,10 +1,10 @@
 export interface DatabaseSchema {
-  events: EventDataModel;
+  events: ExtractedEventDataModel;
   genres: GenreDataModel;
   subgenres: SubGenreDataModel;
 }
 
-export interface EventDataModel {
+export interface ExtractedEventDataModel {
   id: string;
   name: string;
   startDate: Date;

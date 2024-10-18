@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { EventDataModel } from '../../../backend/src/common/models';
+import { ExtractedEventDataModel } from '../../../backend/src/common/models';
 import { fetchEvent } from '../api/eventService';
 import EventCard from '../components/EventCard';
 import styles from '../styles/EventPage.module.css';
 
-const relatedEvents: EventDataModel[] = Array.from(
+const relatedEvents: ExtractedEventDataModel[] = Array.from(
   { length: 4 },
   (_, index) => ({
     id: String(index + 1),
@@ -28,7 +28,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
   const { eventId } = useParams<{
     eventId: string;
   }>() as { eventId: string };
-  const [event, setEvent] = useState<EventDataModel | null>(null);
+  const [event, setEvent] = useState<ExtractedEventDataModel | null>(null);
   useEffect(() => {
     const loadEvent = async (): Promise<void> => {
       try {

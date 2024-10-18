@@ -3,7 +3,7 @@ import { Kysely } from 'kysely';
 import { DatabaseService } from 'src/common/database.service';
 import {
   DatabaseSchema,
-  EventDataModel,
+  ExtractedEventDataModel,
   GenreDataModel,
 } from 'src/common/models';
 
@@ -21,7 +21,7 @@ export class EventService {
     genre?: string,
     limit: number = 20,
     offset: number = 0,
-  ): Promise<EventDataModel[]> {
+  ): Promise<ExtractedEventDataModel[]> {
     let query = this.database
       .selectFrom('events')
       .selectAll()
@@ -42,7 +42,7 @@ export class EventService {
     return await query.execute();
   }
 
-  async getEvent(id: string): Promise<EventDataModel | null> {
+  async getEvent(id: string): Promise<ExtractedEventDataModel | null> {
     return await this.database
       .selectFrom('events')
       .selectAll()

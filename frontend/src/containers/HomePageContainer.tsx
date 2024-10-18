@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  EventDataModel,
+  ExtractedEventDataModel,
   GenreDataModel,
 } from '../../../backend/src/common/models';
 import { fetchEvents } from '../api/eventService';
@@ -23,18 +23,18 @@ const HomePageContainer: React.FC = (): JSX.Element => {
     loadGenres();
   }, []);
 
-  const initialEvents: { [key: string]: EventDataModel[] } = {};
+  const initialEvents: { [key: string]: ExtractedEventDataModel[] } = {};
   genres.forEach((genre) => {
     initialEvents[genre.name] = [];
   });
   const [events, setEvents] = useState<{
-    [key: string]: EventDataModel[] | [];
+    [key: string]: ExtractedEventDataModel[] | [];
   }>(initialEvents);
 
   useEffect(() => {
     const loadEvents = async (): Promise<void> => {
       try {
-        const updatedEvents: { [key: string]: EventDataModel[] } = {
+        const updatedEvents: { [key: string]: ExtractedEventDataModel[] } = {
           ...events,
         };
         const today = new Date();

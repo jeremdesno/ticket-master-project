@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { EventDataModel } from '../../../backend/src/common/models';
+import { ExtractedEventDataModel } from '../../../backend/src/common/models';
 import styles from '../styles/GenrePage.module.css';
 
 interface EventCardProps {
-  event: EventDataModel;
+  event: ExtractedEventDataModel;
   onDetailsClick: () => void;
 }
 

@@ -1,5 +1,5 @@
 import { Controller, Get, Query, Param } from '@nestjs/common';
-import { EventDataModel, GenreDataModel } from 'src/common/models';
+import { ExtractedEventDataModel, GenreDataModel } from 'src/common/models';
 
 import { EventService } from './events.service';
 
@@ -14,7 +14,7 @@ export class EventController {
     @Query('genre') genre?: string,
     @Query('limit') limit: number = 20,
     @Query('offset') offset: number = 0,
-  ): Promise<EventDataModel[]> {
+  ): Promise<ExtractedEventDataModel[]> {
     return this.eventService.getEvents(
       startDate,
       endDate,
@@ -30,7 +30,9 @@ export class EventController {
   }
 
   @Get(':id')
-  async getEvent(@Param('id') id: string): Promise<EventDataModel | null> {
+  async getEvent(
+    @Param('id') id: string,
+  ): Promise<ExtractedEventDataModel | null> {
     return this.eventService.getEvent(id);
   }
 }

@@ -8,7 +8,7 @@ import { parsePageClassifications, parsePageEvents } from './utils';
 import { DatabaseService } from '../common/database.service';
 import {
   DatabaseSchema,
-  EventDataModel,
+  ExtractedEventDataModel,
   GenreDataModel,
   SubGenreDataModel,
 } from '../common/models';
@@ -54,7 +54,7 @@ export class IntegrationService {
     }
   }
 
-  async upsertEvent(event: EventDataModel): Promise<void> {
+  async upsertEvent(event: ExtractedEventDataModel): Promise<void> {
     await this.database
       .insertInto('events')
       .values(event)

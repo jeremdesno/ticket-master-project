@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import FiltersContainer from './FiltersContainer';
 import GenreEventsGridContainer from './GenreEventsGridContainer';
-import { EventDataModel } from '../../../backend/src/common/models';
+import { ExtractedEventDataModel } from '../../../backend/src/common/models';
 import { fetchEvents } from '../api/eventService';
 import { fetchGenres } from '../api/genreService';
 import styles from '../styles/GenrePage.module.css';
@@ -16,7 +16,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   }>() as { genre: string; startDate?: string; endDate?: string };
 
   const [genres, setGenres] = useState<string[]>([]);
-  const [events, setEvents] = useState<EventDataModel[]>([]);
+  const [events, setEvents] = useState<ExtractedEventDataModel[]>([]);
 
   useEffect(() => {
     const loadGenres = async (): Promise<void> => {

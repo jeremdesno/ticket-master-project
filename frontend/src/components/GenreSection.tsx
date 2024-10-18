@@ -3,12 +3,12 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 
-import { EventDataModel } from '../../../backend/src/common/models';
+import { ExtractedEventDataModel } from '../../../backend/src/common/models';
 import styles from '../styles/GenreSection.module.css';
 
 interface GenreSectionProps {
   genre: string;
-  events: EventDataModel[];
+  events: ExtractedEventDataModel[];
   autoplayDirection: 'rtl' | 'ltr';
   handleEventClick: (eventId: string) => void;
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { EventDataModel } from '../../../backend/src/common/models';
+import { ExtractedEventDataModel } from '../../../backend/src/common/models';
 import EventCard from '../components/EventCard';
 import styles from '../styles/GenrePage.module.css';
 
 interface GenreEventsGridProps {
-  events: EventDataModel[];
+  events: ExtractedEventDataModel[];
 }
 
 const GenreEventsGridContainer: React.FC<GenreEventsGridProps> = ({
