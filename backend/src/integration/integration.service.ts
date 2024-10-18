@@ -1,9 +1,7 @@
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Kysely } from 'kysely';
-import { lastValueFrom } from 'rxjs';
 import sharp from 'sharp';
 
 import {
@@ -28,7 +26,6 @@ export class IntegrationService {
   private readonly database: Kysely<DatabaseSchema>;
 
   constructor(
-    private httpService: HttpService,
     private configService: ConfigService,
     private databaseService: DatabaseService,
   ) {
@@ -37,30 +34,9 @@ export class IntegrationService {
     this.database = this.databaseService.getDatabase();
   }
 
-  async makeRequest<T>(url: string): Promise<T> {
-    const maxRetries = 5;
-    let retryCount = 0;
-
-    while (retryCount < maxRetries) {
-      try {
-        const response = await lastValueFrom(this.httpService.get(url));
-        return response.data;
-      } catch (error) {
-        if (error.response && error.response.status === 429) {
-          const waitTime = Math.pow(2, retryCount) * 1000; // Exponential backoff
-          await new Promise((resolve) => setTimeout(resolve, waitTime));
-          retryCount++;
-        } else {
-          throw new Error(`Error when making the request: ${error.message}`);
-        }
-      }
-    }
-    throw new Error(`Max retries reached for request: ${url}`);
-  }
-
   async resizeImage(imageUrl: string): Promise<Buffer> {
     try {
-      const response = await axios.get(imageUrl, {
+      const response = await axios.get<ArrayBuffer>(imageUrl, {
         responseType: 'arraybuffer',
       });
       const imageBuffer = Buffer.from(response.data);
@@ -69,8 +45,7 @@ export class IntegrationService {
         .resize(targetWidth, targetHeight)
         .toBuffer();
     } catch (error) {
-      console.error('Error fetching or processing image:', error);
-      throw error;
+      console.error('Error fetching or processing image: ', error);
     }
   }
 
@@ -85,11 +60,11 @@ export class IntegrationService {
         expiration: 172800, // 2 jours
       };
 
-      const response = await lastValueFrom(
-        this.httpService.post(imgBBUrl, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }),
-      );
+      const response = await axios.post(imgBBUrl, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (response.data && response.data.data.url) {
         return response.data.data.url;
@@ -97,8 +72,7 @@ export class IntegrationService {
         throw new Error('Failed to upload image to imgBB');
       }
     } catch (error) {
-      console.error('Error uploading image to imgBB:', error);
-      throw new Error('Image upload to imgBB failed');
+      console.error('Error uploading image to imgBB: ', error);
     }
   }
 
@@ -120,7 +94,13 @@ export class IntegrationService {
     console.log(
       `Fetching events from the ${startDateTimeFormatted} to the ${endDateTimeFormatted}`,
     );
-    return await this.makeRequest<EventsResponse>(url);
+    try {
+      const response = await axios.get<EventsResponse>(url);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching events');
+      throw error;
+    }
   }
 
   async parsePageEvents(data: EventsResponse): Promise<EventDataModel[]> {
@@ -177,7 +157,7 @@ export class IntegrationService {
             const resizedImageBuffer = await this.resizeImage(closestImage.url);
             imageUrl = await this.uploadToImgBB(resizedImageBuffer);
           } catch (error) {
-            console.error('Error processing image:', error);
+            console.error('Error processing image: ', error);
           }
         }
 
@@ -237,7 +217,12 @@ export class IntegrationService {
 
       if (nextLink && nextLink.href) {
         nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
-        data = await this.makeRequest<EventsResponse>(nextUrl);
+        try {
+          const response = await axios.get<EventsResponse>(nextUrl);
+          data = response.data;
+        } catch (error) {
+          console.error('Error fetching next page of events: ', error);
+        }
       } else {
         nextUrl = null;
       }
@@ -247,7 +232,13 @@ export class IntegrationService {
   async getClassifications(): Promise<ClassificationsResponse> {
     const url = `${this.baseUrl}/discovery/v2/classifications.json?apikey=${this.apiKey}`;
     console.log('Fetching classifications');
-    return await this.makeRequest<ClassificationsResponse>(url);
+    try {
+      const response = await axios.get<ClassificationsResponse>(url);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching classifications');
+      throw error;
+    }
   }
 
   async parsePageClassifications(
@@ -328,7 +319,12 @@ export class IntegrationService {
 
       if (nextLink && nextLink.href) {
         nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
-        data = await this.makeRequest<ClassificationsResponse>(nextUrl);
+        try {
+          const response = await axios.get<ClassificationsResponse>(nextUrl);
+          data = response.data;
+        } catch (error) {
+          console.error('Error fetching next page of classifications: ', error);
+        }
       } else {
         nextUrl = null;
       }
