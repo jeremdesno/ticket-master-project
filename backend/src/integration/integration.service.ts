@@ -8,6 +8,8 @@ import { parsePageClassifications, parsePageEvents } from './utils';
 import { DatabaseService } from '../common/database.service';
 import {
   DatabaseSchema,
+  EventDataModel,
+  EventSessionDataModel,
   ExtractedEventDataModel,
   GenreDataModel,
   SubGenreDataModel,
@@ -102,6 +104,57 @@ export class IntegrationService {
       }
     }
   }
+
+  async upsertEvent(event: EventDataModel): Promise<void> {
+    await this.database
+      .insertInto('events')
+      .values({
+        id: event.id,
+        name: event.name,
+        description: event.description,
+        genre: event.genre,
+        venueAddress: event.venueAddress,
+        venueName: event.venueName,
+        imageUrl: event.imageUrl,
+      })
+      .onConflict((oc) =>
+        oc.column('id').doUpdateSet({
+          name: event.name,
+          description: event.description,
+          genre: event.genre,
+          venueAddress: event.venueAddress,
+          venueName: event.venueName,
+          imageUrl: event.imageUrl,
+        }),
+      )
+      .execute();
+  }
+
+  async upsertEventSession(session: EventSessionDataModel): Promise<void> {
+    await this.database
+      .insertInto('eventSessions')
+      .values({
+        id: session.id,
+        startDate: session.startDate,
+        endDate: session.endDate,
+        url: session.url,
+        startDateSales: session.startDateSales,
+        endDateSales: session.endDateSales,
+        eventId: session.eventId,
+      })
+      .onConflict((oc) =>
+        oc.column('id').doUpdateSet({
+          startDate: session.startDate,
+          endDate: session.endDate,
+          url: session.url,
+          startDateSales: session.startDateSales,
+          endDateSales: session.endDateSales,
+          eventId: session.eventId,
+        }),
+      )
+      .execute();
+  }
+
 
   async getClassifications(): Promise<ClassificationsResponse> {
     const url = `${this.baseUrl}/discovery/v2/classifications.json?apikey=${this.apiKey}`;
