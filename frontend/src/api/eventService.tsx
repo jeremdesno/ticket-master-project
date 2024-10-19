@@ -57,7 +57,7 @@ export const fetchEventSessions = async (
   );
 };
 
-export const fetchNumberTotalPages = async (genre: string): Promise<number> => {
+export const fetchNumberEvents = async (genre: string): Promise<number> => {
   const response = await axiosInstance.get(
     `/events/genres/${genre}/numberEvents`,
   );

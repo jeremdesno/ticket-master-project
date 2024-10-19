@@ -10,7 +10,7 @@ import {
 import {
   fetchEvents,
   fetchEventSessions,
-  fetchNumberTotalPages,
+  fetchNumberEvents,
 } from '../api/eventService';
 import { fetchGenres } from '../api/genreService';
 import Pagination from '../components/Pagination';
@@ -51,16 +51,16 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   useEffect(() => {
     const getNumberTotalPages = async (): Promise<void> => {
       try {
-        const total = await fetchNumberTotalPages();
-        if (total) {
-          setTotalPages(total);
+        const totalGenreEvents = await fetchNumberEvents(genre);
+        if (totalGenreEvents) {
+          setTotalPages(Math.ceil(totalGenreEvents / eventsPerPage));
         }
       } catch (error) {
         console.error('Failed to get total number of pages:', error);
       }
     };
     getNumberTotalPages();
-  }, []);
+  }, [genre]);
 
   useEffect(() => {
     const loadEventsAndSessions = async (): Promise<void> => {
