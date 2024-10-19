@@ -41,7 +41,8 @@ export class EventController {
   @Get(':eventId/sessions')
   async getEventSessions(
     @Param('eventId') eventId: string,
+    @Query('limit') limit: number = 5,
   ): Promise<EventSessionDataModel[] | []> {
-    return this.eventService.getSessions(eventId);
+    return this.eventService.getSessions(eventId, limit);
   }
 }

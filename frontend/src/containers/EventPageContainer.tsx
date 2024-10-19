@@ -75,7 +75,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
   }
   // Find the first session (main session) and set it as default
   const mainSession = sessions[0];
-  const otherSessions = sessions.slice(1, 6); // Next 5 sessions
+  const otherSessions = sessions.slice(1);
 
   return (
     <div className={styles.eventPageContainer}>

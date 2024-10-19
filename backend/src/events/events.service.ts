@@ -64,11 +64,16 @@ export class EventService {
       .executeTakeFirst();
   }
 
-  async getSessions(eventId: string): Promise<EventSessionDataModel[] | []> {
+  async getSessions(
+    eventId: string,
+    limit: number = 5,
+  ): Promise<EventSessionDataModel[] | []> {
     return await this.database
       .selectFrom('eventSessions')
       .selectAll()
       .where('eventId', '=', eventId)
+      .orderBy('startDate', 'asc')
+      .limit(limit)
       .execute();
   }
 
