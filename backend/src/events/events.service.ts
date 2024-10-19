@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Kysely } from 'kysely';
+import { Kysely, sql } from 'kysely';
 import { DatabaseService } from 'src/common/database.service';
 import {
   DatabaseSchema,
@@ -75,6 +75,16 @@ export class EventService {
       .orderBy('startDate', 'asc')
       .limit(limit)
       .execute();
+  }
+
+  async getTotalGenreEvents(genre: string): Promise<number> {
+    const totalEvents = await this.database
+      .selectFrom('events')
+      .select(sql<number>`Count(*)`.as('total'))
+      .where('genre', '=', genre)
+      .executeTakeFirstOrThrow();
+
+    return totalEvents.total;
   }
 
   async getGenres(): Promise<GenreDataModel[]> {

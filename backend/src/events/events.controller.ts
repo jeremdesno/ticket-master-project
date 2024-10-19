@@ -45,4 +45,9 @@ export class EventController {
   ): Promise<EventSessionDataModel[] | []> {
     return this.eventService.getSessions(eventId, limit);
   }
+
+  @Get('genres/:genre/numberEvents')
+  async getTotalPages(@Param('genre') genre: string): Promise<number> {
+    return this.eventService.getTotalGenreEvents(genre);
+  }
 }
