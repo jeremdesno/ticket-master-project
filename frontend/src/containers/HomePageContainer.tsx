@@ -68,7 +68,7 @@ const HomePageContainer: React.FC = (): JSX.Element => {
         <p>Loading genres...</p>
       ) : (
         genres
-          .filter((genre) => events[genre.name]?.length > 0)
+          .filter((genre) => events[genre.name]?.length > 10)
           .map((genre, index) => (
             <GenreSection
               key={genre.id}
