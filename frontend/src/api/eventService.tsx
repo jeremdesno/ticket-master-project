@@ -56,3 +56,7 @@ export const fetchEventSessions = async (
     },
   );
 };
+
+export const fetchNumberTotalPages = async (): Promise<number> => {
+  return 10;
+};
