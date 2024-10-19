@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { Kysely } from 'kysely';
+import { Kysely, sql } from 'kysely';
 
 import { ClassificationsResponse, EventsResponse } from './types';
 import {
@@ -167,6 +167,56 @@ export class IntegrationService {
       .selectAll('extractedEvents')
       .execute();
     return newExtractedEvents;
+  }
+
+  async getNewEvents(): Promise<EventDataModel[]> {
+    const newEvents = await this.database
+      .with('sessionsWithNoMatchingEvents', (db) =>
+        db
+          .selectFrom('extractedEvents')
+          .leftJoin('events', (join) =>
+            join
+              .onRef('extractedEvents.name', '=', 'events.name')
+              .onRef('extractedEvents.venueName', '=', 'events.venueName'),
+          )
+          .where('events.id', 'is', null) // Only select sessions that match to no events in the events table
+          .select([
+            'extractedEvents.name',
+            'extractedEvents.venueName',
+            'extractedEvents.description',
+            'extractedEvents.genre',
+            'extractedEvents.venueAddress',
+            'extractedEvents.imageUrl',
+            sql<number>`ROW_NUMBER() OVER (PARTITION BY "extractedEvents".name, "extractedEvents"."venueName" ORDER BY "extractedEvents"."startDate" DESC)`.as(
+              'rowNumber',
+            ),
+          ]),
+      )
+      .selectFrom('sessionsWithNoMatchingEvents')
+      .where('rowNumber', '=', 1) // Get only the latest event for each group
+      .select([
+        'sessionsWithNoMatchingEvents.name',
+        'sessionsWithNoMatchingEvents.venueName',
+        'sessionsWithNoMatchingEvents.description',
+        'sessionsWithNoMatchingEvents.genre',
+        'sessionsWithNoMatchingEvents.venueAddress',
+        'sessionsWithNoMatchingEvents.imageUrl',
+      ])
+      .execute();
+
+    const newEventsWithIds = newEvents.map((newExtractedEvent) => {
+      const eventId = generateHashFromNameAndVenue(
+        newExtractedEvent.name,
+        newExtractedEvent.venueName,
+      );
+
+      return {
+        id: eventId,
+        ...newExtractedEvent,
+      };
+    });
+
+    return newEventsWithIds;
   }
 
   async syncExtractedEventsToSessionsAndEvents(
