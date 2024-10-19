@@ -8,6 +8,8 @@ import {
   generateHashFromNameAndVenue,
   parsePageClassifications,
   parsePageEvents,
+  resizeImage,
+  uploadToImgBB,
 } from './utils';
 import { DatabaseService } from '../common/database.service';
 import {
@@ -244,6 +246,27 @@ export class IntegrationService {
         startDateSales: newExtractedEvent.startDateSales,
         endDateSales: newExtractedEvent.endDateSales,
         eventId: eventId,
+      });
+    }
+  }
+
+  async syncEvents(newEvents: EventDataModel[]): Promise<void> {
+    for (const newEvent of newEvents) {
+      let imageUrl: string | null = null;
+      try {
+        const resizedImageBuffer = await resizeImage(newEvent.imageUrl);
+        imageUrl = await uploadToImgBB(resizedImageBuffer);
+      } catch (error) {
+        console.error('Error processing image: ', error);
+      }
+      await this.upsertEvent({
+        id: newEvent.id,
+        name: newEvent.name,
+        description: newEvent.description,
+        genre: newEvent.genre,
+        venueAddress: newEvent.venueAddress,
+        venueName: newEvent.venueName,
+        imageUrl: imageUrl,
       });
     }
   }

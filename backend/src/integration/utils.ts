@@ -128,15 +128,6 @@ export async function parsePageEvents(
       }
 
       const closestImage = findClosestImage(event.images);
-      let imageUrl: string | null = null;
-      if (closestImage) {
-        try {
-          const resizedImageBuffer = await resizeImage(closestImage.url);
-          imageUrl = await uploadToImgBB(resizedImageBuffer);
-        } catch (error) {
-          console.error('Error processing image: ', error);
-        }
-      }
 
       return {
         id: event.id,
@@ -150,7 +141,7 @@ export async function parsePageEvents(
         genre: genre.join('/'),
         venueAddress: venueAddress || 'No address available',
         venueName: venue.name || 'No information',
-        imageUrl: imageUrl,
+        imageUrl: closestImage.url,
       };
     }),
   );
