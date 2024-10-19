@@ -61,7 +61,6 @@ const EventPage: React.FC = (): React.JSX.Element => {
       <div>An error happened while fetching the event's information...</div>
     );
   }
-  console.log(sessions);
   // Find the first session (main session) and set it as default
   const mainSession = sessions[0];
   const otherSessions = sessions.slice(1, 6); // Next 5 sessions
