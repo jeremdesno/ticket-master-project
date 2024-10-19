@@ -7,9 +7,16 @@ import {
   EventDataModel,
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
-import { fetchEvents, fetchEventSessions } from '../api/eventService';
+import {
+  fetchEvents,
+  fetchEventSessions,
+  fetchNumberTotalPages,
+} from '../api/eventService';
 import { fetchGenres } from '../api/genreService';
+import Pagination from '../components/Pagination';
 import styles from '../styles/GenrePage.module.css';
+
+const eventsPerPage = 15;
 
 const EventsPageContainer: React.FC = (): React.JSX.Element => {
   const { genre, startDate, endDate } = useParams<{
@@ -25,6 +32,9 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   }>({});
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
   useEffect(() => {
     const loadGenres = async (): Promise<void> => {
       try {
@@ -39,14 +49,34 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   }, []);
 
   useEffect(() => {
+    const getNumberTotalPages = async (): Promise<void> => {
+      try {
+        const total = await fetchNumberTotalPages();
+        if (total) {
+          setTotalPages(total);
+        }
+      } catch (error) {
+        console.error('Failed to get total number of pages:', error);
+      }
+    };
+    getNumberTotalPages();
+  }, []);
+
+  useEffect(() => {
     const loadEventsAndSessions = async (): Promise<void> => {
       setLoading(true);
       try {
-        const fetchedEvents = await fetchEvents(genre, startDate, endDate);
+        const offset = (currentPage - 1) * eventsPerPage;
+        const fetchedEvents = await fetchEvents(
+          genre,
+          startDate,
+          endDate,
+          eventsPerPage,
+          offset,
+        );
         setEvents(fetchedEvents);
 
         const sessionsMap: { [key: string]: EventSessionDataModel } = {};
-
         await Promise.all(
           fetchedEvents.map(async (event) => {
             try {
@@ -70,7 +100,11 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     };
 
     loadEventsAndSessions();
-  }, [genre, startDate, endDate]);
+  }, [genre, startDate, endDate, currentPage]);
+
+  const handlePageChange = (page: number): void => {
+    setCurrentPage(page);
+  };
 
   const currentStartDate = startDate ? new Date(startDate) : null;
   const currentEndDate = endDate ? new Date(endDate) : null;
@@ -87,7 +121,14 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     <div>
       <h1 className={styles.genreTitle}>{genre} Events</h1>
       <div className={styles.eventsPageLayout}>
-        <GenreEventsGridContainer events={events} sessions={sessions} />
+        <div className={styles.bodyLayout}>
+          <GenreEventsGridContainer events={events} sessions={sessions} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
         <FiltersContainer
           genres={genres}
           currentGenre={genre}
