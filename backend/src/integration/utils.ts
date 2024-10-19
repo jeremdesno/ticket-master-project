@@ -59,7 +59,7 @@ export async function uploadToImgBB(imageBuffer: Buffer): Promise<string> {
     const formData = {
       key: imgBBApiKey,
       image: base64Image,
-      expiration: 172800, // 2 jours
+      expiration: 43200, // 12 hours
     };
 
     const response = await axios.post(imgBBUrl, formData, {
