@@ -221,7 +221,7 @@ export class IntegrationService {
     return newEventsWithIds;
   }
 
-  async syncExtractedEventsToSessionsAndEvents(
+  async syncSessions(
     newExtractedEvents: ExtractedEventDataModel[],
   ): Promise<void> {
     for (const newExtractedEvent of newExtractedEvents) {
@@ -229,15 +229,7 @@ export class IntegrationService {
         newExtractedEvent.name,
         newExtractedEvent.venueName,
       );
-      await this.upsertEvent({
-        id: eventId,
-        name: newExtractedEvent.name,
-        description: newExtractedEvent.description,
-        genre: newExtractedEvent.genre,
-        venueAddress: newExtractedEvent.venueAddress,
-        venueName: newExtractedEvent.venueName,
-        imageUrl: newExtractedEvent.imageUrl,
-      });
+
       await this.upsertEventSession({
         id: newExtractedEvent.id,
         startDate: newExtractedEvent.startDate,
