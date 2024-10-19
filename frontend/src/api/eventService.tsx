@@ -38,21 +38,18 @@ export const fetchEvent = async (
 
 export const fetchEventSessions = async (
   eventId: string,
-): Promise<EventSessionDataModel[] | null> => {
+): Promise<EventSessionDataModel[]> => {
   const response = await axiosInstance.get(`/events/${eventId}/sessions`);
   const sessions = response.data;
-  if (sessions) {
-    return sessions.map(
-      (session: EventSessionDataModel): EventSessionDataModel => {
-        return {
-          ...session,
-          startDate: new Date(session.startDate),
-          endDate: session.endDate ? new Date(session.endDate) : null,
-          startDateSales: new Date(session.startDateSales),
-          endDateSales: new Date(session.endDateSales),
-        };
-      },
-    );
-  }
-  return null;
+  return sessions.map(
+    (session: EventSessionDataModel): EventSessionDataModel => {
+      return {
+        ...session,
+        startDate: new Date(session.startDate),
+        endDate: session.endDate ? new Date(session.endDate) : null,
+        startDateSales: new Date(session.startDateSales),
+        endDateSales: new Date(session.endDateSales),
+      };
+    },
+  );
 };
