@@ -4,29 +4,41 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   EventDataModel,
   EventSessionDataModel,
-  ExtractedEventDataModel,
 } from '../../../backend/src/common/models';
 import { fetchEvent, fetchEventSessions } from '../api/eventService';
 import EventCard from '../components/EventCard';
 import styles from '../styles/EventPage.module.css';
 
-const relatedEvents: ExtractedEventDataModel[] = Array.from(
+// Mock events
+const relatedEvents: EventDataModel[] = Array.from(
   { length: 4 },
   (_, index) => ({
     id: String(index + 1),
     name: `Event ${index + 1}`,
-    startDate: new Date(`2024-07-${index + 10}`),
-    endDate: new Date(`2024-07-${index + 12}`),
-    url: `https://event${index + 1}.com`,
     description: `This is the description for Event ${index + 1}`,
     genre: index % 2 === 0 ? 'Jazz' : 'Hip Hop',
-    startDateSales: new Date('2024-01-01'),
-    endDateSales: new Date('2024-07-01'),
     venueAddress: `${index + 1} Venue St.`,
     venueName: `Venue ${index + 1}`,
     imageUrl: null,
   }),
 );
+
+// Mock sessions for each event
+const relatedSessions: { [key: string]: EventSessionDataModel } = Array.from(
+  { length: 4 },
+  (_, index) => ({
+    id: String(index + 1),
+    eventId: String(index + 1),
+    startDate: new Date(`2024-07-${index + 10}`),
+    endDate: new Date(`2024-07-${index + 12}`),
+    url: `https://event${index + 1}.com`,
+    startDateSales: new Date('2024-01-01'),
+    endDateSales: new Date('2024-07-01'),
+  }),
+).reduce<{ [key: string]: EventSessionDataModel }>((acc, session) => {
+  acc[session.eventId] = session;
+  return acc;
+}, {});
 
 const EventPage: React.FC = (): React.JSX.Element => {
   const { eventId } = useParams<{
@@ -165,6 +177,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
             <EventCard
               key={event.id}
               event={event}
+              earliestSession={relatedSessions[event.id]}
               onDetailsClick={(): void => {
                 handleDetailsClick(event.id);
               }}

@@ -1,16 +1,21 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ExtractedEventDataModel } from '../../../backend/src/common/models';
+import {
+  EventDataModel,
+  EventSessionDataModel,
+} from '../../../backend/src/common/models';
 import EventCard from '../components/EventCard';
 import styles from '../styles/GenrePage.module.css';
 
 interface GenreEventsGridProps {
-  events: ExtractedEventDataModel[];
+  events: EventDataModel[];
+  sessions: { [key: string]: EventSessionDataModel };
 }
 
 const GenreEventsGridContainer: React.FC<GenreEventsGridProps> = ({
   events,
+  sessions,
 }) => {
   const navigate = useNavigate();
   const handleDetailsClick = (eventId: string): void => {
@@ -21,6 +26,7 @@ const GenreEventsGridContainer: React.FC<GenreEventsGridProps> = ({
       {events.map((event) => (
         <EventCard
           event={event}
+          earliestSession={sessions[event.id]}
           onDetailsClick={(): void => {
             handleDetailsClick(event.id);
           }}
