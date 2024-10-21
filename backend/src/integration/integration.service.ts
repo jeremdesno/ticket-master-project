@@ -37,6 +37,13 @@ export class IntegrationService {
     this.database = this.databaseService.getDatabase();
   }
 
+  async doHealthChecks(): Promise<boolean> {
+    return (
+      this.databaseService.checkHealth() &&
+      this.eventSearchService.checkHealth()
+    );
+  }
+
   async getEvents(): Promise<EventsResponse> {
     const startDateTime = new Date();
     startDateTime.setDate(startDateTime.getDate() + 1);
