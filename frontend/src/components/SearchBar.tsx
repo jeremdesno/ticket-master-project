@@ -5,11 +5,13 @@ import styles from '../styles/NavBar.module.css';
 interface SearchBarProps {
   searchTerm: string;
   onSearchTermChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSearchSubmit: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
   onSearchTermChange,
+  onSearchSubmit,
 }) => {
   return (
     <input
@@ -18,6 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       placeholder="Search events..."
       value={searchTerm}
       onChange={onSearchTermChange}
+      onKeyDown={onSearchSubmit}
     />
   );
 };
