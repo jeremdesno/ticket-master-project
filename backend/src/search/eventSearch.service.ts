@@ -23,6 +23,7 @@ export class EventSearchService {
   public async indexEvent(event: EventDataModel): Promise<{ result: string }> {
     return await this.elasticsearchService.index<EventSearchBody>({
       index: this.index,
+      id: event.id, // assures that no event is duplicated when indexed
       document: {
         id: event.id,
         name: event.name,
@@ -44,6 +45,9 @@ export class EventSearchService {
       },
     });
 
-    return result.hits.hits.map((hit) => hit._source);
+    return result.hits.hits.map((hit) => ({
+      id: hit._id,
+      ...hit._source,
+    }));
   }
 }
