@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { EventDataModel } from 'src/common/models';
 
-import { EventSearchBody, EventSearchResult } from './types';
+import {
+  EventSearchBody,
+  EventSearchRequestBody,
+  EventSearchResult,
+  SearchAfter,
+} from './types';
 
 @Injectable()
 export class EventSearchService {
@@ -32,22 +37,34 @@ export class EventSearchService {
     });
   }
 
-  public async searchEvents(query: string): Promise<EventSearchResult[]> {
-    const result = await this.elasticsearchService.search<EventSearchResult>({
-      index: this.index,
-      body: {
-        query: {
-          multi_match: {
-            query: query,
-            fields: ['name', 'venueName'],
-            fuzziness: "AUTO",
-          },
+  public async searchEvents(
+    query: string,
+    lastDocSort: SearchAfter | null = null,
+    size = 15,
+  ): Promise<EventSearchResult[]> {
+    const body: EventSearchRequestBody = {
+      query: {
+        multi_match: {
+          query: query,
+          fields: ['name', 'venueName'],
+          fuzziness: 'AUTO',
         },
       },
+      size: size,
+      sort: [{ _score: { order: 'desc' } }, { id: 'asc' }],
+    };
+
+    if (lastDocSort) {
+      body.search_after = lastDocSort;
+    }
+    const result = await this.elasticsearchService.search<EventSearchResult>({
+      index: this.index,
+      body,
     });
 
     return result.hits.hits.map((hit) => ({
       id: hit._id,
+      score: hit._score,
       ...hit._source,
     }));
   }

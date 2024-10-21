@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 
 import { EventSearchService } from './eventSearch.service';
-import { EventSearchResult } from './types';
+import { EventSearchResult, SearchAfter } from './types';
 
 @Controller('search')
 export class EventSearchController {
@@ -10,8 +10,13 @@ export class EventSearchController {
   @Get()
   async searchEvents(
     @Query('query') query: string,
+    @Query('lastDocSortScore') lastDocSortScore: number | null = null,
+    @Query('lastDocSortId') lastDocSortId: string | null = null,
   ): Promise<EventSearchResult[]> {
-    const searchResults = await this.eventSearchService.searchEvents(query);
-    return searchResults;
+    const lastDocSort: SearchAfter =
+      lastDocSortScore && lastDocSortId
+        ? [lastDocSortScore, lastDocSortId]
+        : null;
+    return await this.eventSearchService.searchEvents(query, lastDocSort);
   }
 }
