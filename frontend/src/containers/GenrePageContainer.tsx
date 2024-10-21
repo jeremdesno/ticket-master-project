@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import EventsGridContainer from './EventsGridContainer';
 import FiltersContainer from './FiltersContainer';
-import GenreEventsGridContainer from './GenreEventsGridContainer';
 import {
   EventDataModel,
   EventSessionDataModel,
@@ -122,7 +122,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
       <h1 className={styles.genreTitle}>{genre} Events</h1>
       <div className={styles.eventsPageLayout}>
         <div className={styles.bodyLayout}>
-          <GenreEventsGridContainer events={events} sessions={sessions} />
+          <EventsGridContainer events={events} sessions={sessions} />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

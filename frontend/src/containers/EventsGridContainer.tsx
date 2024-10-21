@@ -13,7 +13,7 @@ interface GenreEventsGridProps {
   sessions: { [key: string]: EventSessionDataModel };
 }
 
-const GenreEventsGridContainer: React.FC<GenreEventsGridProps> = ({
+const EventsGridContainer: React.FC<GenreEventsGridProps> = ({
   events,
   sessions,
 }) => {
@@ -36,4 +36,4 @@ const GenreEventsGridContainer: React.FC<GenreEventsGridProps> = ({
   );
 };
 
-export default GenreEventsGridContainer;
+export default EventsGridContainer;
