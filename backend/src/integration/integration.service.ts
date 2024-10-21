@@ -20,6 +20,7 @@ import {
   GenreDataModel,
   SubGenreDataModel,
 } from '../common/models';
+import { EventSearchService } from '../search/eventSearch.service';
 
 @Injectable()
 export class IntegrationService {
@@ -30,6 +31,7 @@ export class IntegrationService {
   constructor(
     private configService: ConfigService,
     private databaseService: DatabaseService,
+    private eventSearchService: EventSearchService,
   ) {
     this.apiKey = this.configService.get<string>('TICKETMASTER_API_KEY');
     this.database = this.databaseService.getDatabase();
@@ -260,6 +262,12 @@ export class IntegrationService {
         venueName: newEvent.venueName,
         imageUrl: imageUrl,
       });
+    }
+  }
+
+  async indexEvents(events: EventDataModel[]): Promise<void> {
+    for (const event of events) {
+      await this.eventSearchService.indexEvent(event);
     }
   }
 

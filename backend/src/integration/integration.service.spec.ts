@@ -3,13 +3,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { IntegrationService } from './integration.service';
 import { DatabaseService } from '../common/database.service';
+import { EventSearchModule } from '../search/eventSearch.module';
 
 describe('IntegrationService', () => {
   let service: IntegrationService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot()],
+      imports: [ConfigModule.forRoot(), EventSearchModule],
       providers: [IntegrationService, DatabaseService],
     }).compile();
 
