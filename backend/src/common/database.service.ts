@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Kysely, PostgresDialect } from 'kysely';
+import { Kysely, PostgresDialect, sql } from 'kysely';
 import { Pool } from 'pg';
 
 import { DatabaseSchema } from './models';
@@ -29,6 +29,20 @@ export class DatabaseService {
       }),
     });
   }
+
+  public async checkHealth(): Promise<boolean> {
+    try {
+      const status = await this.database
+        .selectFrom('events')
+        .select(sql<boolean>`${true}`.as('connected'))
+        .executeTakeFirst();
+      return status.connected;
+    } catch (error) {
+      console.error('PostgreSQL is down: ', error);
+      return false;
+    }
+  }
+
   public getDatabase(): Kysely<DatabaseSchema> {
     return this.database;
   }
