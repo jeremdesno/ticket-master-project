@@ -57,13 +57,12 @@ export class EventSearchService {
     if (lastDocSort) {
       body.search_after = lastDocSort;
     }
-    const result = await this.elasticsearchService.search<EventSearchResult>({
+    const result = await this.elasticsearchService.search<EventSearchBody>({
       index: this.index,
       body,
     });
 
     return result.hits.hits.map((hit) => ({
-      id: hit._id,
       score: hit._score,
       ...hit._source,
     }));

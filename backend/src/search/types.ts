@@ -4,13 +4,8 @@ export interface EventSearchBody {
   venueName: string;
 }
 
-export interface EventSearchResult {
-  hits: {
-    total: number;
-    hits: Array<{
-      _source: EventSearchBody;
-    }>;
-  };
+export interface EventSearchResult extends EventSearchBody {
+  score: number;
 }
 
 export type SearchAfter = [number, string];
