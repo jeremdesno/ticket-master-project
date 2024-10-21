@@ -4,6 +4,7 @@ import {
   EventSessionDataModel,
   ExtractedEventDataModel,
 } from '../../../backend/src/common/models';
+import { EventSearchResult } from '../../../backend/src/search/types';
 
 export const fetchEvents = async (
   genre?: string,
@@ -60,6 +61,17 @@ export const fetchEventSessions = async (
 export const fetchNumberEvents = async (genre: string): Promise<number> => {
   const response = await axiosInstance.get(
     `/events/genres/${genre}/numberEvents`,
+  );
+  return response.data;
+};
+
+export const SearchEvents = async (
+  query: string,
+  lastDocSortScore: number | null = null,
+  lastDocSortId: string | null = null,
+): Promise<EventSearchResult[]> => {
+  const response = await axiosInstance.get(
+    `/search?query=${query}&lastDocSortScore=${lastDocSortScore}&lastDocSortId=${lastDocSortId}`,
   );
   return response.data;
 };
