@@ -40,6 +40,7 @@ export class EventSearchService {
           multi_match: {
             query: query,
             fields: ['name', 'venueName'],
+            fuzziness: "AUTO",
           },
         },
       },
