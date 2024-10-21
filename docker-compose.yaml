@@ -26,13 +26,37 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     environment:
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=${ELASTICSEARCH_PASSWORD}
-      - ELASTIC_USERNAME=${ELASTICSEARCH_USERNAME}
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
     ports:
       - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
+    networks:
+    - elastic
+
+  kibana:
+    depends_on:
+      - elasticsearch
+
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    volumes:
+      - kibanadata:/usr/share/kibana/data
+    ports:
+      - 5601:5601
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    networks:
+      - elastic
+
+networks:
+  elastic:
+    driver: bridge
 
 volumes:
   pgdata:
   esdata:
+  kibanadata:
