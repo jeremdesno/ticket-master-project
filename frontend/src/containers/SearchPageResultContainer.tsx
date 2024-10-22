@@ -5,6 +5,7 @@ import EventsGridContainer from './EventsGridContainer';
 import { EventSessionDataModel } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
 import { fetchEventSessions, SearchEvents } from '../api/eventService';
+import styles from '../styles/SearchResultsPage.module.css';
 
 const NumberSearchResults = 15;
 
@@ -138,13 +139,13 @@ const SearchPageResultContainer: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Search Results for: {query}</h1>
       <EventsGridContainer events={events} sessions={sessions} />
       {!noMoreMatches ? (
-        <div style={{ textAlign: 'center', margin: '20px 0' }}>
-          <button onClick={handleLoadMore}>Load More</button>
-        </div>
+        <button className={styles.loadMoreButton} onClick={handleLoadMore}>
+          Load More
+        </button>
       ) : null}
     </div>
   );
