@@ -4,10 +4,11 @@ import {
   EventDataModel,
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
+import { EventSearchResult } from '../../../backend/src/search/types';
 import styles from '../styles/GenrePage.module.css';
 
 interface EventCardProps {
-  event: EventDataModel;
+  event: EventDataModel | EventSearchResult;
   earliestSession: EventSessionDataModel;
   onDetailsClick: () => void;
 }

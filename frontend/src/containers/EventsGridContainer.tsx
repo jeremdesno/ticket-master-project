@@ -5,15 +5,16 @@ import {
   EventDataModel,
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
+import { EventSearchResult } from '../../../backend/src/search/types';
 import EventCard from '../components/EventCard';
 import styles from '../styles/GenrePage.module.css';
 
-interface GenreEventsGridProps {
-  events: EventDataModel[];
+interface EventsGridProps {
+  events: EventDataModel[] | EventSearchResult[];
   sessions: { [key: string]: EventSessionDataModel };
 }
 
-const EventsGridContainer: React.FC<GenreEventsGridProps> = ({
+const EventsGridContainer: React.FC<EventsGridProps> = ({
   events,
   sessions,
 }) => {
