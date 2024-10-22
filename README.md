@@ -10,6 +10,8 @@ The events data is handled by three tables :
 
 The genres and subgenres have their own dedicated tables. 
 
+The search is handled by a single node elasticsearch cluster that indexes events, and enables fuzzy search on the venue name and event name.
+
 ## Data Integration
 
 The events integration process has 2 layers, first the ingestion of the ticketmaster events in the extractedEvents table. 
@@ -24,7 +26,7 @@ ts-node scripts/run-events-integration.ts
 ```
 The time period can be changed in the integration service.
 
-Then run the following command to sync the data to the events and eventSessions tables:
+Then run the following command to sync the data to the events and eventSessions tables aswell as to the elasticsearch index:
 ```
 ts-node scripts/sync-events-and-sessions.ts
 ```
@@ -34,28 +36,33 @@ To update the genres and subgenres tables run the following command:
 ts-node scripts/run-genres-integration.ts
 ```
 
-NB_1: Make sure to start the postgresql instance before running the commands.
+NB_1: Make sure to start the postgresql and elasticsearch instances before running these commands.
+
 NB_2: The genres corresponds to the classification levels of the ticketmaster API and the subgenres to the genres.
 
 ## Backend 
 
 The backend was build using Nest.js and typescript.
 Make sure you're located in the backend folder before running the following commands.
-Run the following command tu start the postgres database :
+Run the following command tu start the postgres database and the elasticsearch instance :
 ```
 docker-compose up --build
 ```
+This also starts a pg admin service and a kibana service to visualise and interact with the data in both our database and elasticsearch instance.
+
 And to start the backend server run :
 ```
 nest start
 ```
 
-Currently this API allows you to access event data, including paginated lists of events that can be filtered by date range and genre, as well as specific event details for a given event id. Here's a few exemples of requests that can be made :
+Currently this API allows you to access event data, including paginated lists of events that can be filtered by date range and genre, as well as specific event details or sessions for a given event id. It also exposes an endpoint to search events and venues and provides pagination.
+Here's a few exemples of requests that can be made :
 - GET http://127.0.0.1:3000/events?limit=10&offset=0
 - GET http://127.0.0.1:3000/events/rZ7SnyZ1Ad-07k
 - GET http://127.0.0.1:3000/events?startDate=2024-10-01T00:00:00Z&endDate=2024-10-02T23:59:59Z&limit=10&offset=0
+- GET http://127.0.0.1:3000/search?query=arena
 
-All responses are returned in JSON format. The parameters limit and offset allow for pagination, while date ranges can be specified using ISO 8601 date formats.
+All responses are returned in JSON format.
 
 ## Frontend
 
