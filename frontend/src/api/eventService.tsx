@@ -69,9 +69,10 @@ export const SearchEvents = async (
   query: string,
   lastDocSortScore: number | null = null,
   lastDocSortId: string | null = null,
+  size = 15,
 ): Promise<EventSearchResult[]> => {
-  const response = await axiosInstance.get(
-    `/search?query=${query}&lastDocSortScore=${lastDocSortScore}&lastDocSortId=${lastDocSortId}`,
-  );
+  const response = await axiosInstance.get(`/search`, {
+    params: { query, lastDocSortScore, lastDocSortId, size },
+  });
   return response.data;
 };

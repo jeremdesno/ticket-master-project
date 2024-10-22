@@ -12,11 +12,12 @@ export class EventSearchController {
     @Query('query') query: string,
     @Query('lastDocSortScore') lastDocSortScore: number | null = null,
     @Query('lastDocSortId') lastDocSortId: string | null = null,
+    @Query('size') size: number = 15,
   ): Promise<EventSearchResult[]> {
     const lastDocSort: SearchAfter =
       lastDocSortScore && lastDocSortId
         ? [lastDocSortScore, lastDocSortId]
         : null;
-    return await this.eventSearchService.searchEvents(query, lastDocSort);
+    return await this.eventSearchService.searchEvents(query, lastDocSort, size);
   }
 }
