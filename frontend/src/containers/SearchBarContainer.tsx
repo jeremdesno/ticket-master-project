@@ -18,6 +18,7 @@ const SearchBarContainer: React.FC = () => {
   ): void => {
     if (event.key === 'Enter') {
       navigate(`events/search?query=${searchTerm}`);
+      setSearchTerm('');
     }
   };
 
