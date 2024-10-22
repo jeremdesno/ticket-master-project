@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import EventsGridContainer from './EventsGridContainer';
@@ -25,6 +25,8 @@ const SearchPageResultContainer: React.FC = () => {
     [key: string]: EventSessionDataModel;
   }>({});
   const [noMoreMatches, setNoMoreMatches] = useState<boolean>(false);
+
+  const gridContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadFirstSearchResults = async (): Promise<void> => {
@@ -94,6 +96,8 @@ const SearchPageResultContainer: React.FC = () => {
   }, [nextSessions]);
 
   const handleLoadMore = async (): Promise<void> => {
+    const scrollPosition = gridContainerRef.current?.scrollTop || 0;
+
     const searchedEvents = await SearchEvents(
       query,
       lastDocSortScore,
@@ -128,6 +132,11 @@ const SearchPageResultContainer: React.FC = () => {
       }),
     );
     setNextSessions(sessionsMap);
+    setTimeout(() => {
+      if (gridContainerRef.current) {
+        gridContainerRef.current.scrollTop = scrollPosition;
+      }
+    }, 0);
   };
 
   if (loading) {
@@ -141,12 +150,18 @@ const SearchPageResultContainer: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1>Search Results for: {query}</h1>
-      <EventsGridContainer events={events} sessions={sessions} />
-      {!noMoreMatches ? (
-        <button className={styles.loadMoreButton} onClick={handleLoadMore}>
-          Load More
-        </button>
-      ) : null}
+      <div
+        className={styles.gridContainer}
+        ref={gridContainerRef}
+        style={{ maxHeight: '90%', overflowY: 'scroll' }}
+      >
+        <EventsGridContainer events={events} sessions={sessions} />
+        {!noMoreMatches ? (
+          <button className={styles.loadMoreButton} onClick={handleLoadMore}>
+            Load More
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };
