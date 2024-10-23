@@ -24,8 +24,8 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
 }) => {
   const navigate = useNavigate();
   const [selectedGenre, setSelectedGenre] = useState<string>(currentGenre);
-  const [selectedSubGenre, setSelectedSubGenre] = useState<string | null>(
-    currentSubGenre,
+  const [selectedSubGenre, setSelectedSubGenre] = useState<string>(
+    currentSubGenre ? currentSubGenre : 'All',
   );
   const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
   const [isSubGenreDropdownOpen, setIsSubGenreDropdownOpen] = useState(false);
@@ -38,7 +38,7 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   }, [currentGenre]);
 
   useEffect((): void => {
-    setSelectedSubGenre(currentSubGenre);
+    setSelectedSubGenre(currentSubGenre ? currentSubGenre : 'All');
   }, [currentSubGenre]);
 
   useEffect((): void => {
@@ -68,35 +68,31 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   const handleSubGenreSelect = (subGenre: string): void => {
     const formattedStartDate = startDate ? startDate.toISOString() : '';
     const formattedEndDate = endDate ? endDate.toISOString() : '';
-    const encodedSubGenre = selectedSubGenre
-      ? encodeURIComponent(subGenre)
-      : encodeURIComponent('All');
     setSelectedSubGenre(subGenre);
     setIsSubGenreDropdownOpen(false);
     navigate(
-      `/events/${selectedGenre}/${encodedSubGenre}/${formattedStartDate}/${formattedEndDate}`,
+      `/events/${selectedGenre}/${encodeURIComponent(
+        subGenre,
+      )}/${formattedStartDate}/${formattedEndDate}`,
     );
   };
 
   const handleApplyDateFilter = (): void => {
     const formattedStartDate = startDate ? startDate.toISOString() : '';
     const formattedEndDate = endDate ? endDate.toISOString() : '';
-    const encodedSubGenre = selectedSubGenre
-      ? encodeURIComponent(selectedSubGenre)
-      : encodeURIComponent('All');
     navigate(
-      `/events/${selectedGenre}/${encodedSubGenre}/${formattedStartDate}/${formattedEndDate}`,
+      `/events/${selectedGenre}/${encodeURIComponent(
+        selectedSubGenre,
+      )}/${formattedStartDate}/${formattedEndDate}`,
     );
   };
 
   const handleResetDates = (): void => {
     setStartDate(null);
     setEndDate(null);
-    const encodedSubGenre = selectedSubGenre
-    ? encodeURIComponent(selectedSubGenre)
-    : encodeURIComponent('All')
+
     navigate(
-      `/events/${selectedGenre}/${encodedSubGenre}`,
+      `/events/${selectedGenre}/${encodeURIComponent(selectedSubGenre)}`,
     );
   };
 
