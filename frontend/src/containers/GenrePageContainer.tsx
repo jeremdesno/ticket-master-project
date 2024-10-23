@@ -148,21 +148,23 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     return <div></div>;
   }
 
-  if (!events.length || Object.keys(sessions).length === 0) {
-    return <div>No available events for this genre...</div>;
-  }
-
   return (
     <div>
       <h1 className={styles.genreTitle}>{genre} Events</h1>
       <div className={styles.eventsPageLayout}>
         <div className={styles.bodyLayout}>
-          <EventsGridContainer events={events} sessions={sessions} />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {!events.length || Object.keys(sessions).length === 0 ? (
+            <div>No available events for these filters...</div>
+          ) : (
+            <>
+              <EventsGridContainer events={events} sessions={sessions} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
+          )}
         </div>
         <FiltersContainer
           genres={genres}
