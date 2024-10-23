@@ -41,7 +41,11 @@ const HomePageContainer: React.FC = (): JSX.Element => {
         const startDate = today.toISOString();
         for (const genre of genres) {
           try {
-            const fetchedGenreEvents = await fetchEvents(genre.name, startDate);
+            const fetchedGenreEvents = await fetchEvents(
+              genre.name,
+              undefined,
+              startDate,
+            );
             updatedEvents[genre.name] = fetchedGenreEvents;
           } catch (error) {
             console.error(
