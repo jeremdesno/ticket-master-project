@@ -8,15 +8,15 @@ import { EventSearchResult } from '../../../backend/src/search/types';
 
 export const fetchEvents = async (
   genre?: string,
+  subGenre?: string,
   startDate?: string,
   endDate?: string,
   limit = 15,
   offset = 0,
 ): Promise<ExtractedEventDataModel[]> => {
   const response = await axiosInstance.get('/events', {
-    params: { genre, startDate, endDate, limit, offset },
+    params: { genre, subGenre, startDate, endDate, limit, offset },
   });
-
   // Parse dates
   const events = response.data.map((event: ExtractedEventDataModel) => ({
     ...event,
