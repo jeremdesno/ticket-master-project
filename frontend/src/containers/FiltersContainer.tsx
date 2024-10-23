@@ -81,15 +81,23 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   const handleApplyDateFilter = (): void => {
     const formattedStartDate = startDate ? startDate.toISOString() : '';
     const formattedEndDate = endDate ? endDate.toISOString() : '';
+    const encodedSubGenre = selectedSubGenre
+      ? encodeURIComponent(selectedSubGenre)
+      : encodeURIComponent('All');
     navigate(
-      `/events/${selectedGenre}/${formattedStartDate}/${formattedEndDate}`,
+      `/events/${selectedGenre}/${encodedSubGenre}/${formattedStartDate}/${formattedEndDate}`,
     );
   };
 
   const handleResetDates = (): void => {
     setStartDate(null);
     setEndDate(null);
-    navigate(`/events/${selectedGenre}/${selectedSubGenre}`);
+    const encodedSubGenre = selectedSubGenre
+    ? encodeURIComponent(selectedSubGenre)
+    : encodeURIComponent('All')
+    navigate(
+      `/events/${selectedGenre}/${encodedSubGenre}`,
+    );
   };
 
   return (
