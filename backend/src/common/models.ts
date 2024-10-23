@@ -14,6 +14,7 @@ export interface ExtractedEventDataModel {
   url: string;
   description: string;
   genre: string;
+  subGenre: string;
   startDateSales: Date;
   endDateSales: Date;
   venueAddress: string;
@@ -27,6 +28,7 @@ export interface EventDataModel {
   name: string;
   description: string;
   genre: string;
+  subGenre: string;
   venueAddress: string;
   venueName: string;
   imageUrl: string | null;

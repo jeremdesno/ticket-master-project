@@ -31,6 +31,7 @@ export class EventService {
         'events.name',
         'events.description',
         'events.genre',
+        'events.subGenre',
         'events.venueAddress',
         'events.venueName',
         'events.imageUrl',

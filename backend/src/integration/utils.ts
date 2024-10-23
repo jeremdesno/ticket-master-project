@@ -127,6 +127,8 @@ export async function parsePageEvents(
         );
       }
 
+      const subGenre = event.classifications[0]?.genre?.name;
+
       const closestImage = findClosestImage(event.images);
 
       return {
@@ -139,6 +141,7 @@ export async function parsePageEvents(
         url: event.url,
         description: event.description,
         genre: genre.join('/'),
+        subGenre: subGenre,
         venueAddress: venueAddress || 'No address available',
         venueName: venue.name || 'No information',
         imageUrl: closestImage.url,
