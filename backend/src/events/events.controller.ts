@@ -41,6 +41,14 @@ export class EventController {
     return await this.eventService.getSubGenres(genreId);
   }
 
+  @Get('count')
+  async getEventsCount(
+    @Query('genre') genre: string,
+    @Query('subGenre') subGenre: string | null = null,
+  ): Promise<number> {
+    return this.eventService.getEventsCount(genre, subGenre);
+  }
+
   @Get(':id')
   async getEvent(@Param('id') id: string): Promise<EventDataModel | null> {
     return this.eventService.getEvent(id);
@@ -52,10 +60,5 @@ export class EventController {
     @Query('limit') limit: number = 5,
   ): Promise<EventSessionDataModel[] | []> {
     return this.eventService.getSessions(eventId, limit);
-  }
-
-  @Get('genres/:genre/numberEvents')
-  async getTotalPages(@Param('genre') genre: string): Promise<number> {
-    return this.eventService.getTotalGenreEvents(genre);
   }
 }

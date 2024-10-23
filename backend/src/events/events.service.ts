@@ -79,13 +79,19 @@ export class EventService {
       .execute();
   }
 
-  async getTotalGenreEvents(genre: string): Promise<number> {
-    const totalEvents = await this.database
+  async getEventsCount(
+    genre: string,
+    subGenre: string | null = null,
+  ): Promise<number> {
+    let query = this.database
       .selectFrom('events')
       .select(sql<number>`Count(*)`.as('total'))
-      .where('genre', '=', genre)
-      .executeTakeFirstOrThrow();
+      .where('genre', '=', genre);
 
+    if (subGenre) {
+      query = query.where('subGenre', '=', subGenre);
+    }
+    const totalEvents = await query.executeTakeFirstOrThrow();
     return totalEvents.total;
   }
 
