@@ -68,10 +68,13 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   const handleSubGenreSelect = (subGenre: string): void => {
     const formattedStartDate = startDate ? startDate.toISOString() : '';
     const formattedEndDate = endDate ? endDate.toISOString() : '';
+    const encodedSubGenre = selectedSubGenre
+      ? encodeURIComponent(subGenre)
+      : encodeURIComponent('All');
     setSelectedSubGenre(subGenre);
     setIsSubGenreDropdownOpen(false);
     navigate(
-      `/events/${selectedGenre}/${subGenre}/${formattedStartDate}/${formattedEndDate}`,
+      `/events/${selectedGenre}/${encodedSubGenre}/${formattedStartDate}/${formattedEndDate}`,
     );
   };
 

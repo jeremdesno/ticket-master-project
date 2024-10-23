@@ -43,7 +43,9 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const currentSubGenre = subGenre === 'All' ? undefined : subGenre;
+  const decodedSubGenre = subGenre ? decodeURIComponent(subGenre) : undefined;
+  const currentSubGenre =
+    decodedSubGenre === 'All' ? undefined : decodedSubGenre;
 
   useEffect(() => {
     const loadGenres = async (): Promise<void> => {
@@ -94,7 +96,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
       }
     };
     getNumberTotalPages();
-  }, [genre, subGenre]);
+  }, [genre, decodedSubGenre]);
 
   useEffect(() => {
     const loadEventsAndSessions = async (): Promise<void> => {
@@ -135,7 +137,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     };
 
     loadEventsAndSessions();
-  }, [genre, subGenre, startDate, endDate, currentPage]);
+  }, [genre, decodedSubGenre, startDate, endDate, currentPage]);
 
   const handlePageChange = (page: number): void => {
     setCurrentPage(page);
