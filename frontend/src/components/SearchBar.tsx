@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <input
       className={styles.searchBar}
       type="text"
-      placeholder="Search events..."
+      placeholder="Search events or venues..."
       value={searchTerm}
       onChange={onSearchTermChange}
       onKeyDown={onSearchSubmit}
