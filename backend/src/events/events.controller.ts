@@ -3,6 +3,7 @@ import {
   EventDataModel,
   EventSessionDataModel,
   GenreDataModel,
+  SubGenreDataModel,
 } from 'src/common/models';
 
 import { EventService } from './events.service';
@@ -31,6 +32,13 @@ export class EventController {
   @Get('genres')
   async getGenres(): Promise<GenreDataModel[]> {
     return await this.eventService.getGenres();
+  }
+
+  @Get('subGenres')
+  async getSubGenres(
+    @Query('genreId') genreId: string,
+  ): Promise<SubGenreDataModel[]> {
+    return await this.eventService.getSubGenres(genreId);
   }
 
   @Get(':id')

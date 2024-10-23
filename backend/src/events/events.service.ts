@@ -6,6 +6,7 @@ import {
   EventDataModel,
   EventSessionDataModel,
   GenreDataModel,
+  SubGenreDataModel,
 } from 'src/common/models';
 
 @Injectable()
@@ -90,5 +91,13 @@ export class EventService {
 
   async getGenres(): Promise<GenreDataModel[]> {
     return await this.database.selectFrom('genres').selectAll().execute();
+  }
+
+  async getSubGenres(genreId: string): Promise<SubGenreDataModel[]> {
+    return await this.database
+      .selectFrom('subgenres')
+      .selectAll()
+      .where('genreId', '=', genreId)
+      .execute();
   }
 }
