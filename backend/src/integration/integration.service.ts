@@ -10,6 +10,7 @@ import {
   parsePageEvents,
   resizeImage,
   uploadToImgBB,
+  sleep,
 } from './utils';
 import { DatabaseService } from '../common/database.service';
 import {
@@ -53,7 +54,7 @@ export class IntegrationService {
       .replace(/\.\d{3}Z$/, 'Z');
 
     const endDateTime = new Date(startDateTimeFormatted);
-    endDateTime.setDate(endDateTime.getDate() + 1);
+    endDateTime.setDate(endDateTime.getDate() + 3);
     const endDateTimeFormatted = endDateTime
       .toISOString()
       .replace(/\.\d{3}Z$/, 'Z');
@@ -96,6 +97,8 @@ export class IntegrationService {
 
   async parseAndSaveEvents(data: EventsResponse): Promise<void> {
     let nextUrl: string | null = data._links.self.href;
+    const MAX_RETRIES = 5;
+    const BASE_DELAY = 10000; // 10 second
 
     while (nextUrl) {
       const pageEventsParsed = await parsePageEvents(data);
@@ -103,17 +106,42 @@ export class IntegrationService {
       for (const parsedEvent of pageEventsParsed) {
         this.upsertExtractedEvent(parsedEvent);
       }
-      console.log('upserted page:', data.page.number);
+
+      console.log('Upserted page:', data.page.number);
 
       const nextLink = data._links?.next;
 
       if (nextLink && nextLink.href) {
         nextUrl = `${this.baseUrl}${nextLink.href}&apikey=${this.apiKey}`;
-        try {
-          const response = await axios.get<EventsResponse>(nextUrl);
-          data = response.data;
-        } catch (error) {
-          console.error('Error fetching next page of events: ', error);
+
+        let retryCount = 0;
+        let success = false;
+        let delay = BASE_DELAY;
+
+        while (retryCount < MAX_RETRIES && !success) {
+          try {
+            if (retryCount > 0) {
+              console.log(`Retrying... attempt ${retryCount}`);
+              await sleep(delay);
+              delay *= 3;
+            }
+
+            const response = await axios.get<EventsResponse>(nextUrl);
+            data = response.data;
+            success = true;
+          } catch (error) {
+            retryCount++;
+            console.error(
+              `Error fetching next page of events (attempt ${retryCount}):`,
+              error,
+            );
+
+            if (retryCount >= MAX_RETRIES) {
+              console.error('Max retries reached. Aborting...');
+              nextUrl = null;
+              break;
+            }
+          }
         }
       } else {
         nextUrl = null;

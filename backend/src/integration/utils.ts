@@ -190,3 +190,6 @@ export async function parsePageClassifications(
   });
   return [genreList, subGenreList];
 }
+
+export const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
