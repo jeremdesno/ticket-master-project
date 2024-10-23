@@ -30,18 +30,15 @@ const SearchPageResultContainer: React.FC = () => {
 
   useEffect(() => {
     const loadFirstSearchResults = async (): Promise<void> => {
-      // Reset state when a new query is entered
       setEvents([]);
       setSessions({});
-      setLastDocSortScore(null);
-      setLastDocSortId(null);
       setNoMoreMatches(false);
       setLoading(true);
       try {
         const searchedEvents = await SearchEvents(
           query,
-          lastDocSortScore,
-          lastDocSortId,
+          null,
+          null,
           NumberSearchResults,
         );
 
