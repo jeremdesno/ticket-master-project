@@ -58,10 +58,13 @@ export const fetchEventSessions = async (
   );
 };
 
-export const fetchNumberEvents = async (genre: string): Promise<number> => {
-  const response = await axiosInstance.get(
-    `/events/genres/${genre}/numberEvents`,
-  );
+export const fetchNumberEvents = async (
+  genre: string,
+  subGenre: string | null = null,
+): Promise<number> => {
+  const response = await axiosInstance.get(`/events/count`, {
+    params: { genre, subGenre },
+  });
   return response.data;
 };
 
