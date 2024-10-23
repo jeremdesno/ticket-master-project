@@ -15,7 +15,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<HomePageContainer />} />
         <Route
-          path="/events/:genre/:startDate?/:endDate?"
+          path="/events/:genre/:subGenre?/:startDate?/:endDate?"
           element={<EventsByGenrePage />}
         />
         <Route path="/events/search" element={<SearchPageResultContainer />} />
