@@ -8,6 +8,8 @@ import styles from '../styles/Filters.module.css';
 interface FiltersContainerProps {
   genres: string[];
   currentGenre: string;
+  subGenres: string[];
+  currentSubGenre: string | null;
   currentStartDate: Date | null;
   currentEndDate: Date | null;
 }
@@ -15,12 +17,18 @@ interface FiltersContainerProps {
 const FiltersContainer: React.FC<FiltersContainerProps> = ({
   genres,
   currentGenre,
+  subGenres,
+  currentSubGenre,
   currentStartDate,
   currentEndDate,
 }) => {
   const navigate = useNavigate();
   const [selectedGenre, setSelectedGenre] = useState<string>(currentGenre);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedSubGenre, setSelectedSubGenre] = useState<string | null>(
+    currentSubGenre,
+  );
+  const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
+  const [isSubGenreDropdownOpen, setIsSubGenreDropdownOpen] = useState(false);
 
   const [startDate, setStartDate] = useState<Date | null>(currentStartDate);
   const [endDate, setEndDate] = useState<Date | null>(currentEndDate);
@@ -30,6 +38,10 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   }, [currentGenre]);
 
   useEffect((): void => {
+    setSelectedSubGenre(currentSubGenre);
+  }, [currentSubGenre]);
+
+  useEffect((): void => {
     setStartDate(currentStartDate || null);
   }, [currentStartDate]);
 
@@ -37,16 +49,32 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
     setEndDate(currentEndDate || null);
   }, [currentEndDate]);
 
-  const handleDropdowntoggle = (): void => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleGenreDropdowntoggle = (): void => {
+    setIsGenreDropdownOpen(!isGenreDropdownOpen);
+  };
+
+  const handleSubGenreDropdowntoggle = (): void => {
+    setIsSubGenreDropdownOpen(!isSubGenreDropdownOpen);
   };
 
   const handleGenreSelect = (genre: string): void => {
     const formattedStartDate = startDate ? startDate.toISOString() : '';
     const formattedEndDate = endDate ? endDate.toISOString() : '';
     setSelectedGenre(genre);
-    setIsDropdownOpen(false);
-    navigate(`/events/${genre}/${formattedStartDate}/${formattedEndDate}`);
+    setIsGenreDropdownOpen(false);
+    navigate(
+      `/events/${genre}/${selectedSubGenre}/${formattedStartDate}/${formattedEndDate}`,
+    );
+  };
+
+  const handleSubGenreSelect = (subGenre: string): void => {
+    const formattedStartDate = startDate ? startDate.toISOString() : '';
+    const formattedEndDate = endDate ? endDate.toISOString() : '';
+    setSelectedSubGenre(subGenre);
+    setIsSubGenreDropdownOpen(false);
+    navigate(
+      `/events/${selectedGenre}/${subGenre}/${formattedStartDate}/${formattedEndDate}`,
+    );
   };
 
   const handleApplyDateFilter = (): void => {
@@ -60,18 +88,25 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   const handleResetDates = (): void => {
     setStartDate(null);
     setEndDate(null);
-    navigate(`/events/${selectedGenre}`);
+    navigate(`/events/${selectedGenre}/${selectedSubGenre}`);
   };
 
   return (
     <div className={styles.filtersContainer}>
       <h3>Filters</h3>
       <GenreFilter
-        handleDropdowntoggle={handleDropdowntoggle}
-        isDropdownOpen={isDropdownOpen}
+        handleDropdowntoggle={handleGenreDropdowntoggle}
+        isDropdownOpen={isGenreDropdownOpen}
         genres={genres}
         selectedGenre={selectedGenre}
         onGenreSelect={handleGenreSelect}
+      />
+      <GenreFilter
+        handleDropdowntoggle={handleSubGenreDropdowntoggle}
+        isDropdownOpen={isSubGenreDropdownOpen}
+        genres={['All', ...subGenres]}
+        selectedGenre={selectedSubGenre ? selectedSubGenre : 'All'}
+        onGenreSelect={handleSubGenreSelect}
       />
       <DateFilter
         startDate={startDate || undefined}
