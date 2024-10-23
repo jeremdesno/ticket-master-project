@@ -17,6 +17,7 @@ export class EventController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('genre') genre?: string,
+    @Query('subGenre') subGenre?: string,
     @Query('limit') limit: number = 20,
     @Query('offset') offset: number = 0,
   ): Promise<EventDataModel[]> {
@@ -24,6 +25,7 @@ export class EventController {
       startDate,
       endDate,
       genre,
+      subGenre,
       limit,
       offset,
     );

@@ -21,6 +21,7 @@ export class EventService {
     startDate?: string,
     endDate?: string,
     genre?: string,
+    subGenre?: string,
     limit: number = 20,
     offset: number = 0,
   ): Promise<EventDataModel[]> {
@@ -46,6 +47,9 @@ export class EventService {
     }
     if (genre) {
       query = query.where('events.genre', '=', genre);
+    }
+    if (subGenre) {
+      query = query.where('events.subGenre', '=', subGenre);
     }
 
     query = query
