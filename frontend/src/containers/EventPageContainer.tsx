@@ -17,6 +17,7 @@ const relatedEvents: EventDataModel[] = Array.from(
     name: `Event ${index + 1}`,
     description: `This is the description for Event ${index + 1}`,
     genre: index % 2 === 0 ? 'Jazz' : 'Hip Hop',
+    subGenre: 'Rock',
     venueAddress: `${index + 1} Venue St.`,
     venueName: `Venue ${index + 1}`,
     imageUrl: null,
