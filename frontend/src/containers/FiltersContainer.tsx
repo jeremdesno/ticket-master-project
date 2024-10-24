@@ -10,8 +10,8 @@ interface FiltersContainerProps {
   currentGenre: string;
   subGenres: string[];
   currentSubGenre: string | null;
-  currentStartDate: Date | null;
-  currentEndDate: Date | null;
+  currentStartDate?: Date;
+  currentEndDate?: Date;
 }
 
 const FiltersContainer: React.FC<FiltersContainerProps> = ({
@@ -30,8 +30,10 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
   const [isSubGenreDropdownOpen, setIsSubGenreDropdownOpen] = useState(false);
 
-  const [startDate, setStartDate] = useState<Date | null>(currentStartDate);
-  const [endDate, setEndDate] = useState<Date | null>(currentEndDate);
+  const [startDate, setStartDate] = useState<Date | undefined>(
+    currentStartDate,
+  );
+  const [endDate, setEndDate] = useState<Date | undefined>(currentEndDate);
 
   useEffect((): void => {
     setSelectedGenre(currentGenre);
@@ -42,11 +44,11 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   }, [currentSubGenre]);
 
   useEffect((): void => {
-    setStartDate(currentStartDate || null);
+    setStartDate(currentStartDate);
   }, [currentStartDate]);
 
   useEffect((): void => {
-    setEndDate(currentEndDate || null);
+    setEndDate(currentEndDate);
   }, [currentEndDate]);
 
   const handleGenreDropdowntoggle = (): void => {
@@ -58,42 +60,46 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   };
 
   const handleGenreSelect = (genre: string): void => {
-    const formattedStartDate = startDate ? startDate.toISOString() : '';
-    const formattedEndDate = endDate ? endDate.toISOString() : '';
     setSelectedGenre(genre);
     setIsGenreDropdownOpen(false);
-    navigate(`/events/${genre}/All/${formattedStartDate}/${formattedEndDate}`);
+    navigate(`/events/${genre}`, {
+      state: {
+        subGenre: 'All',
+        startDate: startDate,
+        endDate: endDate,
+      },
+    });
   };
 
   const handleSubGenreSelect = (subGenre: string): void => {
-    const formattedStartDate = startDate ? startDate.toISOString() : '';
-    const formattedEndDate = endDate ? endDate.toISOString() : '';
     setSelectedSubGenre(subGenre);
     setIsSubGenreDropdownOpen(false);
-    navigate(
-      `/events/${selectedGenre}/${encodeURIComponent(
-        subGenre,
-      )}/${formattedStartDate}/${formattedEndDate}`,
-    );
+    navigate(`/events/${selectedGenre}`, {
+      state: {
+        subGenre: encodeURIComponent(subGenre),
+        startDate: startDate,
+        endDate: endDate,
+      },
+    });
   };
 
   const handleApplyDateFilter = (): void => {
-    const formattedStartDate = startDate ? startDate.toISOString() : '';
-    const formattedEndDate = endDate ? endDate.toISOString() : '';
-    navigate(
-      `/events/${selectedGenre}/${encodeURIComponent(
-        selectedSubGenre,
-      )}/${formattedStartDate}/${formattedEndDate}`,
-    );
+    navigate(`/events/${selectedGenre}`, {
+      state: {
+        subGenre: encodeURIComponent(selectedSubGenre),
+        startDate: startDate,
+        endDate: endDate,
+      },
+    });
   };
 
   const handleResetDates = (): void => {
-    setStartDate(null);
-    setEndDate(null);
+    setStartDate(undefined);
+    setEndDate(undefined);
 
-    navigate(
-      `/events/${selectedGenre}/${encodeURIComponent(selectedSubGenre)}`,
-    );
+    navigate(`/events/${selectedGenre}`, {
+      state: { subGenre: encodeURIComponent(selectedSubGenre) },
+    });
   };
 
   return (
@@ -114,10 +120,14 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
         onGenreSelect={handleSubGenreSelect}
       />
       <DateFilter
-        startDate={startDate || undefined}
-        endDate={endDate || undefined}
-        onStartDateChange={setStartDate}
-        onEndDateChange={setEndDate}
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={(date: Date | null): void =>
+          setStartDate(date ? date : undefined)
+        }
+        onEndDateChange={(date: Date | null): void =>
+          setEndDate(date ? date : undefined)
+        }
         onApplyDateFilter={handleApplyDateFilter}
         onResetDates={handleResetDates}
       />

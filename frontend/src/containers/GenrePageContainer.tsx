@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import EventsGridContainer from './EventsGridContainer';
 import FiltersContainer from './FiltersContainer';
@@ -17,19 +17,17 @@ import Pagination from '../components/Pagination';
 import styles from '../styles/GenrePage.module.css';
 
 const eventsPerPage = 15;
+interface LocationState {
+  subGenre?: string;
+  startDate?: Date;
+  endDate?: Date;
+}
 
 const EventsPageContainer: React.FC = (): React.JSX.Element => {
-  const { genre, subGenre, startDate, endDate } = useParams<{
-    genre: string;
-    subGenre?: string;
-    startDate?: string;
-    endDate?: string;
-  }>() as {
-    genre: string;
-    subGenre?: string;
-    startDate?: string;
-    endDate?: string;
-  };
+  const { genre } = useParams<{ genre: string }>() as { genre: string };
+  const location = useLocation();
+  const { subGenre, startDate, endDate } = (location.state ||
+    {}) as LocationState;
 
   const [genres, setGenres] = useState<string[]>([]);
   const [genreMap, setGenreMap] = useState<{ [key: string]: string }>({});
@@ -106,8 +104,8 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
         const fetchedEvents = await fetchEvents(
           genre,
           currentSubGenre,
-          startDate,
-          endDate,
+          startDate ? startDate.toISOString() : undefined,
+          endDate ? endDate.toISOString() : undefined,
           eventsPerPage,
           offset,
         );
@@ -143,9 +141,6 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
     setCurrentPage(page);
   };
 
-  const currentStartDate = startDate ? new Date(startDate) : null;
-  const currentEndDate = endDate ? new Date(endDate) : null;
-
   if (loading) {
     return <div></div>;
   }
@@ -173,8 +168,8 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
           subGenres={subGenres}
           currentGenre={genre}
           currentSubGenre={currentSubGenre ? currentSubGenre : null}
-          currentStartDate={currentStartDate}
-          currentEndDate={currentEndDate}
+          currentStartDate={startDate}
+          currentEndDate={endDate}
         />
       </div>
     </div>
