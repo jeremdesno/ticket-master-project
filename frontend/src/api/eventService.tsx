@@ -63,9 +63,11 @@ export const fetchEventSessions = async (
 export const fetchNumberEvents = async (
   genre: string,
   subGenre: string | null = null,
+  startDate?: string,
+  endDate?: string,
 ): Promise<number> => {
   const response = await axiosInstance.get(`/events/count`, {
-    params: { genre, subGenre },
+    params: { genre, subGenre, startDate, endDate },
   });
   return response.data;
 };

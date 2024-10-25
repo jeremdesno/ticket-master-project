@@ -85,6 +85,8 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
         const totalGenreEvents = await fetchNumberEvents(
           genre,
           currentSubGenre,
+          startDate ? startDate.toISOString() : undefined,
+          endDate ? endDate.toISOString() : undefined,
         );
         if (totalGenreEvents) {
           setTotalPages(Math.ceil(totalGenreEvents / eventsPerPage));
@@ -94,7 +96,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
       }
     };
     getNumberTotalPages();
-  }, [genre, decodedSubGenre]);
+  }, [genre, decodedSubGenre, startDate, endDate]);
 
   useEffect(() => {
     const loadEventsAndSessions = async (): Promise<void> => {
