@@ -100,14 +100,25 @@ export class EventService {
   async getEventsCount(
     genre: string,
     subGenre: string | null = null,
+    startDate?: string,
+    endDate?: string,
   ): Promise<number> {
     let query = this.database
       .selectFrom('events')
-      .select(sql<number>`Count(*)`.as('total'))
-      .where('genre', '=', genre);
+      .innerJoin('eventSessions', 'events.id', 'eventSessions.eventId')
+      .select(sql<number>`Count(DISTINCT events.id)`.as('total'));
 
+    if (startDate) {
+      query = query.where('eventSessions.startDate', '>=', new Date(startDate));
+    }
+    if (endDate) {
+      query = query.where('eventSessions.startDate', '<=', new Date(endDate));
+    }
+    if (genre) {
+      query = query.where('events.genre', '=', genre);
+    }
     if (subGenre) {
-      query = query.where('subGenre', '=', subGenre);
+      query = query.where('events.subGenre', '=', subGenre);
     }
     const totalEvents = await query.executeTakeFirstOrThrow();
     return totalEvents.total;

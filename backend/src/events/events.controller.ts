@@ -47,8 +47,15 @@ export class EventController {
   async getEventsCount(
     @Query('genre') genre: string,
     @Query('subGenre') subGenre: string | null = null,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
   ): Promise<number> {
-    return this.eventService.getEventsCount(genre, subGenre);
+    return this.eventService.getEventsCount(
+      genre,
+      subGenre,
+      startDate,
+      endDate,
+    );
   }
 
   @Get(':id')
