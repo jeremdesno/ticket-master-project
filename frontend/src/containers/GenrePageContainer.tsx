@@ -82,14 +82,14 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   useEffect(() => {
     const getNumberTotalPages = async (): Promise<void> => {
       try {
-        const totalGenreEvents = await fetchNumberEvents(
+        const totalEvents = await fetchNumberEvents(
           genre,
           currentSubGenre,
           startDate ? startDate.toISOString() : undefined,
           endDate ? endDate.toISOString() : undefined,
         );
-        if (totalGenreEvents) {
-          setTotalPages(Math.ceil(totalGenreEvents / eventsPerPage));
+        if (totalEvents) {
+          setTotalPages(Math.ceil(totalEvents / eventsPerPage));
         }
       } catch (error) {
         console.error('Failed to get total number of pages:', error);
