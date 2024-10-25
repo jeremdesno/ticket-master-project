@@ -115,7 +115,11 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
         await Promise.all(
           fetchedEvents.map(async (event) => {
             try {
-              const fetchedSessions = await fetchEventSessions(event.id, 1);
+              const fetchedSessions = await fetchEventSessions(
+                event.id,
+                1,
+                startDate ? startDate.toISOString() : undefined,
+              );
               sessionsMap[event.id] = fetchedSessions[0];
             } catch (error) {
               console.error(
