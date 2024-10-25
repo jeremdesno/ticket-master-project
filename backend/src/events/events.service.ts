@@ -73,6 +73,7 @@ export class EventService {
   async getSessions(
     eventId: string,
     startingAfter?: string,
+    endingBefore?: string,
     limit: number = 5,
   ): Promise<EventSessionDataModel[] | []> {
     let query = this.database
@@ -84,6 +85,13 @@ export class EventService {
         'eventSessions.startDate',
         '>=',
         new Date(startingAfter),
+      );
+    }
+    if (endingBefore) {
+      query = query.where(
+        'eventSessions.startDate',
+        '<=',
+        new Date(endingBefore),
       );
     }
     return await query.orderBy('startDate', 'asc').limit(limit).execute();
