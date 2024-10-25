@@ -119,6 +119,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
                 event.id,
                 1,
                 startDate ? startDate.toISOString() : undefined,
+                endDate ? endDate.toISOString() : undefined,
               );
               sessionsMap[event.id] = fetchedSessions[0];
             } catch (error) {

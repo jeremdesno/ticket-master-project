@@ -41,9 +41,10 @@ export const fetchEventSessions = async (
   eventId: string,
   limit = 5,
   startingAfter?: string,
+  endingBefore?: string,
 ): Promise<EventSessionDataModel[]> => {
   const response = await axiosInstance.get(`/events/${eventId}/sessions`, {
-    params: { limit, startingAfter },
+    params: { limit, startingAfter, endingBefore },
   });
   const sessions = response.data;
   return sessions.map(
