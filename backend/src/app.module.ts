@@ -4,6 +4,7 @@ import * as path from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { EventsModule } from './events/events.module';
 import { EventSearchModule } from './search/eventSearch.module';
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
     CommonModule,
     EventSearchModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
