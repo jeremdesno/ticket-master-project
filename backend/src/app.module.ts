@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
 import { EventsModule } from './events/events.module';
 import { EventSearchModule } from './search/eventSearch.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EventSearchModule } from './search/eventSearch.module';
     EventsModule,
     CommonModule,
     EventSearchModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
