@@ -1,4 +1,5 @@
 export interface DatabaseSchema {
+  users: User;
   extractedEvents: ExtractedEventDataModel;
   events: EventDataModel;
   eventSessions: EventSessionDataModel;
@@ -54,4 +55,11 @@ export interface SubGenreDataModel {
   id: string;
   name: string;
   genreId: string;
+}
+
+export class User {
+  id: number;
+  username: string;
+  password: string;
+  createdAt: Date;
 }
