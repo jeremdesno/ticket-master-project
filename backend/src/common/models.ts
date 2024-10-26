@@ -57,7 +57,7 @@ export interface SubGenreDataModel {
   genreId: string;
 }
 
-export class User {
+export interface User {
   id: number;
   username: string;
   password: string;
