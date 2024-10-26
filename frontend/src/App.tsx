@@ -13,7 +13,7 @@ function App(): JSX.Element {
     <div className="App">
       <NavBarContainer />
       <Routes>
-        <Route path="/" element={<HomePageContainer />} />
+        <Route path="/home" element={<HomePageContainer />} />
         <Route path="/events/:genre" element={<EventsByGenrePage />} />
         <Route path="/events/search" element={<SearchPageResultContainer />} />
         <Route path="/event/:eventId" element={<EventPage />} />

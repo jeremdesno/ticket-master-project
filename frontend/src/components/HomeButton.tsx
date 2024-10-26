@@ -6,7 +6,7 @@ import styles from '../styles/NavBar.module.css';
 const HomeButton: React.FC = (): React.JSX.Element => {
   const navigate = useNavigate();
   const handleClick = (): void => {
-    navigate('/');
+    navigate('/home');
   };
 
   return (
