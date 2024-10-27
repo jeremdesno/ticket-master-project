@@ -8,9 +8,12 @@ import {
 import { fetchEvents } from '../api/eventService';
 import { fetchGenres } from '../api/genreService';
 import GenreSection from '../components/GenreSection';
+import { useAuth } from '../contexts/AuthContext';
 
 const HomePageContainer: React.FC = (): JSX.Element => {
+  const { isAuthenticated } = useAuth();
   const [genres, setGenres] = useState<GenreDataModel[]>([]);
+
   useEffect(() => {
     const loadGenres = async (): Promise<void> => {
       try {
@@ -65,25 +68,33 @@ const HomePageContainer: React.FC = (): JSX.Element => {
       loadEvents();
     }
   }, [genres]);
+
   const navigate = useNavigate();
+
   return (
     <div>
-      {genres.length === 0 ? (
-        <p>Loading genres...</p>
+      {isAuthenticated ? (
+        <>
+          {genres.length === 0 ? (
+            <p>Loading genres...</p>
+          ) : (
+            genres
+              .filter((genre) => events[genre.name]?.length > 10)
+              .map((genre, index) => (
+                <GenreSection
+                  key={genre.id}
+                  genre={genre.name}
+                  events={events[genre.name]}
+                  autoplayDirection={index % 2 === 0 ? 'rtl' : 'ltr'}
+                  handleEventClick={(eventId: string): void => {
+                    navigate(`/event/${eventId}`);
+                  }}
+                />
+              ))
+          )}
+        </>
       ) : (
-        genres
-          .filter((genre) => events[genre.name]?.length > 10)
-          .map((genre, index) => (
-            <GenreSection
-              key={genre.id}
-              genre={genre.name}
-              events={events[genre.name]}
-              autoplayDirection={index % 2 === 0 ? 'rtl' : 'ltr'}
-              handleEventClick={(eventId: string): void => {
-                navigate(`/event/${eventId}`);
-              }}
-            />
-          ))
+        <p>Please log in to see the events.</p>
       )}
     </div>
   );
