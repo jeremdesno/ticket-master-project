@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { login } from '../api/authService';
 import LoginForm from '../components/LoginForm';
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginContainer: React.FC = () => {
   const navigate = useNavigate();
-
+  const { checkAuth } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,6 +28,7 @@ const LoginContainer: React.FC = () => {
   ): Promise<void> => {
     e.preventDefault();
     await login(username, password);
+    await checkAuth();
     navigate('/home');
   };
 

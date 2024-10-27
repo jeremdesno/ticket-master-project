@@ -7,13 +7,16 @@ import { logout } from '../api/authService';
 import FavoritesButton from '../components/FavoritesButton';
 import HomeButton from '../components/HomeButton';
 import LogoutButton from '../components/LogoutButton';
+import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/NavBar.module.css';
 
 const NavBarContainer: React.FC = () => {
   const navigate = useNavigate();
+  const { checkAuth } = useAuth();
 
-  const handleLogoutClick = (): void => {
-    logout();
+  const handleLogoutClick = async (): Promise<void> => {
+    await logout();
+    await checkAuth();
     navigate('/');
   };
 
