@@ -7,6 +7,7 @@ import {
 } from 'src/common/models';
 
 import { EventService } from './events.service';
+import { Public } from '../auth/public.decorator';
 
 @Controller('events')
 export class EventController {
@@ -31,6 +32,7 @@ export class EventController {
     );
   }
 
+  @Public()
   @Get('genres')
   async getGenres(): Promise<GenreDataModel[]> {
     return await this.eventService.getGenres();
