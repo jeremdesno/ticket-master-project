@@ -4,8 +4,10 @@ import {
   Body,
   Res,
   UnauthorizedException,
+  Get,
+  Req,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 import { AuthService } from './auth.service';
 import { Public } from './public.decorator';
@@ -44,5 +46,17 @@ export class AuthController {
   ): Promise<{ message: string }> {
     response.clearCookie('jwt');
     return { message: 'Logged out successfully' };
+  }
+
+  @Public()
+  @Get('whoami')
+  async whoami(@Req() request: Request): Promise<string> {
+    const token = request.cookies?.jwt;
+    if (!token) throw new UnauthorizedException('No JWT provided');
+
+    const payload = await this.authService.validateToken(token);
+    if (!payload) throw new UnauthorizedException('Invalid or expired JWT');
+
+    return payload.username;
   }
 }
