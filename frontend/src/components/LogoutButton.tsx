@@ -2,12 +2,11 @@ import React from 'react';
 
 import styles from '../styles/NavBar.module.css';
 
-
 interface LogoutButtonProps {
-    onLogoutClick: () => void;
+  onLogoutClick: () => void;
 }
 const LogoutButton: React.FC<LogoutButtonProps> = ({
-    onLogoutClick
+  onLogoutClick,
 }): React.JSX.Element => {
   return (
     <button className={styles.navBarButton} onClick={onLogoutClick}>

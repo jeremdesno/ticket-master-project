@@ -3,6 +3,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding: 10px 20px;
       background-color: #004d00;
       color: white;
@@ -11,8 +12,10 @@
       z-index: 1000;
   }
 
-  .leftSectionNavBar {
+  .leftSectionNavBar,
+  .rightSectionNavBar {
     display: flex;
+    align-items: center;
     gap: 15px;
   }
   
@@ -21,9 +24,9 @@
     color: white;
     border: none;
     padding: 10px 15px;
-    margin-bottom: 5px;
     border-radius: 5px;
     cursor: pointer;
+    align-items: center;
     transition: background-color 0.3s ease;
   }
 
@@ -55,14 +58,25 @@
       background-color: #e0e0e0;
   }
   
+  .searchBarInput {
+    flex-grow: 2;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 10px 15px;
+    border: none;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
   .searchBar {
     flex-grow: 2;
     min-width: 300px;
     max-width: 500px;
-    margin-left: 10px;
-    padding: 5px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    align-items: center;
+    border-radius: 5px;
     font-size: 16px;
   }
 

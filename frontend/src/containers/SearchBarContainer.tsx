@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import SearchBar from '../components/SearchBar';
+import styles from '../styles/NavBar.module.css';
 
 const SearchBarContainer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,7 +24,7 @@ const SearchBarContainer: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={styles.searchBar}>
       <SearchBar
         searchTerm={searchTerm}
         onSearchTermChange={handleSearchTermChange}
