@@ -1,25 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import GenreMenuContainer from './GenreMenuContainer';
+import LogoutButtonContainer from './LogoutButtonContainer';
 import SearchBarContainer from './SearchBarContainer';
-import { logout } from '../api/authService';
 import FavoritesButton from '../components/FavoritesButton';
 import HomeButton from '../components/HomeButton';
-import LogoutButton from '../components/LogoutButton';
-import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/NavBar.module.css';
 
 const NavBarContainer: React.FC = () => {
-  const navigate = useNavigate();
-  const { checkAuth } = useAuth();
-
-  const handleLogoutClick = async (): Promise<void> => {
-    await logout();
-    await checkAuth();
-    navigate('/');
-  };
-
   return (
     <nav className={styles.navbar}>
       <div className={styles.leftSectionNavBar}>
@@ -29,7 +17,7 @@ const NavBarContainer: React.FC = () => {
       </div>
       <div className={styles.rightSectionNavBar}>
         <SearchBarContainer />
-        <LogoutButton onLogoutClick={handleLogoutClick} />
+        <LogoutButtonContainer />
       </div>
     </nav>
   );
