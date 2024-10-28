@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import EventsGridContainer from './EventsGridContainer';
 import { EventSessionDataModel } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
 import { fetchEventSessions, SearchEvents } from '../api/eventService';
+import EventsGridContainer from '../containers/EventsGridContainer';
 import styles from '../styles/SearchResultsPage.module.css';
 
 const NumberSearchResults = 15;
 
-const SearchPageResultContainer: React.FC = () => {
+const SearchResultsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query') as string;
 
@@ -163,4 +163,4 @@ const SearchPageResultContainer: React.FC = () => {
   );
 };
 
-export default SearchPageResultContainer;
+export default SearchResultsPage;

@@ -10,7 +10,7 @@ import { fetchGenres } from '../api/genreService';
 import GenreSection from '../components/GenreSection';
 import { useAuth } from '../contexts/AuthContext';
 
-const HomePageContainer: React.FC = (): JSX.Element => {
+const HomePage: React.FC = (): JSX.Element => {
   const { isAuthenticated } = useAuth();
   const [genres, setGenres] = useState<GenreDataModel[]>([]);
 
@@ -100,4 +100,4 @@ const HomePageContainer: React.FC = (): JSX.Element => {
   );
 };
 
-export default HomePageContainer;
+export default HomePage;

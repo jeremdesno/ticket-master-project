@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import EventsGridContainer from './EventsGridContainer';
-import FiltersContainer from './FiltersContainer';
 import {
   EventDataModel,
   EventSessionDataModel,
@@ -14,6 +12,8 @@ import {
 } from '../api/eventService';
 import { fetchGenres, fetchSubGenres } from '../api/genreService';
 import Pagination from '../components/Pagination';
+import EventsGridContainer from '../containers/EventsGridContainer';
+import FiltersContainer from '../containers/FiltersContainer';
 import styles from '../styles/GenrePage.module.css';
 
 const eventsPerPage = 15;
