@@ -52,11 +52,9 @@ export class AuthController {
   @Get('whoami')
   async whoami(@Req() request: Request): Promise<string> {
     const token = request.cookies?.jwt;
-    if (!token) throw new UnauthorizedException('No JWT provided');
+    if (!token) return null;
 
     const payload = await this.authService.validateToken(token);
-    if (!payload) throw new UnauthorizedException('Invalid or expired JWT');
-
-    return payload.username;
+    return payload?.username;
   }
 }

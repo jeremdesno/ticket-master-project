@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/common/models';
 
@@ -29,6 +29,13 @@ export class AuthService {
   }
 
   async validateToken(token: string): Promise<JwtPayload> {
-    return this.jwtService.verify(token);
+    try {
+      return this.jwtService.verify(token);
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        console.log('Token expired.');
+      }
+      console.log('Invalid token.');
+    }
   }
 }

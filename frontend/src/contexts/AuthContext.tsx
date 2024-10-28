@@ -34,7 +34,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   const checkAuth = async (): Promise<void> => {
     try {
       const username = await whoami();
-      setAuth({ isAuthenticated: true, username });
+      if (username) {
+        setAuth({ isAuthenticated: true, username });
+      }
     } catch (error) {
       setAuth({ isAuthenticated: false, username: null });
     }
