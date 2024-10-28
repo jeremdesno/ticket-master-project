@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
-import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
+import router from './routes/router';
 
 const rootElement = document.getElementById('root');
 
@@ -12,11 +12,11 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
         <AuthProvider>
-          <App />
+          <RouterProvider router={router} />
         </AuthProvider>
-      </BrowserRouter>
+      </Suspense>
     </React.StrictMode>,
   );
 } else {
