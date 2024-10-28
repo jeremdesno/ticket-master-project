@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Modal from '../components/Modal';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,6 +11,7 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const { isAuthenticated } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -19,6 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
 
   const handleCloseModal = (): void => {
     setShowModal(false);
+    navigate('/');
   };
 
   return (
