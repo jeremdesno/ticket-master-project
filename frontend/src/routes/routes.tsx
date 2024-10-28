@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import React from 'react';
 
-const LoginForm = lazy(() => import('../containers/loginFormContainer'));
+const LoginForm = lazy(() => import('../containers/LoginContainer'));
 const HomePage = lazy(() => import('../pages/HomePage'));
 const EventsByGenrePage = lazy(() => import('../pages/GenrePage'));
 const EventPage = lazy(() => import('../pages/EventPage'));
