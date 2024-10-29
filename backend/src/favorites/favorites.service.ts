@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Kysely } from 'kysely';
 import { DatabaseService } from 'src/common/database.service';
-import { DatabaseSchema } from 'src/common/models';
+import { DatabaseSchema, FavoriteEventsDataModel } from 'src/common/models';
 
 @Injectable()
 export class FavoritesService {
@@ -19,9 +19,7 @@ export class FavoritesService {
       .execute();
   }
 
-  async getUserFavorites(
-    userId: string,
-  ): Promise<{ userId: string; eventId: string }[]> {
+  async getUserFavorites(userId: string): Promise<FavoriteEventsDataModel[]> {
     return await this.database
       .selectFrom('favoriteEvents')
       .selectAll()

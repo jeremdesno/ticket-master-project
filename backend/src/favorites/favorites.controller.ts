@@ -1,4 +1,5 @@
 import { Controller, Post, Delete, Get, Param } from '@nestjs/common';
+import { FavoriteEventsDataModel } from 'src/common/models';
 
 import { FavoritesService } from './favorites.service';
 
@@ -25,7 +26,7 @@ export class FavoritesController {
   @Get(':userId')
   async getUserFavorites(
     @Param('userId') userId: string,
-  ): Promise<{ userId: string; eventId: string }[]> {
+  ): Promise<FavoriteEventsDataModel[]> {
     return await this.favoritesService.getUserFavorites(userId);
   }
 
