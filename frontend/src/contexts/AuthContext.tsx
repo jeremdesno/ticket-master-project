@@ -11,6 +11,7 @@ import { whoami } from '../api/authService';
 interface AuthStatus {
   isAuthenticated: boolean;
   username: string | null;
+  userId: number | null;
 }
 
 interface AuthContextType extends AuthStatus {
@@ -29,18 +30,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   const [auth, setAuth] = useState<AuthStatus>({
     isAuthenticated: false,
     username: null,
+    userId: null,
   });
 
   const checkAuth = async (): Promise<void> => {
     try {
-      const username = await whoami();
-      if (username) {
-        setAuth({ isAuthenticated: true, username });
+      const user = await whoami();
+      if (user) {
+        setAuth({
+          isAuthenticated: true,
+          username: user.name,
+          userId: user.id,
+        });
       } else {
-        setAuth({ isAuthenticated: false, username: null });
+        setAuth({ isAuthenticated: false, username: null, userId: null });
       }
     } catch (error) {
-      setAuth({ isAuthenticated: false, username: null });
+      setAuth({ isAuthenticated: false, username: null, userId: null });
     }
   };
 
