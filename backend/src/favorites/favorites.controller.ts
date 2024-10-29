@@ -14,6 +14,14 @@ export class FavoritesController {
     await this.favoritesService.addFavorite(userId, eventId);
   }
 
+  @Get(':userId/:eventId')
+  async isFavorite(
+    @Param('userId') userId: string,
+    @Param('eventId') eventId: string,
+  ): Promise<boolean> {
+    return await this.favoritesService.isFavorite(userId, eventId);
+  }
+
   @Get(':userId')
   async getUserFavorites(
     @Param('userId') userId: string,

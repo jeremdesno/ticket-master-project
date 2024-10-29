@@ -29,6 +29,17 @@ export class FavoritesService {
       .execute();
   }
 
+  async isFavorite(userId: string, eventId: string): Promise<boolean> {
+    const favorite = await this.database
+      .selectFrom('favoriteEvents')
+      .select(['userId', 'eventId'])
+      .where('userId', '=', userId)
+      .where('eventId', '=', eventId)
+      .executeTakeFirst();
+
+    return favorite !== undefined;
+  }
+
   async removeFavorite(userId: string, eventId: string): Promise<void> {
     await this.database
       .deleteFrom('favoriteEvents')
