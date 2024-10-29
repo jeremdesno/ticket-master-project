@@ -55,7 +55,15 @@
     margin: 5px 0;
   }
 
-  .accessWebsiteButton {
+  .buttonContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .accessWebsiteButton,
+  .favoritesButton {
     background-color: #004d00;
     color: white;
     padding: 10px 15px;
@@ -66,6 +74,11 @@
     text-decoration: none;
     text-align: center;
     margin-top: 20px;
+  }
+
+  .accessWebsiteButton:hover,
+  .favoritesButton:hover {
+    opacity: 0.8;
   }
   
   .centerSection h1 {

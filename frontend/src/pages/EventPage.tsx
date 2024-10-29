@@ -6,7 +6,14 @@ import {
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
 import { fetchEvent, fetchEventSessions } from '../api/eventService';
+import {
+  addFavorite,
+  fetchFavoriteStatus,
+  removeFavorite,
+} from '../api/favoritesService';
+import Button from '../components/Button';
 import EventCardContainer from '../containers/EventCardContainer';
+import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/EventPage.module.css';
 
 // Mock events
@@ -50,6 +57,8 @@ const EventPage: React.FC = (): React.JSX.Element => {
   const [sessions, setSessions] = useState<EventSessionDataModel[] | null>(
     null,
   );
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const { userId } = useAuth() as { userId: number };
 
   // Fetch event and sessions
   useEffect(() => {
@@ -65,6 +74,30 @@ const EventPage: React.FC = (): React.JSX.Element => {
     };
     loadEventData();
   }, [eventId]);
+
+  useEffect(() => {
+    const setFavoriteState = async (
+      userId: number,
+      eventId: string,
+    ): Promise<void> => {
+      try {
+        const status = await fetchFavoriteStatus(userId, eventId);
+        setIsFavorite(status);
+      } catch (error) {
+        console.error('Failed to fetch event favorite status:', error);
+      }
+    };
+    setFavoriteState(userId, eventId);
+  }, []);
+
+  const handleFavoriteClick = async (): Promise<void> => {
+    if (!isFavorite) {
+      await addFavorite(userId, eventId);
+    } else {
+      await removeFavorite(userId, eventId);
+    }
+    setIsFavorite(!isFavorite);
+  };
 
   if (!event || !sessions) {
     return (
@@ -127,14 +160,21 @@ const EventPage: React.FC = (): React.JSX.Element => {
               </>
             )}
           </div>
-          <a
-            className={styles.accessWebsiteButton}
-            href={mainSession.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Event Website
-          </a>
+          <div className={styles.buttonContainer}>
+            <a
+              className={styles.accessWebsiteButton}
+              href={mainSession.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Event Website
+            </a>
+            <Button
+              className={styles.favoritesButton}
+              label={isFavorite ? 'Remove Favorite' : 'Add Favorite'}
+              onClick={handleFavoriteClick}
+            />
+          </div>
         </div>
 
         {/* Right Section (Event Description + Additional Sessions) */}

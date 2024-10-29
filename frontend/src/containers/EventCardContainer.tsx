@@ -28,7 +28,10 @@ const EventCardContainer: React.FC<EventCardProps> = ({
   const { userId } = useAuth() as { userId: number };
 
   useEffect(() => {
-    const setFavoriteState = async (userId: number, eventId: string): Promise<void> => {
+    const setFavoriteState = async (
+      userId: number,
+      eventId: string,
+    ): Promise<void> => {
       try {
         const status = await fetchFavoriteStatus(userId, eventId);
         setIsFavorite(status);
