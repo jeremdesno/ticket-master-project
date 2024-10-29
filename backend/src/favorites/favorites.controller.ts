@@ -1,0 +1,36 @@
+import { Controller, Post, Delete, Get, Param } from '@nestjs/common';
+
+import { FavoritesService } from './favorites.service';
+
+@Controller('favorites')
+export class FavoritesController {
+  constructor(private readonly favoritesService: FavoritesService) {}
+
+  @Post(':userId/:eventId')
+  async addFavorite(
+    @Param('userId') userId: string,
+    @Param('eventId') eventId: string,
+  ): Promise<void> {
+    await this.favoritesService.addFavorite(userId, eventId);
+  }
+
+  @Get(':userId')
+  async getUserFavorites(
+    @Param('userId') userId: string,
+  ): Promise<{ userId: string; eventId: string }[]> {
+    return await this.favoritesService.getUserFavorites(userId);
+  }
+
+  @Delete(':userId/:eventId')
+  async removeFavorite(
+    @Param('userId') userId: string,
+    @Param('eventId') eventId: string,
+  ): Promise<void> {
+    await this.favoritesService.removeFavorite(userId, eventId);
+  }
+
+  @Delete(':userId')
+  async removeAllFavorites(@Param('userId') userId: string): Promise<void> {
+    await this.favoritesService.removeAllFavorites(userId);
+  }
+}
