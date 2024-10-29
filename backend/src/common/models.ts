@@ -5,6 +5,7 @@ export interface DatabaseSchema {
   eventSessions: EventSessionDataModel;
   genres: GenreDataModel;
   subgenres: SubGenreDataModel;
+  favoriteEvents: FavoriteEvents;
 }
 
 export interface ExtractedEventDataModel {
@@ -62,4 +63,9 @@ export interface User {
   username: string;
   password: string;
   createdAt: Date;
+}
+
+export interface FavoriteEvents {
+  userId: string;
+  eventId: string;
 }
