@@ -1,4 +1,5 @@
 import React from 'react';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 import {
   EventDataModel,
@@ -10,16 +11,26 @@ import styles from '../styles/GenrePage.module.css';
 interface EventCardProps {
   event: EventDataModel | EventSearchResult;
   earliestSession: EventSessionDataModel;
+  isFavorite: boolean;
+  onFavoriteClick: () => void;
   onDetailsClick: () => void;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
   event,
   earliestSession,
+  isFavorite,
+  onFavoriteClick,
   onDetailsClick,
 }) => {
   return (
     <div key={event.id} className={styles.eventCard}>
+      <div
+        className={`${styles.favoriteIcon} ${isFavorite ? styles.filled : ''}`}
+        onClick={onFavoriteClick}
+      >
+        {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
+      </div>
       <h2 className={styles.eventTitle}>{event.name}</h2>
       <p className={styles.eventDetails}>
         <strong>Date:</strong> {earliestSession.startDate.toDateString()}
