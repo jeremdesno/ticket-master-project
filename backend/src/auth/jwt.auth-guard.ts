@@ -7,7 +7,7 @@ import { Reflector } from '@nestjs/core';
 import { TokenExpiredError } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
-import { User } from 'src/common/models';
+import { UserDataModel } from 'src/common/models';
 
 import { IS_PUBLIC_KEY } from './public.decorator';
 
@@ -30,7 +30,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest<TUser = User>(
+  handleRequest<TUser = UserDataModel>(
     err: Error | null,
     user: TUser | false,
     info: TokenExpiredError | Error | null,

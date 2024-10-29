@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { Kysely } from 'kysely';
 
 import { DatabaseService } from '../common/database.service';
-import { DatabaseSchema, User } from '../common/models';
+import { DatabaseSchema, UserDataModel } from '../common/models';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +21,7 @@ export class UsersService {
       .execute();
   }
 
-  async findByUsername(username: string): Promise<User | undefined> {
+  async findByUsername(username: string): Promise<UserDataModel | undefined> {
     const users = await this.database
       .selectFrom('users')
       .selectAll()
