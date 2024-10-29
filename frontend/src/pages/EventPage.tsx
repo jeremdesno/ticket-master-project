@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import {
   EventDataModel,
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
 import { fetchEvent, fetchEventSessions } from '../api/eventService';
-import EventCard from '../components/EventCard';
+import EventCardContainer from '../containers/EventCardContainer';
 import styles from '../styles/EventPage.module.css';
 
 // Mock events
@@ -65,10 +65,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
     };
     loadEventData();
   }, [eventId]);
-  const navigate = useNavigate();
-  const handleDetailsClick = (eventId: string): void => {
-    navigate(`/event/${eventId}`);
-  };
+
   if (!event || !sessions) {
     return (
       <div>An error happened while fetching the event's information...</div>
@@ -175,13 +172,10 @@ const EventPage: React.FC = (): React.JSX.Element => {
         <h3>You Might Like</h3>
         <div className={styles.suggestedEventsContainer}>
           {relatedEvents.map((event) => (
-            <EventCard
+            <EventCardContainer
               key={event.id}
               event={event}
-              earliestSession={relatedSessions[event.id]}
-              onDetailsClick={(): void => {
-                handleDetailsClick(event.id);
-              }}
+              session={relatedSessions[event.id]}
             />
           ))}
         </div>
