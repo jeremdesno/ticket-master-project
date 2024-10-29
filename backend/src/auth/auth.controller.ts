@@ -11,6 +11,7 @@ import { Response, Request } from 'express';
 
 import { AuthService } from './auth.service';
 import { Public } from './public.decorator';
+import { User } from './types';
 
 @Controller('auth')
 export class AuthController {
@@ -50,11 +51,11 @@ export class AuthController {
 
   @Public()
   @Get('whoami')
-  async whoami(@Req() request: Request): Promise<string> {
+  async whoami(@Req() request: Request): Promise<User> {
     const token = request.cookies?.jwt;
     if (!token) return null;
 
     const payload = await this.authService.validateToken(token);
-    return payload?.username;
+    return { name: payload.username, id: payload.sub };
   }
 }

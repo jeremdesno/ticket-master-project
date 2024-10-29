@@ -4,3 +4,8 @@ export interface JwtPayload {
   iat?: number;
   exp?: number;
 }
+
+export interface User {
+  name: string;
+  id: number;
+}
