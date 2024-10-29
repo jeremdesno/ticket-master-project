@@ -22,7 +22,6 @@ export const fetchSubGenres = async (
     const response = await axiosInstance.get(
       `/events/subGenres?genreId=${genreId}`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(`Error fetching genre ${genreId} subgenres:`, error);
