@@ -9,7 +9,7 @@ import React, {
 import { whoami } from '../api/authService';
 
 interface AuthStatus {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
   username: string | null;
   userId: number | null;
 }
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
 }): JSX.Element => {
   const [auth, setAuth] = useState<AuthStatus>({
-    isAuthenticated: false,
+    isAuthenticated: null,
     username: null,
     userId: null,
   });

@@ -14,7 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === false) {
       setShowModal(true);
     }
   }, [isAuthenticated]);
