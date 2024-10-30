@@ -1,4 +1,5 @@
 import axiosInstance from './axios';
+import { FavoriteEventsDataModel } from '../../../backend/src/common/models';
 
 export const fetchFavoriteStatus = async (
   userId: number,
@@ -20,4 +21,16 @@ export const removeFavorite = async (
   eventId: string,
 ): Promise<void> => {
   await axiosInstance.delete(`favorites/${userId}/${eventId}`);
+};
+
+export const fetchFavorites = async (
+  userId: number,
+): Promise<FavoriteEventsDataModel[] | null> => {
+  try {
+    const response = await axiosInstance.get(`favorites/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.log('Failed to fetch favorites');
+    return null;
+  }
 };
