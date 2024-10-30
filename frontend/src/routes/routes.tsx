@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import React from 'react';
 
+const FavoritesPage = lazy(() => import('../pages/FavoritesPage'));
 const LoginForm = lazy(() => import('../containers/LoginContainer'));
 const HomePage = lazy(() => import('../pages/HomePage'));
 const EventsByGenrePage = lazy(() => import('../pages/GenrePage'));
@@ -16,6 +17,11 @@ const routes = [
   {
     path: '/home',
     element: <HomePage />,
+    protected: true,
+  },
+  {
+    path: '/favorites',
+    element: <FavoritesPage />,
     protected: true,
   },
   {
