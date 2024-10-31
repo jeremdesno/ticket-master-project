@@ -33,14 +33,24 @@
 
 .closeButton {
     position: absolute;
-    top: 10px;
+    top: 25px;
     left: 10px;
-    background: #ccc;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    border-radius: 5px;
+    background-color: transparent;
 }
+
+.closeButton:hover {
+    background-color: #eee;
+    border-radius: 8px;
+}
+
+.closeButton svg {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
 
 .header {
     font-size: 1.5rem;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { AiOutlineRight } from 'react-icons/ai';
 
 import {
   EventDataModel,
@@ -38,7 +39,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
   return (
     <div className={`${styles.panel} ${isOpen ? styles.open : ''}`}>
       <button className={styles.closeButton} onClick={onClose}>
-        Close
+        <AiOutlineRight />
       </button>
       <h2 className={styles.header}>{event.name}</h2>
       <h3 className={styles.subHeader}>{event.venueName}</h3>
