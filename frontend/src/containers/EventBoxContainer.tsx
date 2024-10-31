@@ -10,7 +10,10 @@ import EventBox from '../components/EventBox';
 interface EventBoxProps {
   eventId: string;
   onRemoveFavorite: () => void;
-  onDetailsSelect: (eventData: EventDataModel) => void;
+  onDetailsSelect: (
+    eventData: EventDataModel,
+    sessions: EventSessionDataModel[],
+  ) => void;
 }
 
 const EventBoxContainer: React.FC<EventBoxProps> = ({
@@ -19,15 +22,17 @@ const EventBoxContainer: React.FC<EventBoxProps> = ({
   onDetailsSelect,
 }): JSX.Element => {
   const [event, setEvent] = useState<EventDataModel | null>(null);
-  const [session, setSession] = useState<EventSessionDataModel | null>(null);
+  const [sessions, setSessions] = useState<EventSessionDataModel[] | null>(
+    null,
+  );
 
   useEffect(() => {
     const loadEventData = async (eventId: string): Promise<void> => {
       try {
         const fetchedEvent = await fetchEvent(eventId);
-        const fetchedSession = await fetchEventSessions(eventId, 1);
+        const fetchedSessions = await fetchEventSessions(eventId);
         setEvent(fetchedEvent);
-        setSession(fetchedSession[0]);
+        setSessions(fetchedSessions);
       } catch (error) {
         console.log('Failed to fetch event: ', error);
       }
@@ -35,15 +40,15 @@ const EventBoxContainer: React.FC<EventBoxProps> = ({
     loadEventData(eventId);
   }, [eventId]);
 
-  if (!event || !session) {
+  if (!event || !sessions) {
     return <div>Loading...</div>;
   }
   return (
     <EventBox
       event={event}
-      earliestSession={session}
+      earliestSession={sessions[0]}
       onDetailsClick={(): void => {
-        onDetailsSelect(event);
+        onDetailsSelect(event, sessions);
       }}
       onFavoriteClick={onRemoveFavorite}
     />

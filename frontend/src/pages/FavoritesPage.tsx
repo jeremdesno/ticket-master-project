@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
   EventDataModel,
+  EventSessionDataModel,
   FavoriteEventsDataModel,
 } from '../../../backend/src/common/models';
 import { fetchFavorites, removeFavorite } from '../api/favoritesService';
@@ -18,6 +19,9 @@ const FavoritesPage: React.FC = (): React.JSX.Element => {
   const [selectedEvent, setSelectedEvent] = useState<EventDataModel | null>(
     null,
   );
+  const [selectedSessions, setSelectedSessions] = useState<
+    EventSessionDataModel[] | null
+  >(null);
 
   useEffect(() => {
     const loadFavorites = async (userId: number): Promise<void> => {
@@ -35,8 +39,12 @@ const FavoritesPage: React.FC = (): React.JSX.Element => {
     );
   };
 
-  const handleDetailsSelect = (eventData: EventDataModel): void => {
+  const handleDetailsSelect = (
+    eventData: EventDataModel,
+    sessions: EventSessionDataModel[],
+  ): void => {
     setSelectedEvent(eventData);
+    setSelectedSessions(sessions);
     setShowPannel(true);
   };
   const handleClosePanel = (): void => {
@@ -61,11 +69,12 @@ const FavoritesPage: React.FC = (): React.JSX.Element => {
           />
         ))}
       </div>
-      {selectedEvent && (
+      {selectedEvent && selectedSessions && (
         <DetailsPanel
           isOpen={showPannel}
           onClose={handleClosePanel}
           event={selectedEvent}
+          sessions={selectedSessions}
         />
       )}
     </div>
