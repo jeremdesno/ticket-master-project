@@ -10,11 +10,13 @@ import EventBox from '../components/EventBox';
 interface EventBoxProps {
   eventId: string;
   onRemoveFavorite: () => void;
+  onDetailsSelect: (eventData: EventDataModel) => void;
 }
 
 const EventBoxContainer: React.FC<EventBoxProps> = ({
   eventId,
   onRemoveFavorite,
+  onDetailsSelect,
 }): JSX.Element => {
   const [event, setEvent] = useState<EventDataModel | null>(null);
   const [session, setSession] = useState<EventSessionDataModel | null>(null);
@@ -33,9 +35,6 @@ const EventBoxContainer: React.FC<EventBoxProps> = ({
     loadEventData(eventId);
   }, [eventId]);
 
-  const handleDetailsClick = (): void => {
-    console.log('show details');
-  };
   if (!event || !session) {
     return <div>Loading...</div>;
   }
@@ -43,7 +42,9 @@ const EventBoxContainer: React.FC<EventBoxProps> = ({
     <EventBox
       event={event}
       earliestSession={session}
-      onDetailsClick={handleDetailsClick}
+      onDetailsClick={(): void => {
+        onDetailsSelect(event);
+      }}
       onFavoriteClick={onRemoveFavorite}
     />
   );
