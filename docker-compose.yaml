@@ -51,6 +51,13 @@ services:
       - xpack.security.enrollment.enabled=false
     networks:
       - elastic
+  
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./backend/qdrant_storage:/qdrant/storage:z
 
 networks:
   elastic:
