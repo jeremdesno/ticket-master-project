@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Kysely, sql } from 'kysely';
-import { DatabaseService } from 'src/common/database.service';
+
+import { DatabaseService } from '../common/database.service';
 import {
   DatabaseSchema,
   EventDataModel,
   EventSessionDataModel,
   GenreDataModel,
   SubGenreDataModel,
-} from 'src/common/models';
+} from '../common/models';
 
 @Injectable()
 export class EventService {
