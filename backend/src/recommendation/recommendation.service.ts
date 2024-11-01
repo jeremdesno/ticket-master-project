@@ -5,7 +5,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
 
-import { EventPointStruct } from './types';
+import {
+  EventPointStruct,
+  SemanticSearchResponse,
+  SemanticSearchResult,
+} from './types';
+import { EventService } from '../events/events.service';
 
 @Injectable()
 export class RecommendationService {
@@ -15,8 +20,11 @@ export class RecommendationService {
   private readonly embeddingModel: string;
   private readonly vectorSize: number;
 
-  constructor() {
-    const configPath = path.join(process.cwd(), 'src/recommendation/model_config.yaml');
+  constructor(private readonly eventService: EventService) {
+    const configPath = path.join(
+      process.cwd(),
+      'src/recommendation/model_config.yaml',
+    );
     const config = yaml.parse(fs.readFileSync(configPath, 'utf8'));
 
     this.embeddingModel = config.embedding_model;
@@ -58,5 +66,35 @@ export class RecommendationService {
       wait: true,
       points: eventsPoints,
     });
+  }
+
+  async searchSimilarEvents(
+    eventId: string,
+    top_k = 4,
+  ): Promise<SemanticSearchResult[]> {
+    const event = await this.eventService.getEvent(eventId);
+    const descriptionEmbedded = await this.embedEvents([event.description]);
+    const searchResults: SemanticSearchResponse = await this.qdrantClient.query(
+      this.QdrantCollectionName,
+      {
+        query: descriptionEmbedded[0],
+        filter: {
+          must_not: [
+            {
+              key: 'eventId',
+              match: { value: event.id },
+            },
+          ],
+        },
+        with_payload: true,
+        limit: top_k,
+      },
+    );
+    const results = searchResults.points.map((searchResult) => ({
+      id: searchResult.id as string,
+      eventId: searchResult.payload.eventId as string,
+      score: searchResult.score,
+    }));
+    return results;
   }
 }
