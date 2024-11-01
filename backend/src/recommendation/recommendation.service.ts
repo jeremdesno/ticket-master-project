@@ -16,7 +16,7 @@ export class RecommendationService {
   private readonly vectorSize: number;
 
   constructor() {
-    const configPath = path.join(__dirname, 'model_config.yaml');
+    const configPath = path.join(process.cwd(), 'src/recommendation/model_config.yaml');
     const config = yaml.parse(fs.readFileSync(configPath, 'utf8'));
 
     this.embeddingModel = config.embedding_model;
