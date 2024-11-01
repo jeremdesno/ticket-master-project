@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { IntegrationService } from './integration.service';
 import { DatabaseService } from '../common/database.service';
+import { RecommendationModule } from '../recommendation/recommendation.module';
 import { EventSearchModule } from '../search/eventSearch.module';
 
 describe('IntegrationService', () => {
@@ -10,7 +11,11 @@ describe('IntegrationService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), EventSearchModule],
+      imports: [
+        ConfigModule.forRoot(),
+        EventSearchModule,
+        RecommendationModule,
+      ],
       providers: [IntegrationService, DatabaseService],
     }).compile();
 

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Kysely, sql } from 'kysely';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ClassificationsResponse, EventsResponse } from './types';
 import {
@@ -21,6 +22,8 @@ import {
   GenreDataModel,
   SubGenreDataModel,
 } from '../common/models';
+import { RecommendationService } from '../recommendation/recommendation.service';
+import { EventPointStruct } from '../recommendation/types';
 import { EventSearchService } from '../search/eventSearch.service';
 
 @Injectable()
@@ -33,6 +36,7 @@ export class IntegrationService {
     private configService: ConfigService,
     private databaseService: DatabaseService,
     private eventSearchService: EventSearchService,
+    private recommendationService: RecommendationService,
   ) {
     this.apiKey = this.configService.get<string>('TICKETMASTER_API_KEY');
     this.database = this.databaseService.getDatabase();
@@ -309,6 +313,31 @@ export class IntegrationService {
   async indexEvents(events: EventDataModel[]): Promise<void> {
     for (const event of events) {
       await this.eventSearchService.indexEvent(event);
+    }
+  }
+
+  async ingestEventsToQdrant(events: EventDataModel[]): Promise<void> {
+    const collectionCreated =
+      await this.recommendationService.createCollectionIfNotExists();
+
+    const eventDescriptions = events.map((event) => {
+      return event.description ? event.description : '';
+    });
+
+    const embeddings =
+      await this.recommendationService.embedEvents(eventDescriptions);
+    const eventPoints: EventPointStruct[] = events.map((event, index) => ({
+      id: uuidv4(),
+      vector: embeddings[index],
+      payload: {
+        eventId: event.id,
+        name: event.name,
+        genre: event.genre,
+        subgenre: event.subGenre,
+      },
+    }));
+    if (collectionCreated) {
+      await this.recommendationService.addVectorsToQdrant(eventPoints);
     }
   }
 
