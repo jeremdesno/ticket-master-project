@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { EventsModule } from './events/events.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { RecommendationModule } from './recommendation/recommendation.module';
 import { EventSearchModule } from './search/eventSearch.module';
 import { UsersModule } from './users/users.module';
 
@@ -22,6 +23,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     FavoritesModule,
+    RecommendationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
