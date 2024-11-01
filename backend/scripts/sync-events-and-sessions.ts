@@ -18,10 +18,11 @@ async function syncEventsAndSessions() {
 
       await integrationService.syncSessions(newExtractedEvents);
       await integrationService.syncEvents(newEvents);
-      await integrationService.indexEvents(newEvents)
+      await integrationService.indexEvents(newEvents);
+      await integrationService.ingestEventsToQdrant(newEvents)
       
 
-      console.log('Events and Sessions synced and indexed');
+      console.log('Events and Sessions synced, indexed and ingested in Qdrant');
     } catch (error) {
       console.error('Error:', error.message);
     } finally {
