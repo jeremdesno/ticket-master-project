@@ -7,7 +7,7 @@ import * as path from 'path';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt.auth-guard';
+import { JwtAuthGuard } from './guards/jwt.auth-guard';
 import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
 
