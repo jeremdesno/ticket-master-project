@@ -8,9 +8,13 @@ The events data is handled by three tables :
 - events : contains generique data (name, venue, image ...) that is relevant to all sessions of an event.  
 - eventSessions : contains details (dates, url ...) about a specific session of an event.
 
-The genres and subgenres have their own dedicated tables. 
+The users and favorites have dedicated tables.
+
+Same goes for genres and subgenres. 
 
 The search is handled by a single node elasticsearch cluster that indexes events, and enables fuzzy search on the venue name and event name.
+
+The recommendations are handled by a qdrant vector database which enables semantic similarity search using the events description.   
 
 ## Data Integration
 
@@ -26,7 +30,7 @@ ts-node scripts/run-events-integration.ts
 ```
 The time period can be changed in the integration service.
 
-Then run the following command to sync the data to the events and eventSessions tables aswell as to the elasticsearch index:
+Then run the following command to sync the data to the events and eventSessions tables aswell as to the elasticsearch index and Qdrant database:
 ```
 ts-node scripts/sync-events-and-sessions.ts
 ```
@@ -40,11 +44,19 @@ NB_1: Make sure to start the postgresql and elasticsearch instances before runni
 
 NB_2: The genres corresponds to the classification levels of the ticketmaster API and the subgenres to the genres.
 
+## Authentification
+
+The app implements server side authentification based on JWT's, which are securely stored in HTTP-only cookies using the nestjs passport package. 
+The api has two guards: 
+- Global JWT Guard: This guard checks that all requests (excluding a few exceptions) include a valid JWT.
+- Ownership Guard: Specifically set on the favorites routes, this guard ensures that users can only access and manage their own data. It prevents unauthorized access to other users' favorites, thereby maintaining data privacy and integrity.
+
+
 ## Backend 
 
 The backend was build using Nest.js and typescript.
 Make sure you're located in the backend folder before running the following commands.
-Run the following command tu start the postgres database and the elasticsearch instance :
+Run the following command tu start the postgres database, the elasticsearch instance and the qdrant vector database :
 ```
 docker-compose up --build
 ```
@@ -55,19 +67,21 @@ And to start the backend server run :
 nest start
 ```
 
-Currently this API allows you to access event data, including paginated lists of events that can be filtered by date range and genre, as well as specific event details or sessions for a given event id. It also exposes an endpoint to search events and venues and provides pagination.
+Currently this API allows you to access event data, including paginated lists of events that can be filtered by date range and genre, as well as specific event details or sessions for a given event id. It enables personnalization by exposing endpoints to handle favorite events. It also exposes an endpoint to search events and venues and provides pagination. And an endpoint to access similar events based on semantic similarity of their descriptions.
 Here's a few exemples of requests that can be made :
-- GET http://127.0.0.1:3000/events?limit=10&offset=0
-- GET http://127.0.0.1:3000/events/rZ7SnyZ1Ad-07k
-- GET http://127.0.0.1:3000/events?startDate=2024-10-01T00:00:00Z&endDate=2024-10-02T23:59:59Z&limit=10&offset=0
-- GET http://127.0.0.1:3000/search?query=arena
+- GET http://localhost:3000/events?limit=10&offset=0
+- GET http://localhost:3000/events/rZ7SnyZ1Ad-07k
+- GET http://localhost:3000/events?startDate=2024-10-01T00:00:00Z&endDate=2024-10-02T23:59:59Z&limit=10&offset=0
+- GET http://localhost:3000/favorites/1
+- GET http://localhost:3000/search?query=arena
+- GET http://localhost:3000/recommendation?eventId=214a28a55e6d47757a951e3a6751bd00820d4969d6e17feaaf3c2b62ed66ccdc&top_k=5
 
 All responses are returned in JSON format.
 
 ## Frontend
 
 The frontend is built in react, with TypeScript for static typing.
-Moove to the frontend folder and run the following command to launch the app:
+Move to the frontend folder and run the following command to launch the app:
 ```
 npm start
 ```
