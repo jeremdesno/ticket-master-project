@@ -12,6 +12,9 @@ export class RecommendationController {
     @Query('eventId') eventId: string,
     @Query('top_k') top_k: number = 4,
   ): Promise<SemanticSearchResult[]> {
-    return await this.recommendationService.searchSimilarEvents(eventId, top_k);
+    return await this.recommendationService.searchSimilarEvents(
+      eventId,
+      Number(top_k),
+    );
   }
 }
