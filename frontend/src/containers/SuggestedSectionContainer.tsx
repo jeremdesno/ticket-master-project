@@ -72,6 +72,9 @@ const SuggestedSectionContainer: React.FC<EventCardProps> = ({
   if (!similarEvents || !similarEventsEarliestSession) {
     return <div>Loading...</div>;
   }
+  if (similarEvents.length === 0) {
+    return <div></div>;
+  }
   return (
     <SuggestedSection
       suggestedEvents={similarEvents}
