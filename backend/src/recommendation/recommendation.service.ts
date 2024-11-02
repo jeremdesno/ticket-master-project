@@ -79,6 +79,12 @@ export class RecommendationService {
       {
         query: descriptionEmbedded[0],
         filter: {
+          must: [
+            {
+              key: 'genre',
+              match: { value: event.genre },
+            },
+          ],
           must_not: [
             {
               key: 'eventId',
