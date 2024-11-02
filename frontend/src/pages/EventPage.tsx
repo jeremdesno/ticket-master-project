@@ -14,7 +14,7 @@ import {
 import Button from '../components/Button';
 import SuggestedSectionContainer from '../containers/SuggestedSectionContainer';
 import { useAuth } from '../contexts/AuthContext';
-import styles from '../styles/EventPage.module.css';
+import styles from '../styles/pages/EventPage.module.css';
 
 const EventPage: React.FC = (): React.JSX.Element => {
   const { eventId } = useParams<{

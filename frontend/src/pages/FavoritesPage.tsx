@@ -9,7 +9,7 @@ import { fetchFavorites, removeFavorite } from '../api/favoritesService';
 import DetailsPanel from '../components/DetailsPanel';
 import EventBoxContainer from '../containers/EventBoxContainer';
 import { useAuth } from '../contexts/AuthContext';
-import styles from '../styles/FavoritesPage.module.css';
+import styles from '../styles/pages/FavoritesPage.module.css';
 const FavoritesPage: React.FC = (): React.JSX.Element => {
   const { userId } = useAuth() as { userId: number };
   const [favorites, setFavorites] = useState<FavoriteEventsDataModel[] | null>(

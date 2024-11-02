@@ -14,7 +14,7 @@ import { fetchGenres, fetchSubGenres } from '../api/genreService';
 import Pagination from '../components/Pagination';
 import EventsGridContainer from '../containers/EventsGridContainer';
 import FiltersContainer from '../containers/FiltersContainer';
-import styles from '../styles/GenrePage.module.css';
+import styles from '../styles/pages/GenrePage.module.css';
 
 const eventsPerPage = 15;
 interface LocationState {

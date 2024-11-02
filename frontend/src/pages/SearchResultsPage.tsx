@@ -5,7 +5,7 @@ import { EventSessionDataModel } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
 import { fetchEventSessions, SearchEvents } from '../api/eventService';
 import EventsGridContainer from '../containers/EventsGridContainer';
-import styles from '../styles/SearchResultsPage.module.css';
+import styles from '../styles/pages/SearchResultsPage.module.css';
 
 const NumberSearchResults = 15;
 
