@@ -12,41 +12,9 @@ import {
   removeFavorite,
 } from '../api/favoritesService';
 import Button from '../components/Button';
-import EventCardContainer from '../containers/EventCardContainer';
+import SuggestedSectionContainer from '../containers/SuggestedSectionContainer';
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/EventPage.module.css';
-
-// Mock events
-const relatedEvents: EventDataModel[] = Array.from(
-  { length: 4 },
-  (_, index) => ({
-    id: String(index + 1),
-    name: `Event ${index + 1}`,
-    description: `This is the description for Event ${index + 1}`,
-    genre: index % 2 === 0 ? 'Jazz' : 'Hip Hop',
-    subGenre: 'Rock',
-    venueAddress: `${index + 1} Venue St.`,
-    venueName: `Venue ${index + 1}`,
-    imageUrl: null,
-  }),
-);
-
-// Mock sessions for each event
-const relatedSessions: { [key: string]: EventSessionDataModel } = Array.from(
-  { length: 4 },
-  (_, index) => ({
-    id: String(index + 1),
-    eventId: String(index + 1),
-    startDate: new Date(`2024-07-${index + 10}`),
-    endDate: new Date(`2024-07-${index + 12}`),
-    url: `https://event${index + 1}.com`,
-    startDateSales: new Date('2024-01-01'),
-    endDateSales: new Date('2024-07-01'),
-  }),
-).reduce<{ [key: string]: EventSessionDataModel }>((acc, session) => {
-  acc[session.eventId] = session;
-  return acc;
-}, {});
 
 const EventPage: React.FC = (): React.JSX.Element => {
   const { eventId } = useParams<{
@@ -206,20 +174,7 @@ const EventPage: React.FC = (): React.JSX.Element => {
           </div>
         )}
       </div>
-
-      {/* Suggested Events Section */}
-      <div className={styles.suggestedEventsSection}>
-        <h3>You Might Like</h3>
-        <div className={styles.suggestedEventsContainer}>
-          {relatedEvents.map((event) => (
-            <EventCardContainer
-              key={event.id}
-              event={event}
-              session={relatedSessions[event.id]}
-            />
-          ))}
-        </div>
-      </div>
+      <SuggestedSectionContainer eventId={eventId} />
     </div>
   );
 };
