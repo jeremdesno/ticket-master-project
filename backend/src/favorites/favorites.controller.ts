@@ -1,8 +1,17 @@
-import { Controller, Post, Delete, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { FavoriteEventsDataModel } from 'src/common/models';
 
 import { FavoritesService } from './favorites.service';
+import { OwnershipGuard } from '../auth/guards/ownership.auth-guard';
 
+@UseGuards(OwnershipGuard)
 @Controller('favorites')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
