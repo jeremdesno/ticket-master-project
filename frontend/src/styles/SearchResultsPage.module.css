@@ -1,6 +1,12 @@
   .container {
     padding: 30px;
     height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+  }
+  .gridContainer {
+    width: 70vw;
   }
   
   h1 {
