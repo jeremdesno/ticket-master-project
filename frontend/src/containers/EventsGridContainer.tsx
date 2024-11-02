@@ -6,19 +6,30 @@ import {
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
-import styles from '../styles/pages/GenrePage.module.css';
 
 interface EventsGridProps {
   events: EventDataModel[] | EventSearchResult[];
   sessions: { [key: string]: EventSessionDataModel };
+  className?: string;
 }
+
+const eventsGridDefaultStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '20px',
+  padding: '20px 40px',
+};
 
 const EventsGridContainer: React.FC<EventsGridProps> = ({
   events,
   sessions,
+  className,
 }) => {
   return (
-    <div className={styles.eventsGrid}>
+    <div
+      className={className}
+      style={!className ? eventsGridDefaultStyle : undefined}
+    >
       {events.map((event) => (
         <EventCardContainer
           key={event.id}

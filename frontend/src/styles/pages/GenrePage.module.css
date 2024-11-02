@@ -19,10 +19,3 @@
     flex: 4;
     flex-direction: column;
   }
-
-  .eventsGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px 40px;
-  }
