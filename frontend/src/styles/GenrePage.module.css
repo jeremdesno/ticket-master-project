@@ -29,6 +29,8 @@
   
   .eventCard {
     position: relative;
+    max-width:400px;
+    max-height: 250px;
     border: 1px solid #ccc;
     padding: 20px;
     background-color: #f9f9f9;
@@ -44,6 +46,10 @@
   .eventTitle {
     font-size: 1.5rem;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%; 
   }
   
   .eventDetails {
