@@ -4,6 +4,7 @@ import {
   EventSessionDataModel,
   ExtractedEventDataModel,
 } from '../../../backend/src/common/models';
+import { SemanticSearchResult } from '../../../backend/src/recommendation/types';
 import { EventSearchResult } from '../../../backend/src/search/types';
 
 export const fetchEvents = async (
@@ -80,6 +81,16 @@ export const SearchEvents = async (
 ): Promise<EventSearchResult[]> => {
   const response = await axiosInstance.get(`/search`, {
     params: { query, lastDocSortScore, lastDocSortId, size },
+  });
+  return response.data;
+};
+
+export const fetchSimilarEvents = async (
+  eventId: string,
+  top_k = 4,
+): Promise<SemanticSearchResult[]> => {
+  const response = await axiosInstance.get('/recommendation', {
+    params: { eventId, top_k },
   });
   return response.data;
 };
