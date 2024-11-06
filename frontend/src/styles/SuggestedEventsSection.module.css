@@ -1,13 +1,3 @@
-  .suggestedEventsSection {
-    margin-top: 30px;
-    flex-direction: column;
-    background-color: #e9f5e9;
-  }
-  
-  .suggestedEventsSection h3 {
-    margin-bottom: 20px;
-  }
-
   .suggestedEventsContainer {
     display: flex;
     flex-direction: row;

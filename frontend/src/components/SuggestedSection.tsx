@@ -16,17 +16,14 @@ const SuggestedSection: React.FC<SuggestedSectionProps> = ({
   suggestedEventsEarliestSession,
 }) => {
   return (
-    <div className={styles.suggestedEventsSection}>
-      <h3>You Might Like</h3>
-      <div className={styles.suggestedEventsContainer}>
-        {suggestedEvents.map((event, index) => (
-          <EventCardContainer
-            key={event.id}
-            event={event}
-            session={suggestedEventsEarliestSession[index]}
-          />
-        ))}
-      </div>
+    <div className={styles.suggestedEventsContainer}>
+      {suggestedEvents.map((event, index) => (
+        <EventCardContainer
+          key={event.id}
+          event={event}
+          session={suggestedEventsEarliestSession[index]}
+        />
+      ))}
     </div>
   );
 };
