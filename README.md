@@ -54,7 +54,7 @@ The api has two guards:
 
 ## Backend 
 
-The backend was build using Nest.js and typescript.
+The backend was built using Nest.js and typescript.
 Make sure you're located in the backend folder before running the following commands.
 Run the following command tu start the postgres database, the elasticsearch instance and the qdrant vector database :
 ```
