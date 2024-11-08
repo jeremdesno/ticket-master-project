@@ -1,6 +1,7 @@
   .eventCard {
     position: relative;
     max-width:400px;
+    min-width: 300px;
     max-height: 250px;
     border: 1px solid #ccc;
     padding: 20px;
