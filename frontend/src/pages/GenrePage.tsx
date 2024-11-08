@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import {
-  EventDataModel,
-  EventSessionDataModel,
-} from '../../../backend/src/common/models';
-import {
-  fetchEvents,
-  fetchEventSessions,
-  fetchNumberEvents,
-} from '../api/eventService';
+import { EventDataModel } from '../../../backend/src/common/models';
+import { fetchEvents, fetchNumberEvents } from '../api/eventService';
 import { fetchGenres, fetchSubGenres } from '../api/genreService';
 import Pagination from '../components/Pagination';
 import EventsGridContainer from '../containers/EventsGridContainer';
@@ -33,9 +26,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   const [genreMap, setGenreMap] = useState<{ [key: string]: string }>({});
   const [subGenres, setSubGenres] = useState<string[]>([]);
   const [events, setEvents] = useState<EventDataModel[]>([]);
-  const [sessions, setSessions] = useState<{
-    [key: string]: EventSessionDataModel;
-  }>({});
+
   const [loading, setLoading] = useState<boolean>(true);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -99,7 +90,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
   }, [genre, decodedSubGenre, startDate, endDate]);
 
   useEffect(() => {
-    const loadEventsAndSessions = async (): Promise<void> => {
+    const loadEvents = async (): Promise<void> => {
       setLoading(true);
       try {
         const offset = (currentPage - 1) * eventsPerPage;
@@ -112,28 +103,6 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
           offset,
         );
         setEvents(fetchedEvents);
-
-        const sessionsMap: { [key: string]: EventSessionDataModel } = {};
-        await Promise.all(
-          fetchedEvents.map(async (event) => {
-            try {
-              const fetchedSessions = await fetchEventSessions(
-                event.id,
-                1,
-                startDate ? startDate.toISOString() : undefined,
-                endDate ? endDate.toISOString() : undefined,
-              );
-              sessionsMap[event.id] = fetchedSessions[0];
-            } catch (error) {
-              console.error(
-                `Failed to fetch sessions for event ${event.id}:`,
-                error,
-              );
-            }
-          }),
-        );
-
-        setSessions(sessionsMap);
       } catch (error) {
         console.error('Failed to fetch events or sessions:', error);
       } finally {
@@ -141,7 +110,7 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
       }
     };
 
-    loadEventsAndSessions();
+    loadEvents();
   }, [genre, decodedSubGenre, startDate, endDate, currentPage]);
 
   const handlePageChange = (page: number): void => {
@@ -157,11 +126,15 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
       <h1 className={styles.genreTitle}>{genre} Events</h1>
       <div className={styles.eventsPageLayout}>
         <div className={styles.bodyLayout}>
-          {!events.length || Object.keys(sessions).length === 0 ? (
+          {!events.length ? (
             <div>No available events for these filters...</div>
           ) : (
             <>
-              <EventsGridContainer events={events} sessions={sessions} />
+              <EventsGridContainer
+                events={events}
+                startDate={startDate}
+                endDate={endDate}
+              />
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}

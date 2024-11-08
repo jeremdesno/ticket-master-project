@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { EventSessionDataModel } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
-import { fetchEventSessions, SearchEvents } from '../api/eventService';
+import { SearchEvents } from '../api/eventService';
 import EventsGridContainer from '../containers/EventsGridContainer';
 import styles from '../styles/pages/SearchResultsPage.module.css';
 
@@ -14,16 +13,11 @@ const SearchResultsPage: React.FC = () => {
   const query = searchParams.get('query') as string;
 
   const [events, setEvents] = useState<EventSearchResult[]>([]);
-  const [sessions, setSessions] = useState<{
-    [key: string]: EventSessionDataModel;
-  }>({});
+
   const [loading, setLoading] = useState<boolean>(true);
   const [lastDocSortScore, setLastDocSortScore] = useState<number | null>(null);
   const [lastDocSortId, setLastDocSortId] = useState<string | null>(null);
   const [nextEvents, setNextEvents] = useState<EventSearchResult[]>([]);
-  const [nextSessions, setNextSessions] = useState<{
-    [key: string]: EventSessionDataModel;
-  }>({});
   const [noMoreMatches, setNoMoreMatches] = useState<boolean>(false);
 
   const gridContainerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +25,6 @@ const SearchResultsPage: React.FC = () => {
   useEffect(() => {
     const loadFirstSearchResults = async (): Promise<void> => {
       setEvents([]);
-      setSessions({});
       setNoMoreMatches(false);
       setLoading(true);
       try {
@@ -53,23 +46,6 @@ const SearchResultsPage: React.FC = () => {
           setNoMoreMatches(true);
         }
         setEvents(searchedEvents);
-
-        const sessionsMap: { [key: string]: EventSessionDataModel } = {};
-        await Promise.all(
-          searchedEvents.map(async (event) => {
-            try {
-              const fetchedSessions = await fetchEventSessions(event.id, 1);
-              sessionsMap[event.id] = fetchedSessions[0];
-            } catch (error) {
-              console.error(
-                `Failed to fetch sessions for event ${event.id}:`,
-                error,
-              );
-            }
-          }),
-        );
-
-        setSessions(sessionsMap);
       } catch (error) {
         console.error('Failed to fetch events or sessions:', error);
       } finally {
@@ -85,12 +61,6 @@ const SearchResultsPage: React.FC = () => {
       setEvents((prevEvents) => [...prevEvents, ...nextEvents]);
     }
   }, [nextEvents]);
-
-  useEffect(() => {
-    if (Object.keys(nextSessions).length > 0) {
-      setSessions((prevSessions) => ({ ...prevSessions, ...nextSessions }));
-    }
-  }, [nextSessions]);
 
   const handleLoadMore = async (): Promise<void> => {
     const scrollPosition = gridContainerRef.current?.scrollTop || 0;
@@ -113,22 +83,6 @@ const SearchResultsPage: React.FC = () => {
       setNoMoreMatches(true);
     }
     setNextEvents(searchedEvents);
-
-    const sessionsMap: { [key: string]: EventSessionDataModel } = {};
-    await Promise.all(
-      searchedEvents.map(async (event) => {
-        try {
-          const fetchedSessions = await fetchEventSessions(event.id, 1);
-          sessionsMap[event.id] = fetchedSessions[0];
-        } catch (error) {
-          console.error(
-            `Failed to fetch sessions for event ${event.id}:`,
-            error,
-          );
-        }
-      }),
-    );
-    setNextSessions(sessionsMap);
     setTimeout(() => {
       if (gridContainerRef.current) {
         gridContainerRef.current.scrollTop = scrollPosition;
@@ -140,7 +94,7 @@ const SearchResultsPage: React.FC = () => {
     return <div></div>;
   }
 
-  if (!events.length || Object.keys(sessions).length !== events.length) {
+  if (!events.length) {
     return <div>No results for query: {query}</div>;
   }
 
@@ -152,7 +106,7 @@ const SearchResultsPage: React.FC = () => {
         ref={gridContainerRef}
         style={{ maxHeight: '90%', overflowY: 'scroll' }}
       >
-        <EventsGridContainer events={events} sessions={sessions} />
+        <EventsGridContainer events={events} />
         {!noMoreMatches ? (
           <button className={styles.loadMoreButton} onClick={handleLoadMore}>
             Load More

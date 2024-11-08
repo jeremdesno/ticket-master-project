@@ -1,15 +1,13 @@
 import React from 'react';
 
 import EventCardContainer from './EventCardContainer';
-import {
-  EventDataModel,
-  EventSessionDataModel,
-} from '../../../backend/src/common/models';
+import { EventDataModel } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
 
 interface EventsGridProps {
   events: EventDataModel[] | EventSearchResult[];
-  sessions: { [key: string]: EventSessionDataModel };
+  startDate?: Date;
+  endDate?: Date;
   className?: string;
 }
 
@@ -22,7 +20,8 @@ const eventsGridDefaultStyle: React.CSSProperties = {
 
 const EventsGridContainer: React.FC<EventsGridProps> = ({
   events,
-  sessions,
+  startDate,
+  endDate,
   className,
 }) => {
   return (
@@ -34,7 +33,8 @@ const EventsGridContainer: React.FC<EventsGridProps> = ({
         <EventCardContainer
           key={event.id}
           event={event}
-          session={sessions[event.id]}
+          startDate={startDate}
+          endDate={endDate}
         />
       ))}
     </div>

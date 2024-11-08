@@ -1,30 +1,21 @@
 import React from 'react';
 
-import {
-  EventDataModel,
-  EventSessionDataModel,
-} from '../../../backend/src/common/models';
+import { EventDataModel } from '../../../backend/src/common/models';
 import EventCardContainer from '../containers/EventCardContainer';
 import styles from '../styles/SuggestedEventsSection.module.css';
 
 interface SuggestedSectionProps {
   suggestedEvents: EventDataModel[];
-  suggestedEventsEarliestSession: EventSessionDataModel[];
   className?: string;
 }
 const SuggestedSection: React.FC<SuggestedSectionProps> = ({
   suggestedEvents,
-  suggestedEventsEarliestSession,
   className,
 }) => {
   return (
     <div className={className ?? styles.suggestedEventsContainer}>
-      {suggestedEvents.map((event, index) => (
-        <EventCardContainer
-          key={event.id}
-          event={event}
-          session={suggestedEventsEarliestSession[index]}
-        />
+      {suggestedEvents.map((event) => (
+        <EventCardContainer key={event.id} event={event} />
       ))}
     </div>
   );
