@@ -1,7 +1,0 @@
-  .suggestedEventsContainer {
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    justify-content: center;
-    margin-bottom: 30px;
-  }

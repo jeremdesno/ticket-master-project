@@ -176,7 +176,10 @@ const EventPage: React.FC = (): React.JSX.Element => {
       </div>
       <div className={styles.suggestedEventsSection}>
         <h3>You Might Like</h3>
-        <SuggestedSectionContainer eventId={eventId} />
+        <SuggestedSectionContainer
+          eventId={eventId}
+          className={styles.suggestedEventsContainer}
+        />
       </div>
     </div>
   );

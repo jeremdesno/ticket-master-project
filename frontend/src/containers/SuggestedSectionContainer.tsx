@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 
+import EventsGridContainer from './EventsGridContainer';
 import { EventDataModel } from '../../../backend/src/common/models';
 import { SemanticSearchResult } from '../../../backend/src/recommendation/types';
 import { fetchEvent, fetchSimilarEvents } from '../api/eventService';
-import SuggestedSection from '../components/SuggestedSection';
 
 interface SuggestedSectionContainerProps {
   eventId: string;
@@ -51,9 +51,7 @@ const SuggestedSectionContainer: React.FC<SuggestedSectionContainerProps> = ({
   if (similarEvents.length === 0) {
     return <div></div>;
   }
-  return (
-    <SuggestedSection className={className} suggestedEvents={similarEvents} />
-  );
+  return <EventsGridContainer className={className} events={similarEvents} />;
 };
 
 export default SuggestedSectionContainer;
