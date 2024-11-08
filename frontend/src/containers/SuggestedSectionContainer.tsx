@@ -13,12 +13,14 @@ import {
 } from '../api/eventService';
 import SuggestedSection from '../components/SuggestedSection';
 
-interface EventCardProps {
+interface SuggestedSectionContainerProps {
   eventId: string;
+  className?: string;
 }
 
-const SuggestedSectionContainer: React.FC<EventCardProps> = ({
+const SuggestedSectionContainer: React.FC<SuggestedSectionContainerProps> = ({
   eventId,
+  className,
 }): JSX.Element => {
   const [similarEvents, setSimilarEvents] = useState<EventDataModel[] | null>(
     null,
@@ -77,6 +79,7 @@ const SuggestedSectionContainer: React.FC<EventCardProps> = ({
   }
   return (
     <SuggestedSection
+      className={className}
       suggestedEvents={similarEvents}
       suggestedEventsEarliestSession={similarEventsEarliestSession}
     />

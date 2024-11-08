@@ -10,13 +10,15 @@ import styles from '../styles/SuggestedEventsSection.module.css';
 interface SuggestedSectionProps {
   suggestedEvents: EventDataModel[];
   suggestedEventsEarliestSession: EventSessionDataModel[];
+  className?: string;
 }
 const SuggestedSection: React.FC<SuggestedSectionProps> = ({
   suggestedEvents,
   suggestedEventsEarliestSession,
+  className,
 }) => {
   return (
-    <div className={styles.suggestedEventsContainer}>
+    <div className={className ?? styles.suggestedEventsContainer}>
       {suggestedEvents.map((event, index) => (
         <EventCardContainer
           key={event.id}
