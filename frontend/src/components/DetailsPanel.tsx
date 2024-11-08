@@ -5,6 +5,7 @@ import {
   EventDataModel,
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
+import SuggestedSectionContainer from '../containers/SuggestedSectionContainer';
 import styles from '../styles/DetailsPanel.module.css';
 
 interface DetailsPanelProps {
@@ -81,6 +82,13 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
             </div>
           ))}
         </div>
+      </div>
+      <div className={styles.suggestedEventsSection}>
+        <h3>Similar events</h3>
+        <SuggestedSectionContainer
+          className={styles.suggestedEventsContainer}
+          eventId={event.id}
+        />
       </div>
     </div>
   );
