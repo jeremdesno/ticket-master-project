@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import {
-  ExtractedEventDataModel,
-  GenreDataModel,
-} from '../../../backend/src/common/models';
-import { fetchEvents } from '../api/eventService';
+import { GenreDataModel } from '../../../backend/src/common/models';
 import { fetchGenres } from '../api/genreService';
-import GenreSection from '../components/GenreSection';
+import GenreSectionContainer from '../containers/GenreSectionContainer';
 import { useAuth } from '../contexts/AuthContext';
 
 const HomePage: React.FC = (): JSX.Element => {
@@ -26,51 +21,6 @@ const HomePage: React.FC = (): JSX.Element => {
     loadGenres();
   }, []);
 
-  const initialEvents: { [key: string]: ExtractedEventDataModel[] } = {};
-  genres.forEach((genre) => {
-    initialEvents[genre.name] = [];
-  });
-  const [events, setEvents] = useState<{
-    [key: string]: ExtractedEventDataModel[] | [];
-  }>(initialEvents);
-
-  useEffect(() => {
-    const loadEvents = async (): Promise<void> => {
-      try {
-        const updatedEvents: { [key: string]: ExtractedEventDataModel[] } = {
-          ...events,
-        };
-        const today = new Date();
-        const startDate = today.toISOString();
-        for (const genre of genres) {
-          try {
-            const fetchedGenreEvents = await fetchEvents(
-              genre.name,
-              undefined,
-              startDate,
-            );
-            updatedEvents[genre.name] = fetchedGenreEvents;
-          } catch (error) {
-            console.error(
-              `Failed to fetch events for genre ${genre.name}:`,
-              error,
-            );
-          }
-        }
-
-        setEvents(updatedEvents);
-      } catch (error) {
-        console.error('Failed to fetch events:', error);
-      }
-    };
-
-    if (genres.length > 0) {
-      loadEvents();
-    }
-  }, [genres]);
-
-  const navigate = useNavigate();
-
   return (
     <div>
       {isAuthenticated ? (
@@ -78,19 +28,9 @@ const HomePage: React.FC = (): JSX.Element => {
           {genres.length === 0 ? (
             <p>Loading genres...</p>
           ) : (
-            genres
-              .filter((genre) => events[genre.name]?.length > 10)
-              .map((genre, index) => (
-                <GenreSection
-                  key={genre.id}
-                  genre={genre.name}
-                  events={events[genre.name]}
-                  autoplayDirection={index % 2 === 0 ? 'rtl' : 'ltr'}
-                  handleEventClick={(eventId: string): void => {
-                    navigate(`/event/${eventId}`);
-                  }}
-                />
-              ))
+            genres.map((genre, index) => (
+              <GenreSectionContainer genre={genre.name} index={index} />
+            ))
           )}
         </>
       ) : (
