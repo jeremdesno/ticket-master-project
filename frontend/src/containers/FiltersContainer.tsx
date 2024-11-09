@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import DateFilter from '../components/DateFilter';
 import DropDownFilter from '../components/DropDownFilter';
-import styles from '../styles/Filters.module.css';
 
 interface FiltersContainerProps {
   genres: string[];
@@ -12,7 +11,15 @@ interface FiltersContainerProps {
   currentSubGenre: string | null;
   currentStartDate?: Date;
   currentEndDate?: Date;
+  className?: string;
 }
+
+const filtersDefaultStyle: React.CSSProperties = {
+  padding: '20px',
+  flex: '1',
+  backgroundColor: '#f8f8f8',
+  marginTop: '20px',
+};
 
 const FiltersContainer: React.FC<FiltersContainerProps> = ({
   genres,
@@ -21,6 +28,7 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   currentSubGenre,
   currentStartDate,
   currentEndDate,
+  className,
 }) => {
   const navigate = useNavigate();
   const [selectedGenre, setSelectedGenre] = useState<string>(currentGenre);
@@ -103,7 +111,10 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   };
 
   return (
-    <div className={styles.filtersContainer}>
+    <div
+      className={className}
+      style={!className ? filtersDefaultStyle : undefined}
+    >
       <h3>Filters</h3>
       <DropDownFilter
         handleDropdowntoggle={handleGenreDropdowntoggle}
