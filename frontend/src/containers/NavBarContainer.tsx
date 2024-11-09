@@ -5,7 +5,7 @@ import GenreMenuContainer from './GenreMenuContainer';
 import SearchBarContainer from './SearchBarContainer';
 import NavButton from '../components/NavButton';
 import { useAuth } from '../contexts/AuthContext';
-import styles from '../styles/NavBar.module.css';
+import styles from '../styles/layout/NavBar.module.css';
 
 const NavBarContainer: React.FC = () => {
   const navigate = useNavigate();
