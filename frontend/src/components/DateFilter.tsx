@@ -1,10 +1,8 @@
-// DateFilter.tsx
-
 import React from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from '../styles/Filters.module.css';
+import styles from '../styles/components/DateFilter.module.css';
 
 interface DateFilterProps {
   startDate: Date | undefined;
