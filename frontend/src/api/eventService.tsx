@@ -2,7 +2,6 @@ import axiosInstance from './axios';
 import {
   EventDataModel,
   EventSessionDataModel,
-  ExtractedEventDataModel,
 } from '../../../backend/src/common/models';
 import { SemanticSearchResult } from '../../../backend/src/recommendation/types';
 import { EventSearchResult } from '../../../backend/src/search/types';
@@ -14,20 +13,12 @@ export const fetchEvents = async (
   endDate?: string,
   limit = 15,
   offset = 0,
-): Promise<ExtractedEventDataModel[]> => {
+): Promise<EventDataModel[]> => {
   const response = await axiosInstance.get('/events', {
     params: { genre, subGenre, startDate, endDate, limit, offset },
   });
-  // Parse dates
-  const events = response.data.map((event: ExtractedEventDataModel) => ({
-    ...event,
-    startDate: new Date(event.startDate),
-    endDate: event.endDate ? new Date(event.endDate) : null,
-    startDateSales: new Date(event.startDateSales),
-    endDateSales: new Date(event.endDateSales),
-  }));
 
-  return events;
+  return response.data;
 };
 
 export const fetchEvent = async (
