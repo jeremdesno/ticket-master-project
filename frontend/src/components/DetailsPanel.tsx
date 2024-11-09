@@ -6,7 +6,7 @@ import {
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
 import SuggestedSectionContainer from '../containers/SuggestedSectionContainer';
-import styles from '../styles/DetailsPanel.module.css';
+import styles from '../styles/components/DetailsPanel.module.css';
 
 interface DetailsPanelProps {
   event: EventDataModel;

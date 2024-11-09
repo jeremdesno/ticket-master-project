@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 
 import { ExtractedEventDataModel } from '../../../backend/src/common/models';
-import styles from '../styles/GenreSection.module.css';
+import styles from '../styles/components/GenreSection.module.css';
 
 interface GenreSectionProps {
   genre: string;

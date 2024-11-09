@@ -6,7 +6,7 @@ import {
   EventDataModel,
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
-import styles from '../styles/EventBox.module.css';
+import styles from '../styles/components/EventBox.module.css';
 
 interface EventRectangleProps {
   event: EventDataModel;

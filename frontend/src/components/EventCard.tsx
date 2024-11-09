@@ -6,7 +6,7 @@ import {
   EventSessionDataModel,
 } from '../../../backend/src/common/models';
 import { EventSearchResult } from '../../../backend/src/search/types';
-import styles from '../styles/EventCard.module.css';
+import styles from '../styles/components/EventCard.module.css';
 
 interface EventCardProps {
   event: EventDataModel | EventSearchResult;
