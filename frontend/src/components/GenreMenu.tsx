@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { GenreDataModel } from '../../../backend/src/common/models';
-import styles from '../styles/NavBar.module.css';
+import styles from '../styles/components/GenreMenu.module.css';
 
 interface GenreMenuProps {
   genres: GenreDataModel[];
