@@ -1,0 +1,51 @@
+  .genreFilter {
+    margin-bottom: 20px;
+  }
+  
+  .genreDropdownButton {
+    background-color: #004d00;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .genreDropdownArrow {
+    margin-left: 10px;
+    font-size: 0.8rem;
+    pointer-events: none;
+  }
+  
+  .genreDropdownMenu {
+    margin-top: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .genreItem {
+    margin-bottom: 10px;
+    background-color: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 5px 0;
+  }
+  
+  .genreItem:hover {
+    font-weight: bold;
+  }
+  
+  .genreSelected {
+    background-color: #555555;
+    color: white;
+  }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../styles/Filters.module.css';
+import styles from '../styles/components/GenreFilter.module.css';
 
 interface GenreFilterProps {
   handleDropdowntoggle: () => void;
