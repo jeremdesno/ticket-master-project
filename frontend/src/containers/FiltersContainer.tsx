@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import DateFilter from '../components/DateFilter';
-import GenreFilter from '../components/GenreFilter';
+import DropDownFilter from '../components/DropDownFilter';
 import styles from '../styles/Filters.module.css';
 
 interface FiltersContainerProps {
@@ -105,19 +105,19 @@ const FiltersContainer: React.FC<FiltersContainerProps> = ({
   return (
     <div className={styles.filtersContainer}>
       <h3>Filters</h3>
-      <GenreFilter
+      <DropDownFilter
         handleDropdowntoggle={handleGenreDropdowntoggle}
         isDropdownOpen={isGenreDropdownOpen}
-        genres={genres}
-        selectedGenre={selectedGenre}
-        onGenreSelect={handleGenreSelect}
+        items={genres}
+        selectedItem={selectedGenre}
+        onItemSelect={handleGenreSelect}
       />
-      <GenreFilter
+      <DropDownFilter
         handleDropdowntoggle={handleSubGenreDropdowntoggle}
         isDropdownOpen={isSubGenreDropdownOpen}
-        genres={['All', ...subGenres]}
-        selectedGenre={selectedSubGenre ? selectedSubGenre : 'All'}
-        onGenreSelect={handleSubGenreSelect}
+        items={['All', ...subGenres]}
+        selectedItem={selectedSubGenre ? selectedSubGenre : 'All'}
+        onItemSelect={handleSubGenreSelect}
       />
       <DateFilter
         startDate={startDate}

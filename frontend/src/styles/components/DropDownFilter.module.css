@@ -1,8 +1,8 @@
-  .genreFilter {
+  .dropDownFilter {
     margin-bottom: 20px;
   }
   
-  .genreDropdownButton {
+  .dropdownButton {
     background-color: #004d00;
     color: white;
     padding: 10px 15px;
@@ -13,13 +13,13 @@
     width: 100%;
   }
 
-  .genreDropdownArrow {
+  .dropdownArrow {
     margin-left: 10px;
     font-size: 0.8rem;
     pointer-events: none;
   }
   
-  .genreDropdownMenu {
+  .dropdownMenu {
     margin-top: 10px;
     background-color: #f8f8f8;
     border: 1px solid #ccc;
@@ -30,7 +30,7 @@
     overflow-y: auto;
   }
   
-  .genreItem {
+  .item {
     margin-bottom: 10px;
     background-color: transparent;
     border: none;
@@ -41,11 +41,11 @@
     padding: 5px 0;
   }
   
-  .genreItem:hover {
+  .item:hover {
     font-weight: bold;
   }
   
-  .genreSelected {
+  .itemSelected {
     background-color: #555555;
     color: white;
   }
