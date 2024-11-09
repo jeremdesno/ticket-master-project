@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../styles/NavBar.module.css';
+import styles from '../styles/components/SearchBar.module.css';
 
 interface SearchBarProps {
   searchTerm: string;
@@ -14,14 +14,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearchSubmit,
 }) => {
   return (
-    <input
-      className={styles.searchBarInput}
-      type="text"
-      placeholder="Search events or venues..."
-      value={searchTerm}
-      onChange={onSearchTermChange}
-      onKeyDown={onSearchSubmit}
-    />
+    <div className={styles.searchBar}>
+      <input
+        className={styles.searchBarInput}
+        type="text"
+        placeholder="Search events or venues..."
+        value={searchTerm}
+        onChange={onSearchTermChange}
+        onKeyDown={onSearchSubmit}
+      />
+    </div>
   );
 };
 
