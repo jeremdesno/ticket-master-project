@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { GenreDataModel } from '../../../backend/src/common/models';
 import { fetchGenres } from '../api/genreService';
 import GenreMenu from '../components/GenreMenu';
-import styles from '../styles/NavBar.module.css';
+import NavButton from '../components/NavButton';
 
 const GenreMenuContainer: React.FC = (): React.JSX.Element => {
   const [showGenreMenu, setShowGenreMenu] = useState(false);
@@ -37,7 +37,10 @@ const GenreMenuContainer: React.FC = (): React.JSX.Element => {
 
   return (
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <button className={styles.navBarButton}>Genres</button>
+      <NavButton
+        label="Genres"
+        onClick={(): void => setShowGenreMenu(!showGenreMenu)}
+      />
       {showGenreMenu && (
         <GenreMenu
           onClose={handleMouseLeave}

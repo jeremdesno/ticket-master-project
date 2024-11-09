@@ -1,26 +1,32 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import FavoritesButtonContainer from './FavoritesButtonContainer';
 import GenreMenuContainer from './GenreMenuContainer';
-import HomeButtonContainer from './HomeButtonContainer';
-import LoginButtonContainer from './LoginButonContainer';
-import LogoutButtonContainer from './LogoutButtonContainer';
 import SearchBarContainer from './SearchBarContainer';
+import NavButton from '../components/NavButton';
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/NavBar.module.css';
 
 const NavBarContainer: React.FC = () => {
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const handleNavigation = (path: string) => () => {
+    navigate(path);
+  };
   return (
     <nav className={styles.navbar}>
       <div className={styles.leftSectionNavBar}>
-        <HomeButtonContainer />
-        <FavoritesButtonContainer />
+        <NavButton label="Home" onClick={handleNavigation('/home')} />
+        <NavButton label="Favorites" onClick={handleNavigation('/favorites')} />
         <GenreMenuContainer />
       </div>
       <div className={styles.rightSectionNavBar}>
         <SearchBarContainer />
-        {isAuthenticated ? <LogoutButtonContainer /> : <LoginButtonContainer />}
+        {isAuthenticated ? (
+          <NavButton label="Logout" onClick={handleNavigation('/logout')} />
+        ) : (
+          <NavButton label="Login" onClick={handleNavigation('/login')} />
+        )}
       </div>
     </nav>
   );
