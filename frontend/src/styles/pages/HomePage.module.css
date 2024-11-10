@@ -20,6 +20,13 @@
     color: #333;
     margin-bottom: 20px;
   }
+  
+  .mostLikedEvents {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
   .upcomingEvents {
     grid-column: 1 / -1;
     display: flex;

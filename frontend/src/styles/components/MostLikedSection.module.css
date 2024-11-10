@@ -1,0 +1,35 @@
+  .mostLikedLayout {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .bigImageLayout{
+    flex: 3;
+  }
+  .bigImage {
+    background-color: #eceff1;
+    height: 40vh;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .smallImagesGrid {
+    flex: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .smallImage {
+    background-color: #cfd8dc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #333;
+  }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { GenreDataModel } from '../../../backend/src/common/models';
 import { fetchGenres } from '../api/genreService';
 import GenreSectionContainer from '../containers/GenreSectionContainer';
+import MostLikedSectionContainer from '../containers/MostLikedSectionContainer';
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/pages/HomePage.module.css';
 
@@ -26,6 +27,11 @@ const HomePage: React.FC = (): JSX.Element => {
     <div className={styles.homePage}>
       {isAuthenticated ? (
         <>
+          <section className={styles.mostLikedEvents}>
+            <h2>Top Most Liked Events</h2>
+            <MostLikedSectionContainer />
+          </section>
+
           <section className={styles.upcomingEvents}>
             <h2>Upcoming Events</h2>
             {genres.map((genre, index) => (
