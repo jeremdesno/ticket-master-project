@@ -16,15 +16,15 @@ const MostLikedSectionContainer: React.FC = (): JSX.Element => {
       <ImageSection
         images={[images[0]]}
         styles={{
-          layout: styles.bigImageLayout,
-          image: styles.bigImage,
+          imagesLayoutContainer: styles.bigImageLayout,
+          imageContainer: styles.bigImage,
         }}
       />
       <ImageSection
         images={images.slice(1)}
         styles={{
-          layout: styles.smallImagesGrid,
-          image: styles.smallImage,
+          imagesLayoutContainer: styles.smallImagesGrid,
+          imageContainer: styles.smallImage,
         }}
       />
     </div>

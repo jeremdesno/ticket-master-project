@@ -5,8 +5,8 @@ import defaultstyles from '../styles/components/ImageSection.module.css';
 interface ImageSectionProps {
   images: (string | null)[];
   styles: {
-    layout: string;
-    image: string;
+    imagesLayoutContainer: string;
+    imageContainer: string;
   };
 }
 
@@ -15,9 +15,9 @@ const ImageSection: React.FC<ImageSectionProps> = ({
   styles,
 }): JSX.Element => {
   return (
-    <div className={styles.layout}>
+    <div className={styles.imagesLayoutContainer}>
       {images.map((imageUrl, idx) => (
-        <div key={idx} className={styles.image}>
+        <div key={idx} className={styles.imageContainer}>
           {imageUrl ? (
             <img src={imageUrl} className={defaultstyles.image} />
           ) : (

@@ -15,8 +15,8 @@ const FeaturedGenresSectionContainer: React.FC = (): JSX.Element => {
     <ImageSection
       images={images}
       styles={{
-        layout: styles.verticalStack,
-        image: styles.genreImage,
+        imagesLayoutContainer: styles.verticalStack,
+        imageContainer: styles.genreImage,
       }}
     />
   );

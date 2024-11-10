@@ -15,8 +15,8 @@ const RecommendedSectionContainer: React.FC = (): JSX.Element => {
     <ImageSection
       images={images}
       styles={{
-        layout: styles.squareGrid,
-        image: styles.squareImage,
+        imagesLayoutContainer: styles.squareGrid,
+        imageContainer: styles.squareImage,
       }}
     />
   );
