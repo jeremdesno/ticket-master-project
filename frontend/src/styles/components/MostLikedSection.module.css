@@ -2,34 +2,35 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+    height: 50vh;
   }
   .bigImageLayout{
     flex: 3;
+    height: 100%;
+    width: 100%;
   }
+
   .bigImage {
-    background-color: #eceff1;
-    height: 40vh;
+    height: 100%;
+    width: 100%;
+  }
+
+  .bigImage img {
     border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    color: #333;
   }
   
   .smallImagesGrid {
     flex: 2;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
     gap: 10px;
   }
   
   .smallImage {
-    background-color: #cfd8dc;
+    min-width: 0; /* Allows item to shrink within the cell */
+    min-height: 0;  /* Allows item to shrink within the cell */
+  }
+
+  .smallImage img {
     border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.1rem;
-    color: #333;
   }

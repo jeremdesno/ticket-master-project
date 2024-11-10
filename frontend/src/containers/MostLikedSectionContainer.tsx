@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { EventDataModel } from '../../../backend/src/common/models';
+import { fetchTrendingEvents } from '../api/eventService';
 import ImageSection from '../components/ImageSection';
 import styles from '../styles/components/MostLikedSection.module.css';
 
 const MostLikedSectionContainer: React.FC = (): JSX.Element => {
-  const images = [
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
-  ];
+  const [events, setEvents] = useState<EventDataModel[] | null>(null);
+  useEffect(() => {
+    const loadTrendingEvents = async (): Promise<void> => {
+      try {
+        const fetchedTrendingEvents = await fetchTrendingEvents();
+        setEvents(fetchedTrendingEvents);
+      } catch (error) {
+        console.log('Failed to fetch trending events:', error);
+      }
+    };
+    loadTrendingEvents();
+  }, []);
+  if (!events) {
+    return <div>Loading trending events...</div>;
+  }
   return (
     <div className={styles.mostLikedLayout}>
       <ImageSection
-        images={[images[0]]}
+        images={[events[0].imageUrl]}
         styles={{
           imagesLayoutContainer: styles.bigImageLayout,
           imageContainer: styles.bigImage,
         }}
       />
       <ImageSection
-        images={images.slice(1)}
+        images={events.slice(1).map((event) => {
+          return event.imageUrl;
+        })}
         styles={{
           imagesLayoutContainer: styles.smallImagesGrid,
           imageContainer: styles.smallImage,
