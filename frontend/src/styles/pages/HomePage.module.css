@@ -26,6 +26,21 @@
     flex-direction: column;
   }
   
+  .genresAndRecommendedSection {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  .featuredGenres {
+    flex: 2;
+  }
+
+  .recommendedEvents {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+  }
   
   .upcomingEvents {
     grid-column: 1 / -1;

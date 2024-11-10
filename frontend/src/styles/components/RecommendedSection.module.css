@@ -1,0 +1,20 @@
+  .squareGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 15px;
+    height: 100%;
+    flex: 1;
+  }
+  
+  .squareImage {
+    background-color: #ffe0b2;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #333;
+    width: 100%;
+    height: 100%;
+  }
