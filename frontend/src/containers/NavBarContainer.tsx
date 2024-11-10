@@ -3,15 +3,22 @@ import { useNavigate } from 'react-router-dom';
 
 import GenreMenuContainer from './GenreMenuContainer';
 import SearchBarContainer from './SearchBarContainer';
+import { logout } from '../api/authService';
 import NavButton from '../components/NavButton';
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/layout/NavBar.module.css';
 
 const NavBarContainer: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, checkAuth } = useAuth();
   const handleNavigation = (path: string) => () => {
     navigate(path);
+  };
+
+  const handleLogoutClick = async (): Promise<void> => {
+    await logout();
+    await checkAuth();
+    navigate('/');
   };
   return (
     <nav className={styles.navbar}>
@@ -23,9 +30,9 @@ const NavBarContainer: React.FC = () => {
       <div className={styles.rightSectionNavBar}>
         <SearchBarContainer />
         {isAuthenticated ? (
-          <NavButton label="Logout" onClick={handleNavigation('/logout')} />
+          <NavButton label="Logout" onClick={handleLogoutClick} />
         ) : (
-          <NavButton label="Login" onClick={handleNavigation('/login')} />
+          <NavButton label="Login" onClick={handleNavigation('/')} />
         )}
       </div>
     </nav>
