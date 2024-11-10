@@ -125,6 +125,29 @@ export class EventService {
     return totalEvents.total;
   }
 
+  async getMostLikedEvents(limit: number = 5): Promise<EventDataModel[]> {
+    const mostLikedEvents = await this.database
+      .with('eventLikeCounts', (db) =>
+        db
+          .selectFrom('favoriteEvents')
+          .groupBy('eventId')
+          .select([
+            'eventId',
+            this.database.fn.count('eventId').as('likeCount'),
+          ])
+          .orderBy('likeCount', 'desc')
+          .limit(limit),
+      )
+      .selectFrom('eventLikeCounts')
+      .leftJoin('events', (join) =>
+        join.onRef('eventLikeCounts.eventId', '=', 'events.id'),
+      )
+      .selectAll('events')
+      .execute();
+
+    return mostLikedEvents;
+  }
+
   async getGenres(): Promise<GenreDataModel[]> {
     return await this.database.selectFrom('genres').selectAll().execute();
   }

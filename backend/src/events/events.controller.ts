@@ -60,6 +60,13 @@ export class EventController {
     );
   }
 
+  @Get('trending')
+  async getMostLikedEvents(
+    @Query('limit') limit: number = 5,
+  ): Promise<EventDataModel[]> {
+    return this.eventService.getMostLikedEvents(limit);
+  }
+
   @Get(':id')
   async getEvent(@Param('id') id: string): Promise<EventDataModel | null> {
     return this.eventService.getEvent(id);
