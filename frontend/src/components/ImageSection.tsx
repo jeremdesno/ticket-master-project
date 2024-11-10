@@ -1,5 +1,7 @@
 import React from 'react';
 
+import defaultstyles from '../styles/components/ImageSection.module.css';
+
 interface ImageSectionProps {
   images: (string | null)[];
   styles: {
@@ -17,9 +19,9 @@ const ImageSection: React.FC<ImageSectionProps> = ({
       {images.map((imageUrl, idx) => (
         <div key={idx} className={styles.image}>
           {imageUrl ? (
-            <img src={imageUrl} />
+            <img src={imageUrl} className={defaultstyles.image} />
           ) : (
-            <p className={styles.image}>Image not available</p>
+            <p className={defaultstyles.p}>Image not available</p>
           )}
         </div>
       ))}
