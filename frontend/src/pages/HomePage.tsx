@@ -4,6 +4,7 @@ import { GenreDataModel } from '../../../backend/src/common/models';
 import { fetchGenres } from '../api/genreService';
 import GenreSectionContainer from '../containers/GenreSectionContainer';
 import { useAuth } from '../contexts/AuthContext';
+import styles from '../styles/pages/HomePage.module.css';
 
 const HomePage: React.FC = (): JSX.Element => {
   const { isAuthenticated } = useAuth();
@@ -22,16 +23,19 @@ const HomePage: React.FC = (): JSX.Element => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.homePage}>
       {isAuthenticated ? (
         <>
-          {genres.length === 0 ? (
-            <p>Loading genres...</p>
-          ) : (
-            genres.map((genre, index) => (
-              <GenreSectionContainer genre={genre.name} index={index} />
-            ))
-          )}
+          <section className={styles.upcomingEvents}>
+            <h2>Upcoming Events</h2>
+            {genres.map((genre, index) => (
+              <GenreSectionContainer
+                key={genre.id}
+                genre={genre.name}
+                index={index}
+              />
+            ))}
+          </section>
         </>
       ) : (
         <p>Please log in to see the events.</p>
