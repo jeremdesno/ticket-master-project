@@ -85,3 +85,12 @@ export const fetchSimilarEvents = async (
   });
   return response.data;
 };
+
+export const fetchTrendingEvents = async (
+  limit = 5,
+): Promise<EventDataModel[]> => {
+  const response = await axiosInstance.get('/events/trending', {
+    params: { limit },
+  });
+  return response.data;
+};
