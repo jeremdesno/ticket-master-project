@@ -32,18 +32,18 @@ const ImageSection: React.FC<ImageSectionProps> = ({
             handleClick(image.id);
           }}
         >
-          {image.imageUrl ? (
-            <div className={defaultstyles.imageWrapper}>
+          <div className={defaultstyles.imageWrapper}>
+            {image.imageUrl ? (
               <img src={image.imageUrl} className={defaultstyles.image} />
-              {image.name && (
-                <div className={styles.imageText ?? defaultstyles.overlayText}>
-                  {image.name}
-                </div>
-              )}
-            </div>
-          ) : (
-            <p className={defaultstyles.p}>Image not available</p>
-          )}
+            ) : (
+              <p className={defaultstyles.p}>Image not available</p>
+            )}
+            {image.name && (
+              <div className={styles.imageText ?? defaultstyles.overlayText}>
+                {image.name}
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>
