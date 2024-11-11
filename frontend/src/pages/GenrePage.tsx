@@ -5,6 +5,7 @@ import { EventDataModel } from '../../../backend/src/common/models';
 import { fetchEvents, fetchNumberEvents } from '../api/eventService';
 import { fetchGenres, fetchSubGenres } from '../api/genreService';
 import Pagination from '../components/Pagination';
+import { genreImagesPaths } from '../constants/genres';
 import EventsGridContainer from '../containers/EventsGridContainer';
 import FiltersContainer from '../containers/FiltersContainer';
 import styles from '../styles/pages/GenrePage.module.css';
@@ -123,7 +124,15 @@ const EventsPageContainer: React.FC = (): React.JSX.Element => {
 
   return (
     <div>
-      <h1 className={styles.genreTitle}>{genre} Events</h1>
+      <div className={styles.header}>
+        {genreMap[genre] in genreImagesPaths && (
+          <img
+            src={genreImagesPaths[genreMap[genre]]}
+            className={styles.headerBackgroundImage}
+          />
+        )}
+        <h1 className={styles.headerGenreTitle}>{genre} Events</h1>
+      </div>
       <div className={styles.eventsPageLayout}>
         <div className={styles.bodyLayout}>
           {!events.length ? (
