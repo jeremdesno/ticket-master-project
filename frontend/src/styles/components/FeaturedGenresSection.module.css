@@ -5,16 +5,13 @@
   }
   
   .genreImage {
-    background-color: #d1c4e9;
-    height: 120px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.1rem;
-    color: #333;
+    height: 15vh;
   }
   
   .genreImage:hover {
     transform: scale(1.05);
+  }
+
+  .genreImage img {
+    border-radius: 8px;
   }
