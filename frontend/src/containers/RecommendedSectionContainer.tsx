@@ -10,7 +10,9 @@ const RecommendedSectionContainer: React.FC = (): JSX.Element => {
     { imageUrl: 'https://via.placeholder.com', id: '3' },
     { imageUrl: 'https://via.placeholder.com', id: '4' },
   ];
-
+  const handleEventClick = (id: string): void => {
+    console.log(`clicked on recommended image ${id}`);
+  };
   return (
     <ImageSection
       images={images}
@@ -18,6 +20,7 @@ const RecommendedSectionContainer: React.FC = (): JSX.Element => {
         imagesLayoutContainer: styles.squareGrid,
         imageContainer: styles.squareImage,
       }}
+      handleClick={handleEventClick}
     />
   );
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { EventDataModel } from '../../../backend/src/common/models';
 import { fetchTrendingEvents } from '../api/eventService';
@@ -7,6 +8,8 @@ import styles from '../styles/components/MostLikedSection.module.css';
 
 const MostLikedSectionContainer: React.FC = (): JSX.Element => {
   const [events, setEvents] = useState<EventDataModel[] | null>(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const loadTrendingEvents = async (): Promise<void> => {
       try {
@@ -18,6 +21,9 @@ const MostLikedSectionContainer: React.FC = (): JSX.Element => {
     };
     loadTrendingEvents();
   }, []);
+  const handleEventClick = (id: string): void => {
+    navigate(`/event/${id}`);
+  };
   if (!events) {
     return <div>Loading trending events...</div>;
   }
@@ -29,6 +35,7 @@ const MostLikedSectionContainer: React.FC = (): JSX.Element => {
           imagesLayoutContainer: styles.bigImageLayout,
           imageContainer: styles.bigImage,
         }}
+        handleClick={handleEventClick}
       />
       <ImageSection
         images={events.slice(1)}
@@ -36,6 +43,7 @@ const MostLikedSectionContainer: React.FC = (): JSX.Element => {
           imagesLayoutContainer: styles.smallImagesGrid,
           imageContainer: styles.smallImage,
         }}
+        handleClick={handleEventClick}
       />
     </div>
   );

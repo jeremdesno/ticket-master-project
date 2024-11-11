@@ -12,16 +12,24 @@ interface ImageSectionProps {
     imagesLayoutContainer: string;
     imageContainer: string;
   };
+  handleClick: (id: string) => void;
 }
 
 const ImageSection: React.FC<ImageSectionProps> = ({
   images,
   styles,
+  handleClick,
 }): JSX.Element => {
   return (
     <div className={styles.imagesLayoutContainer}>
       {images.map((image, idx) => (
-        <div key={idx} className={styles.imageContainer}>
+        <div
+          key={idx}
+          className={styles.imageContainer}
+          onClick={(): void => {
+            handleClick(image.id);
+          }}
+        >
           {image.imageUrl ? (
             <img src={image.imageUrl} className={defaultstyles.image} />
           ) : (
