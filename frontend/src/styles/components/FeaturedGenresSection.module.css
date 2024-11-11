@@ -15,3 +15,27 @@
   .genreImage img {
     border-radius: 8px;
   }
+
+  .genreTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .genreTitle::before {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 15%;
+    width: 100%;
+    height: 26px;
+    background-color: #004d00;
+    z-index: -1;
+    border-radius: 5px;
+  }

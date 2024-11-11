@@ -48,11 +48,13 @@ const FeaturedGenresSectionContainer: React.FC = (): JSX.Element => {
           return {
             imageUrl: genreImagesPaths[genre.id],
             id: genre.id,
+            name: genre.name,
           };
         })}
       styles={{
         imagesLayoutContainer: styles.verticalStack,
         imageContainer: styles.genreImage,
+        imageText: styles.genreTitle,
       }}
       handleClick={handleGenreClick}
     />
