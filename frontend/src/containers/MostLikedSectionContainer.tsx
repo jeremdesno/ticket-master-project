@@ -24,16 +24,14 @@ const MostLikedSectionContainer: React.FC = (): JSX.Element => {
   return (
     <div className={styles.mostLikedLayout}>
       <ImageSection
-        images={[events[0].imageUrl]}
+        images={[events[0]]}
         styles={{
           imagesLayoutContainer: styles.bigImageLayout,
           imageContainer: styles.bigImage,
         }}
       />
       <ImageSection
-        images={events.slice(1).map((event) => {
-          return event.imageUrl;
-        })}
+        images={events.slice(1)}
         styles={{
           imagesLayoutContainer: styles.smallImagesGrid,
           imageContainer: styles.smallImage,

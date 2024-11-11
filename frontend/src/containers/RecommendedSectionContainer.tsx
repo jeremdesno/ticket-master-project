@@ -5,10 +5,10 @@ import styles from '../styles/components/RecommendedSection.module.css';
 
 const RecommendedSectionContainer: React.FC = (): JSX.Element => {
   const images = [
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
-    'https://via.placeholder.com',
+    { imageUrl: 'https://via.placeholder.com', id: '1' },
+    { imageUrl: 'https://via.placeholder.com', id: '2' },
+    { imageUrl: 'https://via.placeholder.com', id: '3' },
+    { imageUrl: 'https://via.placeholder.com', id: '4' },
   ];
 
   return (

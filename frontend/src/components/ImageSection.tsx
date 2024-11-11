@@ -2,8 +2,12 @@ import React from 'react';
 
 import defaultstyles from '../styles/components/ImageSection.module.css';
 
+interface Image {
+  imageUrl: string | null;
+  id: string;
+}
 interface ImageSectionProps {
-  images: (string | null)[];
+  images: Image[];
   styles: {
     imagesLayoutContainer: string;
     imageContainer: string;
@@ -16,10 +20,10 @@ const ImageSection: React.FC<ImageSectionProps> = ({
 }): JSX.Element => {
   return (
     <div className={styles.imagesLayoutContainer}>
-      {images.map((imageUrl, idx) => (
+      {images.map((image, idx) => (
         <div key={idx} className={styles.imageContainer}>
-          {imageUrl ? (
-            <img src={imageUrl} className={defaultstyles.image} />
+          {image.imageUrl ? (
+            <img src={image.imageUrl} className={defaultstyles.image} />
           ) : (
             <p className={defaultstyles.p}>Image not available</p>
           )}

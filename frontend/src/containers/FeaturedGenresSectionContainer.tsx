@@ -28,7 +28,10 @@ const FeaturedGenresSectionContainer: React.FC = (): JSX.Element => {
       images={genres
         .filter((genre) => genre.id in genreImagesPaths)
         .map((genre) => {
-          return genreImagesPaths[genre.id];
+          return {
+            imageUrl: genreImagesPaths[genre.id],
+            id: genre.id,
+          };
         })}
       styles={{
         imagesLayoutContainer: styles.verticalStack,
