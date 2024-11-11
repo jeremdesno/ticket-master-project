@@ -4,8 +4,28 @@
   }
   
   .genreTitle {
-    font-size: 24px;
-    margin-bottom: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .genreTitle::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 100%;
+    height: 50px;
+    background-color: #004d00;
+    z-index: -1;
+    border-radius: 5px;
   }
   
   .eventsContainer {

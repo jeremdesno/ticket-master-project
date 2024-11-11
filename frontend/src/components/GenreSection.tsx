@@ -55,7 +55,7 @@ const GenreSection: React.FC<GenreSectionProps> = ({
 
   return (
     <section className={styles.genreSection}>
-      <h2 className={styles.genreTitle}>{genre}</h2>
+      <div className={styles.genreTitle}>{genre}</div>
       <div className={styles.eventsContainer}>
         <Slider {...carouselSettings}>{renderCarouselItems()}</Slider>
       </div>
