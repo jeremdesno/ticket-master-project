@@ -15,6 +15,10 @@
     width: 100%;
   }
 
+  .bigImage:hover {
+    transform: scale(1.05);
+  }
+
   .bigImage img {
     border-radius: 8px;
   }
@@ -29,6 +33,10 @@
   .smallImage {
     min-width: 0; /* Allows item to shrink within the cell */
     min-height: 0;  /* Allows item to shrink within the cell */
+  }
+
+  .smallImage:hover {
+    transform: scale(1.05);
   }
 
   .smallImage img {
